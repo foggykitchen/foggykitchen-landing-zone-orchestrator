@@ -1,8 +1,25 @@
 # Architecture
 
-## Core Idea
+This document explains the **high-level architecture model** used by FoggyKitchen Landing Zone Orchestrator.
 
-The orchestrator treats YAML as an architecture contract rather than a raw resource manifest.
+---
+
+## 🎯 Purpose
+
+The goal of this repository is not to create one giant landing zone supermodule.  
+Instead, it provides a **thin orchestration layer** that composes reusable FoggyKitchen modules into architecture-driven patterns.
+
+The core idea is:
+
+- YAML payloads describe architecture intent
+- shared HCL patterns implement that intent
+- examples provide payload variants and thin wrappers
+
+---
+
+## 🧠 Core Model
+
+The orchestrator treats YAML as an **architecture contract** rather than a raw resource manifest.
 
 The payload expresses:
 
@@ -12,48 +29,160 @@ The payload expresses:
 - security intent
 - feature switches
 - workload placement
+- interconnect staging intent where needed
 
-Terraform/OpenTofu then maps that intent to statically declared FoggyKitchen module calls.
+Terraform / OpenTofu then maps that intent to **statically declared** FoggyKitchen module calls and, in a few cases, explicit provider resources where the module catalog is not yet complete.
 
-## MVP Pattern
+---
 
-The implemented MVP is an Azure hub-and-spoke landing zone:
+## 📂 Repository Architecture
 
-- one resource group
-- one hub VNet
-- two spoke VNets
-- bidirectional VNet peering
-- subnet-level NSGs
-- route table attachments
-- NAT Gateway for selected private subnets
-- Azure Bastion for operator access
-- Private DNS zones linked to all VNets
-- one private VM workload
-- one internal load balancer
+The repository is organized around two layers:
 
-## Why Thin Composition
+1. `patterns/`
+   - shared HCL orchestration logic
+   - one directory per reusable architecture pattern
+2. `examples/`
+   - payload-driven example variants
+   - thin wrappers that call shared patterns
 
-This repository intentionally does not reimplement networking, compute, or DNS internals. Those concerns stay inside the dedicated FoggyKitchen modules. The orchestrator only normalizes payload input, resolves references, and wires modules together.
+This separation keeps the implementation:
 
-## Azure MVP Boundaries
+- understandable
+- testable
+- scalable as more examples are added
 
-Included:
+---
 
-- VNet and subnet creation
+## ✨ Currently Implemented Pattern Families
+
+### Azure
+
+- `hub_spoke`
+- `private_endpoint`
+- `firewall_transit`
+
+### OCI
+
+- `drg_hub_spoke`
+- `lpg_local_peering`
+
+### Multicloud
+
+- `oci_azure_interconnect`
+
+---
+
+## 🧩 Pattern Responsibilities
+
+### Azure Hub-and-Spoke
+
+Focus:
+
+- core network boundary
+- hub and spokes
 - peering
-- routing scaffolding
-- NSG baselines
-- outbound egress identity via NAT
-- bastion access
+- route tables
+- NSGs
+- NAT
+- Bastion
 - private DNS
-- compute placement
-- internal traffic entry via ILB
+- private VM workload
+- internal load balancer
 
-Not included in MVP:
+### Azure Private Endpoint
 
-- Azure Firewall transit
-- private endpoints
-- storage and platform services
-- AKS
-- RBAC and governance overlays
+Focus:
+
+- reuse hub-and-spoke core
+- add Storage
+- add private endpoints
+- add private DNS zone integration
+
+### Azure Firewall Transit
+
+Focus:
+
+- hub-and-spoke transit pattern
+- centralized east-west inspection
+- centralized north-south egress
+- route tables pointing to Azure Firewall private IP
+
+### OCI DRG Hub-and-Spoke
+
+Focus:
+
+- multi-VCN connectivity
+- DRG attachments
+- DRG route flow
+- private workloads
+- private load balancer
+
+### OCI LPG Local Peering
+
+Focus:
+
+- same-region VCN peering
+- local route flow through LPGs
+- private workloads
+- private load balancer
+
+### OCI-Azure Interconnect
+
+Focus:
+
+- Azure ExpressRoute side
+- OCI FastConnect side
+- DRG-based OCI attachment
+- private workload connectivity across clouds
+
+This pattern is intentionally transitional at the moment and still mixes:
+
+- FoggyKitchen modules for foundational layers
+- raw provider resources for interconnect edge components
+
+---
+
+## ⚖️ Why Thin Composition
+
+This repository intentionally does not reimplement all networking, compute, DNS, firewall, or storage internals.
+
+Those concerns stay inside dedicated modules where possible.  
+The orchestrator is responsible for:
+
+- payload normalization
+- reference resolution
+- static module wiring
+- architecture-level composition
+
+---
+
+## ⚠️ Current Architectural Boundaries
+
+Included today:
+
+- Azure landing zone networking patterns
+- Azure private endpoint pattern for Storage
+- Azure firewall transit pattern
+- OCI DRG and LPG-based networking patterns
+- OCI-Azure interconnect reference pattern
+
+Not yet treated as first-class pattern families:
+
+- OCI file storage patterns
+- OCI object storage patterns
+- OCI bastion service integration
+- OCI block volume patterns
+- enterprise governance overlays
 - CI/CD and policy-as-code
+
+---
+
+## 🪪 License
+
+Licensed under the **Universal Permissive License (UPL), Version 1.0**.  
+See [LICENSE](../LICENSE) for details.
+
+---
+
+© 2026 FoggyKitchen.com — *Cloud. Code. Clarity.*
