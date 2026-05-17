@@ -1,0 +1,77 @@
+landing_zone:
+  name: fk-azure-fw-transit-dev
+  environment: dev
+  owner: foggykitchen
+  default_tags:
+    project: foggykitchen
+    environment: dev
+    managed_by: opentofu
+    landing_zone: fk-azure-fw-transit-dev
+
+cloud:
+  provider: azure
+  location: westeurope
+  resource_group:
+    name: rg-fk-azure-fw-transit-dev
+
+networking:
+  hub:
+    name: vnet-fk-hub-fw-dev
+    address_space:
+      - 10.0.0.0/16
+    firewall_subnet:
+      name: AzureFirewallSubnet
+      cidr: 10.0.1.0/24
+
+  spokes:
+    spoke1:
+      name: vnet-fk-spoke1-fw-dev
+      address_space:
+        - 10.1.0.0/16
+      subnet:
+        name: snet-spoke1-workload
+        cidr: 10.1.1.0/24
+    spoke2:
+      name: vnet-fk-spoke2-fw-dev
+      address_space:
+        - 10.2.0.0/16
+      subnet:
+        name: snet-spoke2-workload
+        cidr: 10.2.1.0/24
+
+peering:
+  allow_forwarded_traffic: true
+
+firewall:
+  name: fk-azure-firewall
+  public_ip_name: pip-fk-firewall-dev
+  sku_tier: Standard
+  threat_intel_mode: Alert
+
+routing:
+  mode: firewall_transit
+
+compute:
+  instances:
+    spoke1_vm:
+      name: vm-fk-spoke1-01
+      subnet_ref: spoke1.workload
+      size: Standard_B1ms
+      admin_username: azureuser
+      private_ip_address: 10.1.1.4
+      image:
+        publisher: Canonical
+        offer: 0001-com-ubuntu-server-jammy
+        sku: 22_04-lts-gen2
+        version: latest
+    spoke2_vm:
+      name: vm-fk-spoke2-01
+      subnet_ref: spoke2.workload
+      size: Standard_B1ms
+      admin_username: azureuser
+      private_ip_address: 10.2.1.4
+      image:
+        publisher: Canonical
+        offer: 0001-com-ubuntu-server-jammy
+        sku: 22_04-lts-gen2
+        version: latest

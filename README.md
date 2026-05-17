@@ -31,6 +31,7 @@ Depending on the selected pattern and payload, the repository can compose:
 
 - Azure hub-and-spoke landing zones
 - Azure private endpoint landing zones
+- Azure firewall transit landing zones
 - OCI DRG hub-and-spoke landing zones
 - OCI same-region LPG local peering landing zones
 - OCI-Azure Interconnect reference landing zones
@@ -111,6 +112,7 @@ foggykitchen-landing-zone-orchestrator/
 Currently implemented:
 
 - [examples/azure/networking/hub_spoke/basic](examples/azure/networking/hub_spoke/basic/README.md)
+- [examples/azure/networking/firewall_transit/basic](examples/azure/networking/firewall_transit/basic/README.md)
 - [examples/azure/networking/private_endpoint/storage_private_link](examples/azure/networking/private_endpoint/storage_private_link/README.md)
 - [examples/oci/networking/drg_hub_spoke/basic](examples/oci/networking/drg_hub_spoke/basic/README.md)
 - [examples/oci/networking/lpg_local_peering/basic](examples/oci/networking/lpg_local_peering/basic/README.md)
@@ -119,6 +121,7 @@ Currently implemented:
 Shared orchestration patterns:
 
 - [patterns/azure/hub_spoke](patterns/azure/hub_spoke)
+- [patterns/azure/firewall_transit](patterns/azure/firewall_transit)
 - [patterns/azure/private_endpoint](patterns/azure/private_endpoint)
 - [patterns/oci/drg_hub_spoke](patterns/oci/drg_hub_spoke)
 - [patterns/oci/lpg_local_peering](patterns/oci/lpg_local_peering)
