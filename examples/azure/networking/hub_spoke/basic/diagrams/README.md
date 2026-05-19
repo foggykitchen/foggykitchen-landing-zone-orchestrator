@@ -9,6 +9,7 @@ This directory stores **architecture images and related visual assets** for the 
 Current assets:
 
 - [`azure-hub-spoke-basic-architecture.png`](azure-hub-spoke-basic-architecture.png)
+- [`azure-hub-spoke-basic-portal1.png`](azure-hub-spoke-basic-portal1.png)
 
 The main example README embeds this diagram directly:
 

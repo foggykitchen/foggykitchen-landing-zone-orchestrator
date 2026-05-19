@@ -13,7 +13,7 @@ module "hub_vnet" {
   address_space       = local.hub.address_space
 
   subnets = {
-    for subnet_key, subnet in local.hub_subnets : subnet_key => {
+    for subnet_key, subnet in local.hub_subnets : subnet.name => {
       address_prefixes                              = [subnet.cidr]
       private_endpoint_network_policies             = "Enabled"
       private_link_service_network_policies_enabled = true
@@ -35,7 +35,7 @@ module "spoke_vnets" {
   address_space       = each.value.address_space
 
   subnets = {
-    for subnet_key, subnet in each.value.subnets : subnet_key => {
+    for subnet_key, subnet in each.value.subnets : subnet.name => {
       address_prefixes                              = [subnet.cidr]
       private_endpoint_network_policies             = subnet.is_pe ? "Disabled" : "Enabled"
       private_link_service_network_policies_enabled = true
@@ -95,7 +95,7 @@ module "hub_shared_nsg" {
   ]
   subnet_associations = {
     shared = {
-      subnet_id = module.hub_vnet.subnet_ids["shared"]
+      subnet_id = local.subnet_ids_by_ref["hub.shared"]
     }
   }
   tags = local.tags
@@ -124,7 +124,7 @@ module "app_frontend_nsg" {
   ]
   subnet_associations = {
     frontend = {
-      subnet_id = module.spoke_vnets["app"].subnet_ids["frontend"]
+      subnet_id = local.subnet_ids_by_ref["app.frontend"]
     }
   }
   tags = local.tags
@@ -181,7 +181,7 @@ module "app_backend_nsg" {
   )
   subnet_associations = {
     backend = {
-      subnet_id = module.spoke_vnets["app"].subnet_ids["backend"]
+      subnet_id = local.subnet_ids_by_ref["app.backend"]
     }
   }
   tags = local.tags
@@ -222,7 +222,7 @@ module "data_database_nsg" {
   ]
   subnet_associations = {
     database = {
-      subnet_id = module.spoke_vnets["data"].subnet_ids["database"]
+      subnet_id = local.subnet_ids_by_ref["data.database"]
     }
   }
   tags = local.tags
@@ -251,7 +251,7 @@ module "data_private_endpoints_nsg" {
   ]
   subnet_associations = {
     private_endpoints = {
-      subnet_id = module.spoke_vnets["data"].subnet_ids["private_endpoints"]
+      subnet_id = local.subnet_ids_by_ref["data.private_endpoints"]
     }
   }
   tags = local.tags
@@ -294,10 +294,10 @@ module "router_vm_nsg" {
 }
 
 module "nat_public_ip" {
-  count  = local.features.nat_gateway && local.nat_gateway.enabled ? 1 : 0
-  source = "git::https://github.com/mlinxfeld/terraform-az-fk-public-ip.git?ref=main"
+  for_each = local.features.nat_gateway && local.nat_gateway.enabled ? local.nat_subnet_refs_by_vnet : {}
+  source   = "git::https://github.com/mlinxfeld/terraform-az-fk-public-ip.git?ref=main"
 
-  name                = "pip-${local.landing_zone.name}-nat"
+  name                = "natgw-fk-${each.key}-${local.landing_zone.environment}-pip"
   location            = local.location
   resource_group_name = azurerm_resource_group.this.name
   allocation_method   = "Static"
@@ -306,17 +306,17 @@ module "nat_public_ip" {
 }
 
 module "nat_gateway" {
-  count  = local.features.nat_gateway && local.nat_gateway.enabled ? 1 : 0
-  source = "git::https://github.com/mlinxfeld/terraform-az-fk-natgw.git?ref=main"
+  for_each = local.features.nat_gateway && local.nat_gateway.enabled ? local.nat_subnet_refs_by_vnet : {}
+  source   = "git::https://github.com/mlinxfeld/terraform-az-fk-natgw.git?ref=main"
 
-  name                = "natgw-${local.landing_zone.environment}"
+  name                = "natgw-fk-${each.key}-${local.landing_zone.environment}"
   location            = local.location
   resource_group_name = azurerm_resource_group.this.name
   create_public_ip    = false
-  public_ip_id        = module.nat_public_ip[0].id
+  public_ip_id        = module.nat_public_ip[each.key].id
   subnet_associations = {
-    for subnet_ref in local.nat_subnet_refs : replace(subnet_ref, ".", "-") => {
-      subnet_id = split(".", subnet_ref)[0] == "app" ? module.spoke_vnets["app"].subnet_ids[split(".", subnet_ref)[1]] : module.spoke_vnets["data"].subnet_ids[split(".", subnet_ref)[1]]
+    for subnet_ref in each.value : replace(subnet_ref, ".", "-") => {
+      subnet_id = local.subnet_ids_by_ref[subnet_ref]
     }
   }
   tags = local.tags
@@ -329,7 +329,7 @@ module "bastion" {
   name                = local.bastion.name
   location            = local.location
   resource_group_name = azurerm_resource_group.this.name
-  bastion_subnet_id   = module.hub_vnet.subnet_ids["bastion"]
+  bastion_subnet_id   = local.subnet_ids_by_ref["hub.bastion"]
   sku                 = local.bastion.sku
   tunneling_enabled   = true
   ip_connect_enabled  = true

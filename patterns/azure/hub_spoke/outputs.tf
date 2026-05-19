@@ -14,14 +14,26 @@ output "spoke_vnet_ids" {
 
 output "subnet_ids" {
   value = {
-    hub  = module.hub_vnet.subnet_ids
-    app  = module.spoke_vnets["app"].subnet_ids
-    data = module.spoke_vnets["data"].subnet_ids
+    hub = {
+      for subnet_key, subnet in local.hub_subnets : subnet_key => module.hub_vnet.subnet_ids[subnet.name]
+    }
+    app = {
+      for subnet_key, subnet in local.spokes["app"].subnets : subnet_key => module.spoke_vnets["app"].subnet_ids[subnet.name]
+    }
+    data = {
+      for subnet_key, subnet in local.spokes["data"].subnets : subnet_key => module.spoke_vnets["data"].subnet_ids[subnet.name]
+    }
   }
 }
 
 output "nat_public_ip" {
-  value = try(module.nat_public_ip[0].ip_address, null)
+  value = length(module.nat_public_ip) == 1 ? values(module.nat_public_ip)[0].ip_address : null
+}
+
+output "nat_public_ips" {
+  value = {
+    for vnet_key, mod in module.nat_public_ip : vnet_key => mod.ip_address
+  }
 }
 
 output "bastion_name" {

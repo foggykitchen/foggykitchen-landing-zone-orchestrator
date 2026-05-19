@@ -4,6 +4,8 @@ This example provides one payload for the shared **Azure hub-and-spoke orchestra
 
 ![Azure hub-and-spoke architecture](diagrams/azure-hub-spoke-basic-architecture.png)
 
+![Azure Portal view of the deployed basic hub-and-spoke landing zone](diagrams/azure-hub-spoke-basic-portal1.png)
+
 ---
 
 ## 🎯 Purpose
@@ -31,6 +33,19 @@ This example composes:
 - NAT Gateway on selected private subnets
 - Azure Bastion in the hub
 - reserved application and data subnets for future workload patterns
+
+---
+
+## 🖼️ Azure Portal View
+
+The screenshot above shows the deployed `basic` scaffold in Azure Portal after a successful `apply`.
+
+One portal screenshot is enough here as long as it clearly shows:
+
+- the resource group scope
+- the hub and two spoke VNets
+- Bastion
+- both NAT Gateways and their Public IPs
 
 ---
 

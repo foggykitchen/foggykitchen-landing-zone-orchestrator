@@ -60,11 +60,20 @@ locals {
     ]...)
   )
 
-  subnet_ids_by_ref = merge(
-    { for subnet_key, subnet_id in module.hub_vnet.subnet_ids : "hub.${subnet_key}" => subnet_id },
+  subnet_names_by_ref = merge(
+    { for subnet_key, subnet in local.hub_subnets : "hub.${subnet_key}" => subnet.name },
     merge([
-      for spoke_key, mod in module.spoke_vnets : {
-        for subnet_key, subnet_id in mod.subnet_ids : "${spoke_key}.${subnet_key}" => subnet_id
+      for spoke_key, spoke in local.spokes : {
+        for subnet_key, subnet in spoke.subnets : "${spoke_key}.${subnet_key}" => subnet.name
+      }
+    ]...)
+  )
+
+  subnet_ids_by_ref = merge(
+    { for subnet_key, subnet in local.hub_subnets : "hub.${subnet_key}" => module.hub_vnet.subnet_ids[subnet.name] },
+    merge([
+      for spoke_key, spoke in local.spokes : {
+        for subnet_key, subnet in spoke.subnets : "${spoke_key}.${subnet_key}" => module.spoke_vnets[spoke_key].subnet_ids[subnet.name]
       }
     ]...)
   )
@@ -79,6 +88,11 @@ locals {
   )
 
   nat_subnet_refs = toset(try(local.nat_gateway.attach_to_subnets, []))
+
+  nat_subnet_refs_by_vnet = {
+    for vnet_key in distinct([for subnet_ref in local.nat_subnet_refs : split(".", subnet_ref)[0]]) :
+    vnet_key => [for subnet_ref in local.nat_subnet_refs : subnet_ref if split(".", subnet_ref)[0] == vnet_key]
+  }
 
   route_next_hop_vm_refs = toset(flatten([
     for _, route_table in try(local.routing.route_tables, {}) : [
@@ -111,7 +125,7 @@ locals {
 
   load_balancer_backend_refs = toset(try(local.load_balancer.backend_vm_refs, []))
 
-  load_balancer_frontend_subnet_id = try(local.load_balancer.frontend_subnet_ref, null) != null ? module.spoke_vnets[split(".", local.load_balancer.frontend_subnet_ref)[0]].subnet_ids[split(".", local.load_balancer.frontend_subnet_ref)[1]] : null
+  load_balancer_frontend_subnet_id = try(local.load_balancer.frontend_subnet_ref, null) != null ? local.subnet_ids_by_ref[local.load_balancer.frontend_subnet_ref] : null
 
   route_tables = !local.features.routing || !try(local.routing.enabled, false) ? {} : (
     try(local.routing.route_tables, null) != null ? {
@@ -138,7 +152,7 @@ locals {
             next_hop_ip    = local.routing.firewall_next_hop.ip_address
           }
         ] : []
-        subnet_ids = [module.spoke_vnets["app"].subnet_ids["frontend"]]
+        subnet_ids = [local.subnet_ids_by_ref["app.frontend"]]
       }
       app_backend = {
         location = local.location
@@ -150,7 +164,7 @@ locals {
             next_hop_ip    = local.routing.firewall_next_hop.ip_address
           }
         ] : []
-        subnet_ids = [module.spoke_vnets["app"].subnet_ids["backend"]]
+        subnet_ids = [local.subnet_ids_by_ref["app.backend"]]
       }
       data_database = {
         location = local.location
@@ -162,12 +176,12 @@ locals {
             next_hop_ip    = local.routing.firewall_next_hop.ip_address
           }
         ] : []
-        subnet_ids = [module.spoke_vnets["data"].subnet_ids["database"]]
+        subnet_ids = [local.subnet_ids_by_ref["data.database"]]
       }
       data_private_endpoints = {
         location   = local.location
         routes     = []
-        subnet_ids = [module.spoke_vnets["data"].subnet_ids["private_endpoints"]]
+        subnet_ids = [local.subnet_ids_by_ref["data.private_endpoints"]]
       }
     }
   )
