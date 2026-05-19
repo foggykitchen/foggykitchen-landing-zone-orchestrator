@@ -4,8 +4,6 @@ This example provides one payload for the shared **Azure hub-and-spoke orchestra
 
 ![Azure hub-and-spoke architecture](diagrams/azure-hub-spoke-basic-architecture.png)
 
-![Azure Portal view of the deployed basic hub-and-spoke landing zone](diagrams/azure-hub-spoke-basic-portal1.png)
-
 ---
 
 ## 🎯 Purpose
@@ -38,7 +36,10 @@ This example composes:
 
 ## 🖼️ Azure Portal View
 
-The screenshot above shows the deployed `basic` scaffold in Azure Portal after a successful `apply`.
+The screenshot below shows the deployed `basic` scaffold in Azure Portal after a successful `apply`.
+It gives a quick visual confirmation that the hub VNet, both spoke VNets, Bastion, NAT Gateways, and their Public IPs were created as expected.
+
+![Azure Portal view of the deployed basic hub-and-spoke landing zone](diagrams/azure-hub-spoke-basic-portal1.png)
 
 One portal screenshot is enough here as long as it clearly shows:
 
