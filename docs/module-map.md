@@ -57,6 +57,13 @@ Uses:
 - everything from `hub_spoke` indirectly
 - `terraform-az-fk-storage`
 - `terraform-az-fk-private-endpoint`
+- optionally `terraform-az-fk-compute` a second time for `compute_storage_mounts`
+
+Why the extra compute call:
+
+- generic `hub_spoke` compute is storage-agnostic
+- a consumer VM that mounts Azure Files needs Storage Account outputs
+- the private endpoint pattern therefore creates that VM after Storage Account provisioning when `compute_storage_mounts` is enabled
 
 ### `patterns/azure/firewall_transit`
 

@@ -158,6 +158,29 @@ The intended flow is:
 
 ---
 
+## 📦 Runner IP Allowlist For Azure Files Provisioning
+
+The `azure/private_endpoint` storage example accepts:
+
+- `provisioner_public_ip`
+
+Why:
+
+- Azure Files share creation is a Storage data-plane operation
+- the orchestrator keeps the Storage Account behind network rules with `default_action = Deny`
+- the OpenTofu runner still needs a narrow way to create the file share during provisioning
+
+This is treated as an operational workaround, not as the intended workload path.
+The runtime consumer VM continues to access Azure Files through:
+
+- Private DNS
+- Private Endpoint
+- routed hub-and-spoke transit via the router VM
+
+This is why the public IP is passed as a wrapper variable and not embedded into `landing-zone.yaml` as architecture intent.
+
+---
+
 ## 🪪 License
 
 Licensed under the **Universal Permissive License (UPL), Version 1.0**.  

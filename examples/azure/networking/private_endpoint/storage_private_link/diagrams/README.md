@@ -8,11 +8,17 @@ This directory is reserved for **architecture images and validation screenshots*
 
 Expected assets may include:
 
-- storage private link topology diagram
+- storage private link topology diagram with routed app-to-data access
 - private endpoint DNS validation screenshots
 - Azure Portal screenshots for Storage and Private Endpoint resources
+- mount validation screenshots from `vm-fk-app-pe-01`
 
-The directory exists now so the example structure remains stable as visual assets are added later.
+Current assets:
+
+- `azure_private_endpoint_storage_private_link_architecture.png`
+- `azure_private_endpoint_storage_private_link_portal01.png`
+- `azure_private_endpoint_storage_private_link_portal02.png`
+- `azure_private_endpoint_storage_private_link_portal03.png`
 
 ---
 

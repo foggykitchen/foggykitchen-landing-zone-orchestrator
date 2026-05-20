@@ -104,6 +104,15 @@ Focus:
 - add Storage
 - add private endpoints
 - add private DNS zone integration
+- optionally add a storage-aware consumer VM through `compute_storage_mounts`
+
+The current routed storage example uses:
+
+- router-VM-based transit between spokes
+- Storage private endpoints hosted in the data spoke
+- an app VM in another spoke that mounts Azure Files through the private endpoint path
+
+This is intentionally modeled as a private endpoint pattern specialization rather than as a generic extension to the shared `hub_spoke` compute contract.
 
 ### Azure Firewall Transit
 

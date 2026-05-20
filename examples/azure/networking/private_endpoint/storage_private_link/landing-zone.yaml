@@ -18,7 +18,7 @@ cloud:
 architecture:
   topology: hub_spoke
   access_model: private_first
-  routing_model: centralized
+  routing_model: router_vm_transit
   security_model: deny_by_default
 
 features:
@@ -29,7 +29,7 @@ features:
   bastion: true
   private_dns: true
   compute: true
-  internal_load_balancer: true
+  internal_load_balancer: false
   firewall: false
   private_endpoint: true
 
@@ -37,42 +37,39 @@ networking:
   hub:
     name: vnet-fk-hub-pe-dev
     address_space:
-      - 10.110.0.0/16
+      - 10.10.0.0/16
     subnets:
       bastion:
         name: AzureBastionSubnet
-        cidr: 10.110.0.0/26
+        cidr: 10.10.0.0/26
       shared:
         name: snet-fk-shared-services
-        cidr: 10.110.1.0/24
-      firewall:
-        name: AzureFirewallSubnet
-        cidr: 10.110.2.0/26
+        cidr: 10.10.1.0/24
 
   spokes:
     app:
       name: vnet-fk-app-pe-dev
       address_space:
-        - 10.120.0.0/16
+        - 10.20.0.0/16
       subnets:
         frontend:
-          name: snet-app-frontend
-          cidr: 10.120.1.0/24
+          name: snet-fk-app-frontend
+          cidr: 10.20.1.0/24
         backend:
-          name: snet-app-backend
-          cidr: 10.120.2.0/24
+          name: snet-fk-app-backend
+          cidr: 10.20.2.0/24
 
     data:
       name: vnet-fk-data-pe-dev
       address_space:
-        - 10.130.0.0/16
+        - 10.30.0.0/16
       subnets:
         database:
-          name: snet-data-private
-          cidr: 10.130.1.0/24
+          name: snet-fk-data-private
+          cidr: 10.30.1.0/24
         private_endpoints:
-          name: snet-data-private-endpoints
-          cidr: 10.130.2.0/24
+          name: snet-fk-data-private-endpoints
+          cidr: 10.30.2.0/24
 
 peering:
   hub_to_spokes: true
@@ -82,26 +79,48 @@ peering:
 
 routing:
   enabled: true
-  mode: basic_hub_spoke
-  spoke_to_spoke:
-    enabled: true
-    via: hub
-  default_route:
-    enabled: false
-  firewall_next_hop:
-    enabled: false
-    ip_address: null
+  route_tables:
+    rt-app-backend:
+      subnet_refs:
+        - app.backend
+      routes:
+        - name: to-data-via-router
+          address_prefix: 10.30.0.0/16
+          next_hop_type: VirtualAppliance
+          next_hop_vm_ref: hubrouter
+    rt-data-database:
+      subnet_refs:
+        - data.database
+      routes:
+        - name: to-app-via-router
+          address_prefix: 10.20.0.0/16
+          next_hop_type: VirtualAppliance
+          next_hop_vm_ref: hubrouter
+    rt-data-private-endpoints:
+      subnet_refs:
+        - data.private_endpoints
+      routes:
+        - name: to-app-via-router
+          address_prefix: 10.20.0.0/16
+          next_hop_type: VirtualAppliance
+          next_hop_vm_ref: hubrouter
 
 security:
   nsg:
     enabled: true
     baseline_rules:
       deny_internet_inbound: true
-      allow_http_from_load_balancer: true
+      allow_http_from_load_balancer: false
       allow_ssh_from_bastion_or_hub: true
 
 nat_gateway:
   enabled: true
+  names:
+    app: natgw-fk-app-pe-dev
+    data: natgw-fk-data-pe-dev
+  public_ip_names:
+    app: natgw-fk-app-pe-pip
+    data: natgw-fk-data-pe-pip
   attach_to_subnets:
     - app.backend
     - data.database
@@ -118,42 +137,62 @@ private_dns:
     - name: privatelink.blob.core.windows.net
       link_to_vnets:
         - app
+        - data
     - name: privatelink.file.core.windows.net
       link_to_vnets:
         - app
-    - name: privatelink.database.windows.net
-      link_to_vnets:
         - data
 
 compute:
   enabled: true
   instances:
-    app01:
-      name: vm-fk-app-pe-01
-      subnet_ref: app.backend
+    hubrouter:
+      name: vm-fk-router-01
+      subnet_ref: hub.shared
       size: Standard_B2s
-      public_ip: false
       admin_username: azureuser
+      enable_ip_forwarding: true
+      attach_nsg_to_nic: true
+      nic_nsg_name: nsg-fk-router-01
+      private_ip_address_allocation: Static
+      private_ip_address: 10.10.1.4
       image:
         publisher: Canonical
         offer: ubuntu-24_04-lts
         sku: server
         version: latest
-      cloud_init: scripts/install-nginx.sh
+      cloud_init: scripts/enable-ip-forwarding.sh
+    db01:
+      name: vm-fk-db-pe-01
+      subnet_ref: data.database
+      size: Standard_B2s
+      admin_username: azureuser
+      private_ip_address_allocation: Static
+      private_ip_address: 10.30.1.4
+      image:
+        publisher: Canonical
+        offer: ubuntu-24_04-lts
+        sku: server
+        version: latest
+      cloud_init: scripts/install-network-tools.sh
 
-load_balancer:
+compute_storage_mounts:
   enabled: true
-  name: ilb-fk-app-pe-dev
-  type: internal
-  frontend_subnet_ref: app.frontend
-  backend_vm_refs:
-    - app01
-  listener:
-    protocol: Tcp
-    port: 80
-  health_probe:
-    protocol: Tcp
-    port: 80
+  name: vm-fk-app-pe-01
+  subnet_ref: app.backend
+  size: Standard_B2s
+  admin_username: azureuser
+  private_ip_address_allocation: Static
+  private_ip_address: 10.20.2.4
+  image:
+    publisher: Canonical
+    offer: ubuntu-24_04-lts
+    sku: server
+    version: latest
+  mount_azure_files:
+    enabled: true
+    share_name: shared
+    mount_path: /mnt/azurefiles
 
 storage:
   enabled: true
@@ -162,20 +201,15 @@ storage:
   account_replication_type: LRS
   account_kind: StorageV2
   access_tier: Hot
-  public_network_access_enabled: false
+  public_network_access_enabled: true
   enable_network_rules: true
   network_rules:
     default_action: Deny
     bypass:
       - AzureServices
     ip_rules: []
-    virtual_network_subnet_refs:
-      - app.backend
-      - data.database
-  create_containers: true
-  containers:
-    appdata:
-      access_type: private
+    virtual_network_subnet_refs: []
+  create_containers: false
   create_file_shares: true
   file_shares:
     shared:

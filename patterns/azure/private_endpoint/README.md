@@ -12,6 +12,7 @@ The goal of this pattern is to extend the shared Azure hub-and-spoke foundation 
 - private access only
 - Private Endpoint resources
 - Private DNS integration
+- optional routed consumer compute that mounts Azure Files through Private Link
 
 ---
 
@@ -23,6 +24,7 @@ The pattern composes:
 - one Azure Storage Account
 - one or more Private Endpoints
 - Private DNS zone bindings for private service resolution
+- an optional `compute_storage_mounts` VM created after Storage Account provisioning
 
 ---
 
@@ -50,8 +52,10 @@ The payload is expected to include the baseline Azure networking contract plus:
 
 - `storage`
 - `private_endpoints`
+- optional `compute_storage_mounts`
 
 The payload is normalized in [`locals.tf`](locals.tf), where logical subnet references are resolved through the shared `hub_spoke` outputs.
+When `compute_storage_mounts` is enabled, the pattern also renders a storage-aware cloud-init template after the Storage Account exists and then deploys a VM that can mount Azure Files over the private endpoint path.
 
 ---
 
@@ -59,6 +63,7 @@ The payload is normalized in [`locals.tf`](locals.tf), where logical subnet refe
 
 - this pattern reuses `hub_spoke` rather than duplicating the Azure networking foundation
 - the current example focuses on Storage private access
+- `compute_storage_mounts` exists because a VM that mounts Azure Files needs Storage Account outputs and therefore cannot be treated as an ordinary early-stage `hub_spoke` compute instance
 
 ---
 
@@ -68,6 +73,7 @@ The pattern exposes outputs for:
 
 - all inherited `hub_spoke` foundation outputs
 - Storage Account ID and name
+- Storage file share names
 - blob and file endpoints
 - Private Endpoint IDs
 - Private Endpoint private IPs

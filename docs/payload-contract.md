@@ -120,6 +120,7 @@ routing:
 
 - `storage`
 - `private_endpoints`
+- optional `compute_storage_mounts`
 
 For private DNS, a more explicit contract is:
 
@@ -141,6 +142,43 @@ private_dns:
 ```
 
 If the new per-zone structure is not used, the current Azure hub-and-spoke pattern falls back to the older shared-link behavior for backward compatibility.
+
+For routed private endpoint consumption scenarios, the Azure private endpoint pattern also accepts:
+
+- `compute_storage_mounts.enabled`
+- `compute_storage_mounts.name`
+- `compute_storage_mounts.subnet_ref`
+- `compute_storage_mounts.mount_azure_files.enabled`
+- `compute_storage_mounts.mount_azure_files.share_name`
+- `compute_storage_mounts.mount_azure_files.mount_path`
+
+Example:
+
+```yaml
+compute_storage_mounts:
+  enabled: true
+  name: vm-fk-app-pe-01
+  subnet_ref: app.backend
+  size: Standard_B2s
+  private_ip_address_allocation: Static
+  private_ip_address: 10.20.2.4
+  mount_azure_files:
+    enabled: true
+    share_name: shared
+    mount_path: /mnt/azurefiles
+```
+
+Why this sits outside generic `compute.instances`:
+
+- the VM depends on Storage Account outputs
+- cloud-init must be rendered after the Storage Account and file share exist
+- this keeps the shared `hub_spoke` pattern storage-agnostic while still allowing a storage-aware consumer VM in the private endpoint pattern
+
+Operational note for local applies:
+
+- the example wrapper may also accept a `provisioner_public_ip` input
+- this is not architecture intent and therefore does not live in YAML
+- it exists only to allow the local OpenTofu runner to create Azure Files data-plane resources while the Storage Account remains locked down by network rules
 
 `firewall_transit` focuses on:
 

@@ -27,7 +27,7 @@ module "storage" {
   network_rules = {
     default_action             = try(local.storage.network_rules.default_action, "Deny")
     bypass                     = try(local.storage.network_rules.bypass, ["AzureServices"])
-    ip_rules                   = try(local.storage.network_rules.ip_rules, [])
+    ip_rules                   = distinct(concat(try(local.storage.network_rules.ip_rules, []), local.storage_runner_ip_rules))
     virtual_network_subnet_ids = local.resolved_storage_subnet_ids
   }
   tags = local.tags
@@ -46,4 +46,32 @@ module "private_endpoints" {
   private_dns_zone_ids           = each.value.private_dns_zone_ids
   private_ip_address             = each.value.private_ip_address
   tags                           = local.tags
+}
+
+module "compute_storage_mounts" {
+  count  = local.features.compute && try(local.compute_storage_mounts.enabled, false) ? 1 : 0
+  source = "git::https://github.com/mlinxfeld/terraform-az-fk-compute.git?ref=v0.3.5"
+
+  name                = local.compute_storage_mounts.name
+  location            = local.location
+  resource_group_name = module.hub_spoke.resource_group_name
+  subnet_id           = module.hub_spoke.subnet_ids[split(".", local.compute_storage_mounts.subnet_ref)[0]][split(".", local.compute_storage_mounts.subnet_ref)[1]]
+  deployment_mode     = try(local.compute_storage_mounts.deployment_mode, "vm")
+  vm_size             = local.compute_storage_mounts.size
+  admin_username      = try(local.compute_storage_mounts.admin_username, "azureuser")
+  ssh_public_key      = var.admin_ssh_public_key
+  identity_type       = try(local.compute_storage_mounts.identity_type, "SystemAssigned")
+  image_reference = {
+    publisher = try(local.compute_storage_mounts.image.publisher, "Canonical")
+    offer     = try(local.compute_storage_mounts.image.offer, "ubuntu-24_04-lts")
+    sku       = try(local.compute_storage_mounts.image.sku, "server")
+    version   = try(local.compute_storage_mounts.image.version, "latest")
+  }
+  custom_data                   = local.compute_storage_mounts_custom_data
+  enable_ip_forwarding          = try(local.compute_storage_mounts.enable_ip_forwarding, false)
+  private_ip_address_allocation = try(local.compute_storage_mounts.private_ip_address_allocation, "Dynamic")
+  private_ip_address            = try(local.compute_storage_mounts.private_ip_address, null)
+  attach_nsg_to_nic             = try(local.compute_storage_mounts.attach_nsg_to_nic, false)
+  nsg_id                        = try(local.compute_storage_mounts.nsg_id, null)
+  tags                          = merge(local.tags, { workload = "app01" })
 }

@@ -11,6 +11,7 @@ resource "tls_private_key" "generated" {
 module "landing_zone" {
   source = "../../../../../patterns/azure/private_endpoint"
 
-  payload_file         = "${path.module}/landing-zone.yaml"
-  admin_ssh_public_key = local.effective_admin_ssh_public_key
+  payload_file          = "${path.module}/landing-zone.yaml"
+  admin_ssh_public_key  = local.effective_admin_ssh_public_key
+  provisioner_public_ip = trimspace(var.provisioner_public_ip)
 }

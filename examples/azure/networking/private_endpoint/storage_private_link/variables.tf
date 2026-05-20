@@ -3,3 +3,9 @@ variable "admin_ssh_public_key" {
   type        = string
   default     = ""
 }
+
+variable "provisioner_public_ip" {
+  description = "Optional public IP/CIDR of the provisioning machine allowed to create Storage data-plane resources during apply."
+  type        = string
+  default     = ""
+}
