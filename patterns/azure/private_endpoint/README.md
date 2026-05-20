@@ -74,7 +74,7 @@ The pattern exposes outputs for:
 - all inherited `hub_spoke` foundation outputs
 - Storage Account ID and name
 - Storage file share names
-- blob and file endpoints
+- storage service endpoints
 - Private Endpoint IDs
 - Private Endpoint private IPs
 

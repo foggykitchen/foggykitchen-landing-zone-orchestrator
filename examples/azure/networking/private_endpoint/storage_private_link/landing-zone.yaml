@@ -134,10 +134,6 @@ bastion:
 private_dns:
   enabled: true
   zones:
-    - name: privatelink.blob.core.windows.net
-      link_to_vnets:
-        - app
-        - data
     - name: privatelink.file.core.windows.net
       link_to_vnets:
         - app
@@ -219,13 +215,6 @@ storage:
 private_endpoints:
   enabled: true
   endpoints:
-    blob:
-      name: pe-fk-storage-blob-dev
-      subnet_ref: data.private_endpoints
-      subresource_names:
-        - blob
-      private_dns_zone_names:
-        - privatelink.blob.core.windows.net
     file:
       name: pe-fk-storage-file-dev
       subnet_ref: data.private_endpoints

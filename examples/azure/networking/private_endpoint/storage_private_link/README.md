@@ -35,7 +35,7 @@ This example composes:
 - one route table on `data.database`
 - one route table on `data.private_endpoints`
 - one private-first Storage Account
-- private endpoints for `blob` and `file` in `data.private_endpoints`
+- one private endpoint for `file` in `data.private_endpoints`
 - private DNS zones for storage private link
 - NAT Gateway on selected private subnets
 - Azure Bastion in the hub
@@ -161,7 +161,6 @@ Suggested flow:
 From `vm-fk-app-pe-01`:
 
 ```bash
-nslookup fkazpeprivdev01.blob.core.windows.net
 nslookup fkazpeprivdev01.file.core.windows.net
 ping -c 4 10.30.1.4
 traceroute 10.30.1.4

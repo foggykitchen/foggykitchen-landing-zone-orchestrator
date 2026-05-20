@@ -133,9 +133,6 @@ Example:
 private_dns:
   enabled: true
   zones:
-    - name: privatelink.blob.core.windows.net
-      link_to_vnets:
-        - app
     - name: privatelink.file.core.windows.net
       link_to_vnets:
         - app
