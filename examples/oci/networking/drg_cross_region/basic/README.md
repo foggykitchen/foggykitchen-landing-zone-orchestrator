@@ -101,19 +101,11 @@ This example includes a high-level architecture diagram for the home-region and 
 
 The screenshots below provide a lightweight control-plane confirmation of the cross-region DRG remote peering architecture.
 
-They show the home-region and peer-region resource inventory, the peering state of the remote peering connections, and representative routing views that confirm cross-region traffic is sent through the local DRG and across the RPC path.
-
-**Home region overview**
-
-![OCI DRG cross-region home region overview](diagrams/drg_cross_region_basic_oci_console01.png)
+They show the peer-region resource inventory and representative routing views that confirm cross-region traffic is sent through the local DRG and across the RPC path.
 
 **Peer region overview**
 
 ![OCI DRG cross-region peer region overview](diagrams/drg_cross_region_basic_oci_console02.png)
-
-**Remote peering state**
-
-![OCI DRG cross-region RPC peering state](diagrams/drg_cross_region_basic_oci_console03.png)
 
 **Home-side routing view**
 
