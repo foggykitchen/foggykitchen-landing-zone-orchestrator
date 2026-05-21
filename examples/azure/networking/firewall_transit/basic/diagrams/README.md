@@ -13,7 +13,9 @@ Expected assets may include:
 - route table verification screenshots
 - firewall overview and rules screenshots
 
-The directory exists now so the example structure stays stable even before those assets are added.
+Current assets:
+
+- `firewall_transit_basic_architecture.png`
 
 ---
 

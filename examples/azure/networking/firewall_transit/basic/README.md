@@ -2,6 +2,8 @@
 
 This example provides one payload for the shared **Azure firewall transit orchestrator pattern**.
 
+![Azure firewall transit architecture](diagrams/firewall_transit_basic_architecture.png)
+
 ---
 
 ## 🎯 Purpose
