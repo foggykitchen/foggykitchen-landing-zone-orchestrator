@@ -10,8 +10,8 @@ landing_zone:
 cloud:
   provider: oci
   region: eu-frankfurt-1
-  tenancy_ocid: ocid1.tenancy.oc1..example
-  compartment_ocid: ocid1.compartment.oc1..example
+  tenancy_ocid: ocid1.tenancy.oc1..exampleuniqueid
+  compartment_ocid: ocid1.compartment.oc1..exampleuniqueid
 
 architecture:
   topology: lpg_local_peering

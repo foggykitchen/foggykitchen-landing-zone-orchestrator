@@ -12,7 +12,12 @@ Expected assets may include:
 - route validation screenshots
 - OCI Console screenshots for LPG resources and peering state
 
-The directory exists now so the example structure remains stable as visual assets are added later.
+Current assets:
+
+- `lpg_local_peering_basic_architecture.png`
+- `lpg_local_peering_basic_oci_console01.png`
+- `lpg_local_peering_basic_oci_console02.png`
+- `lpg_local_peering_basic_oci_console03.png`
 
 ---
 
