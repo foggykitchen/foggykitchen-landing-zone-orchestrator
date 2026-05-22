@@ -7,7 +7,7 @@ module "hub_spoke" {
 
 module "storage" {
   count  = local.features.private_endpoint && local.storage.enabled ? 1 : 0
-  source = "git::https://github.com/mlinxfeld/terraform-az-fk-storage.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-storage.git?ref=main"
 
   name                          = local.storage.name
   resource_group_name           = module.hub_spoke.resource_group_name
