@@ -64,7 +64,7 @@ module "hub_to_spokes_peering" {
 }
 
 module "firewall_public_ip" {
-  source = "git::https://github.com/mlinxfeld/terraform-az-fk-public-ip.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-public-ip.git?ref=main"
 
   name                = local.firewall.public_ip_name
   location            = local.location

@@ -295,7 +295,7 @@ module "router_vm_nsg" {
 
 module "nat_public_ip" {
   for_each = local.features.nat_gateway && local.nat_gateway.enabled ? local.nat_subnet_refs_by_vnet : {}
-  source   = "git::https://github.com/mlinxfeld/terraform-az-fk-public-ip.git?ref=main"
+  source   = "git::https://github.com/foggykitchen/terraform-az-fk-public-ip.git?ref=main"
 
   name                = try(local.nat_gateway.public_ip_names[each.key], "natgw-fk-${each.key}-${local.landing_zone.environment}-pip")
   location            = local.location
@@ -307,7 +307,7 @@ module "nat_public_ip" {
 
 module "nat_gateway" {
   for_each = local.features.nat_gateway && local.nat_gateway.enabled ? local.nat_subnet_refs_by_vnet : {}
-  source   = "git::https://github.com/mlinxfeld/terraform-az-fk-natgw.git?ref=main"
+  source   = "git::https://github.com/foggykitchen/terraform-az-fk-natgw.git?ref=main"
 
   name                = try(local.nat_gateway.names[each.key], "natgw-fk-${each.key}-${local.landing_zone.environment}")
   location            = local.location
