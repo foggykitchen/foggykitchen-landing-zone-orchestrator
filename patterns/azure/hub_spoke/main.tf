@@ -74,7 +74,7 @@ module "routing" {
 
 module "hub_shared_nsg" {
   count  = local.features.nsg && local.security.nsg.enabled ? 1 : 0
-  source = "git::https://github.com/mlinxfeld/terraform-az-fk-nsg.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=main"
 
   name                = "nsg-fk-hub-shared"
   location            = local.location
@@ -103,7 +103,7 @@ module "hub_shared_nsg" {
 
 module "app_frontend_nsg" {
   count  = local.features.nsg && local.security.nsg.enabled ? 1 : 0
-  source = "git::https://github.com/mlinxfeld/terraform-az-fk-nsg.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=main"
 
   name                = "nsg-fk-app-frontend"
   location            = local.location
@@ -132,7 +132,7 @@ module "app_frontend_nsg" {
 
 module "app_backend_nsg" {
   count  = local.features.nsg && local.security.nsg.enabled ? 1 : 0
-  source = "git::https://github.com/mlinxfeld/terraform-az-fk-nsg.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=main"
 
   name                = "nsg-fk-app-backend"
   location            = local.location
@@ -189,7 +189,7 @@ module "app_backend_nsg" {
 
 module "data_database_nsg" {
   count  = local.features.nsg && local.security.nsg.enabled ? 1 : 0
-  source = "git::https://github.com/mlinxfeld/terraform-az-fk-nsg.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=main"
 
   name                = "nsg-fk-data-database"
   location            = local.location
@@ -230,7 +230,7 @@ module "data_database_nsg" {
 
 module "data_private_endpoints_nsg" {
   count  = local.features.nsg && local.security.nsg.enabled ? 1 : 0
-  source = "git::https://github.com/mlinxfeld/terraform-az-fk-nsg.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=main"
 
   name                = "nsg-fk-data-private-endpoints"
   location            = local.location
@@ -259,7 +259,7 @@ module "data_private_endpoints_nsg" {
 
 module "router_vm_nsg" {
   count  = local.features.nsg && local.security.nsg.enabled && length(local.route_next_hop_vm_refs) > 0 ? 1 : 0
-  source = "git::https://github.com/mlinxfeld/terraform-az-fk-nsg.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=main"
 
   name                = try(local.compute.instances[one(tolist(local.route_next_hop_vm_refs))].nic_nsg_name, "nsg-fk-router-01")
   location            = local.location
@@ -348,7 +348,7 @@ module "private_dns" {
 
 module "internal_load_balancer" {
   count  = local.features.internal_load_balancer && try(local.load_balancer.enabled, false) ? 1 : 0
-  source = "git::https://github.com/mlinxfeld/terraform-az-fk-loadbalancer.git?ref=v1.2.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-loadbalancer.git?ref=v1.2.0"
 
   name                = local.load_balancer.name
   location            = local.location
