@@ -1,6 +1,6 @@
 module "vcns" {
   for_each = local.vcn_module_inputs
-  source   = "git::https://github.com/mlinxfeld/terraform-oci-fk-vcn.git?ref=main"
+  source   = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=main"
 
   compartment_ocid = local.compartment_ocid
   name             = each.value.name
@@ -79,7 +79,7 @@ module "load_balancer" {
 
 module "compute" {
   for_each = local.compute.enabled ? local.compute_instances : {}
-  source   = "git::https://github.com/mlinxfeld/terraform-oci-fk-compute.git?ref=main"
+  source   = "git::https://github.com/foggykitchen/terraform-oci-fk-compute.git?ref=main"
 
   name             = each.value.name
   compartment_ocid = local.compartment_ocid
