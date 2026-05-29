@@ -39,7 +39,8 @@ Figure 1. Public OCI DevOps build-only pattern using a GitHub source repository,
 - `region` is the workload region for DevOps, OCIR, logging, and notifications
 - `iam_home_region` is the OCI home region for IAM resources and defaults to `region` when omitted
 - `devops.github.pat_secret_ocid` must point to an OCI Vault secret containing the GitHub personal access token
-- `github_pat_secret_compartment_ocid` should point to the compartment that contains that Vault secret; it defaults to `compartment_ocid`
+- `devops.github.pat_secret_compartment_ocid` should point to the compartment that contains that Vault secret; in this example it is templated from `github_pat_secret_compartment_ocid` and defaults to `compartment_ocid`
+- `devops.github.branch` is set to `master` because the current `foggykitchen-hello-world` repository still uses `master` as its default branch
 - `devops.iam.dynamic_group_name` provisions the service-side IAM required by OCI DevOps for Vault secret reads, OCIR access, and DevOps resource access
 - `devops.iam.operator_group_name` is optional; if you set it, the pattern also provisions `Allow group <group-name> to use devops-connection in compartment ...`
 - this public pattern intentionally stops before OKE deployment
