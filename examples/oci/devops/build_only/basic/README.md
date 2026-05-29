@@ -28,6 +28,12 @@ tofu init
 tofu plan
 ```
 
+## Architecture Overview
+
+![OCI DevOps Build-Only Architecture](images/oci_devops_build_only_basic_architecture.png)
+
+Figure 1. Public OCI DevOps build-only pattern using a GitHub source repository, Vault-backed PAT, OCI DevOps mirrored repository, build-and-deliver pipeline, and OCI Container Registry as the final image target.
+
 ## Notes
 
 - `region` is the workload region for DevOps, OCIR, logging, and notifications
@@ -38,6 +44,36 @@ tofu plan
 - `devops.iam.operator_group_name` is optional; if you set it, the pattern also provisions `Allow group <group-name> to use devops-connection in compartment ...`
 - this public pattern intentionally stops before OKE deployment
 - a follow-up public pattern will build on this with deploy environments and deploy pipelines
+
+## OCI Console Verification
+
+![OCI DevOps Project And Connection](images/oci_devops_build_only_basic_oci_console1.png)
+
+Figure 2. The DevOps project and external GitHub connection were created successfully in the workload region, with logging and notifications enabled for the project.
+
+![OCI DevOps Build Pipeline Overview](images/oci_devops_build_only_basic_oci_console2.png)
+
+Figure 3. The build-only pipeline exists with the expected `build` and `deliver` stages and is ready for manual execution after the mirrored repository finishes synchronizing.
+
+![OCI DevOps Mirrored Repository Success](images/oci_devops_build_only_basic_oci_console3.png)
+
+Figure 4. The mirrored repository is active, the last mirror status is `Passed`, the default branch is visible, and repository contents are now present in OCI DevOps.
+
+![OCI DevOps Pipeline Definition](images/oci_devops_build_only_basic_oci_console4.png)
+
+Figure 5. The pipeline definition shows the intended two-stage flow: a managed build stage followed by a deliver-artifacts stage.
+
+![OCI DevOps Successful Build Run](images/oci_devops_build_only_basic_oci_console5.png)
+
+Figure 6. A manual build run completed successfully, with both `build` and `deliver` stages green and the execution log confirming image build and artifact delivery.
+
+![OCI DevOps Docker Artifact](images/oci_devops_build_only_basic_oci_console6.png)
+
+Figure 7. The DevOps project artifact remains active and points at the OCI Registry image path that the deliver stage publishes.
+
+![OCI Container Registry Image Version](images/oci_devops_build_only_basic_oci_console7.png)
+
+Figure 8. OCI Container Registry now contains the produced image version, proving the build-only pattern completed the full mirror -> build -> deliver -> registry flow.
 
 ## License
 

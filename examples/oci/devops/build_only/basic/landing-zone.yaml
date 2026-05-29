@@ -29,7 +29,7 @@ devops:
   github:
     repository_name: foggykitchen-hello-world
     repository_url: https://github.com/foggykitchen/foggykitchen-hello-world.git
-    branch: main
+    branch: master
     pat_secret_ocid: ${github_pat_secret_ocid}
     pat_secret_compartment_ocid: ${github_pat_secret_compartment_ocid}
 
