@@ -1,3 +1,48 @@
+module "policy" {
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-policy.git?ref=v0.1.0"
+
+  providers = {
+    oci = oci.home
+  }
+
+  tenancy_ocid = local.tenancy_ocid
+
+  dynamic_group = {
+    name          = local.devops_dynamic_group_name
+    description   = "Dynamic group for OCI DevOps build-only pattern resources"
+    matching_rule = local.devops_dynamic_group_matching_rule
+  }
+
+  policies = concat(
+    [
+      {
+        name        = "${local.project_name}-devops-dg-policy"
+        description = "Allow OCI DevOps build-only resources to access Vault, OCIR, DevOps, and optional notifications"
+        statements = concat(
+          [
+            "Allow dynamic-group ${local.devops_dynamic_group_name} to read secret-family in compartment id ${local.github_pat_secret_compartment_ocid}",
+            "Allow dynamic-group ${local.devops_dynamic_group_name} to manage repos in compartment id ${local.compartment_ocid}",
+            "Allow dynamic-group ${local.devops_dynamic_group_name} to manage devops-family in compartment id ${local.compartment_ocid}"
+          ],
+          local.notification_enabled ? [
+            "Allow dynamic-group ${local.devops_dynamic_group_name} to use ons-topics in compartment id ${local.compartment_ocid}"
+          ] : []
+        )
+      }
+    ],
+    local.create_operator_group_policy ? [
+      {
+        name        = "${local.project_name}-devops-operators-policy"
+        description = "Allow DevOps operators to validate and use external GitHub connections"
+        statements = [
+          "Allow group ${local.devops_operator_group_name} to use devops-connection in compartment id ${local.compartment_ocid}"
+        ]
+      }
+    ] : []
+  )
+
+}
+
 module "ocir" {
   source = "git::https://github.com/foggykitchen/terraform-oci-fk-ocir.git?ref=v0.1.0"
 

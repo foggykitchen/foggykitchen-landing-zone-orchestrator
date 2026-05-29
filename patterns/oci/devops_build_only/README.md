@@ -26,6 +26,11 @@ This pattern composes:
 
 It provisions the shared DevOps control plane and a simple build pipeline, but it intentionally stops before OKE deployment.
 
+The pattern supports a split between:
+
+- `cloud.workload_region` for regional DevOps resources
+- `cloud.home_region` for global IAM resources such as policies and dynamic groups
+
 ---
 
 ## 📂 Consumed By

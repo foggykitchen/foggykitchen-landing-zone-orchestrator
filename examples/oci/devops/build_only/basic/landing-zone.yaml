@@ -9,7 +9,8 @@ landing_zone:
 
 cloud:
   provider: oci
-  home_region: ${region}
+  home_region: ${iam_home_region}
+  workload_region: ${workload_region}
   tenancy_ocid: ${tenancy_ocid}
   compartment_ocid: ${compartment_ocid}
 
@@ -30,6 +31,13 @@ devops:
     repository_url: https://github.com/foggykitchen/foggykitchen-hello-world.git
     branch: main
     pat_secret_ocid: ${github_pat_secret_ocid}
+    pat_secret_compartment_ocid: ${github_pat_secret_compartment_ocid}
+
+  iam:
+    dynamic_group_name: fk-devops-build-only-dev-dg
+    # Optional: set operator_group_name to provision:
+    # Allow group <group-name> to use devops-connection in the target compartment.
+    # operator_group_name: foggykitchen-devops-users
 
   registry:
     repository_name: fkhello/fkhello

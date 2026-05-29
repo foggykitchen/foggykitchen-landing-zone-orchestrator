@@ -19,8 +19,14 @@ variable "private_key_path" {
 }
 
 variable "region" {
-  description = "OCI region for the build-only pattern example."
+  description = "OCI workload region for DevOps, OCIR, logging, and notifications."
   type        = string
+}
+
+variable "iam_home_region" {
+  description = "OCI home region used for IAM resources such as dynamic groups and policies. Defaults to region when null."
+  type        = string
+  default     = null
 }
 
 variable "compartment_ocid" {
@@ -31,6 +37,12 @@ variable "compartment_ocid" {
 variable "github_pat_secret_ocid" {
   description = "OCI Vault secret OCID containing the GitHub personal access token."
   type        = string
+}
+
+variable "github_pat_secret_compartment_ocid" {
+  description = "OCI compartment OCID containing the Vault secret for the GitHub PAT. Defaults to compartment_ocid when null."
+  type        = string
+  default     = null
 }
 
 variable "availability_domain" {
