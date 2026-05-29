@@ -12,12 +12,14 @@ Current emphasis:
 
 - build-oriented DevOps flows
 - reusable DevOps control plane composition
+- basic OKE-oriented delivery flows
 
 ---
 
 ## 📂 Available OCI DevOps Domains
 
 - [Build-only examples](build_only/README.md)
+- [Build-and-deploy-OKE examples](build_and_deploy_oke/basic/README.md)
 
 ---
 

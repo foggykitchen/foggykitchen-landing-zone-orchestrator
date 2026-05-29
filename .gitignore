@@ -1,7 +1,11 @@
+# Terraform / OpenTofu
 .terraform/
+.opentofu/
 .terraform.lock.hcl
+.terraform.tfstate.lock.info
 *.tfstate
 *.tfstate.*
+*.tfplan
 crash.log
 crash.*.log
 override.tf
@@ -10,4 +14,3 @@ override.tf.json
 *_override.tf.json
 terraform.rc
 .terraformrc
-.opentofu/

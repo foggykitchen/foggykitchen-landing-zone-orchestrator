@@ -1,0 +1,68 @@
+landing_zone:
+  name: fk-oci-devops-build-and-deploy-oke-dev
+  defined_tags: {}
+  freeform_tags:
+    project: foggykitchen
+    environment: dev
+    landing_zone: fk-oci-devops-build-and-deploy-oke-dev
+    managed_by: opentofu
+
+cloud:
+  tenancy_ocid: ${tenancy_ocid}
+  compartment_ocid: ${compartment_ocid}
+  home_region: ${iam_home_region}
+  workload_region: ${workload_region}
+
+architecture:
+  network:
+    vcn_cidr: 10.40.0.0/16
+    api_endpoint_subnet_cidr: 10.40.10.0/28
+    lb_subnet_cidr: 10.40.20.0/24
+    nodes_subnet_cidr: 10.40.30.0/24
+  oke:
+    cluster_name: fk-devops-oke-cluster
+    kubernetes_version: v1.35.2
+    node_linux_version: "8.10"
+    node_shape: VM.Standard.E5.Flex
+    node_ocpus: 1
+    node_memory: 8
+    node_count: 1
+
+devops:
+  iam:
+    dynamic_group_name: fk-devops-build-and-deploy-oke-dev-dg
+  project:
+    name: fk-devops-build-and-deploy-oke-dev
+    description: FoggyKitchen OCI DevOps build-and-deploy-oke pattern
+    enable_logging: true
+    enable_notifications: true
+  github:
+    pat_secret_ocid: ${github_pat_secret_ocid}
+    pat_secret_compartment_ocid: ${github_pat_secret_compartment_ocid}
+    app_repository_name: foggykitchen-hello-world
+    app_repository_url: https://github.com/foggykitchen/foggykitchen-hello-world.git
+    app_branch: master
+    helm_repository_name: helm-foggykitchen-hello-world
+    helm_repository_url: https://github.com/foggykitchen/helm-foggykitchen-hello-world.git
+    helm_branch: main
+  registry:
+    image_repository_name: fkhello/fkhello
+    helm_repository_name: helm-foggykitchen-hello-world
+    ocir_user_name: ${ocir_user_name}
+  helm:
+    chart_name: helm-foggykitchen-hello-world-chart
+    chart_version_prefix: 0.1.0
+  build_pipeline:
+    name: fk-devops-build-and-deploy-oke-build
+    description: Builds the app image and packages the Helm chart for OKE deployment
+    build_stage:
+      name: build_and_package
+      build_spec_file: build_spec.yaml
+      image: OL8_X86_64_STANDARD_10
+      timeout_in_seconds: 36000
+  deploy_pipeline:
+    name: fk-devops-build-and-deploy-oke-deploy
+    description: Deploys the Helm chart to a basic public OKE cluster
+    helm_stage:
+      name: helm_deploy
+      timeout_in_seconds: 1800

@@ -34,6 +34,7 @@ Examples under `examples/` should stay thin and delegate architecture logic to t
 - [drg_cross_region](oci/drg_cross_region)
 - [lpg_local_peering](oci/lpg_local_peering)
 - [devops_build_only](oci/devops_build_only)
+- [devops_build_and_deploy_oke](oci/devops_build_and_deploy_oke)
 
 ### Multicloud
 

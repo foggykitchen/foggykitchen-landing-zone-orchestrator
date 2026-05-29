@@ -15,6 +15,7 @@ These patterns focus on OCI network, connectivity, and platform delivery archite
 - [drg_cross_region](drg_cross_region/README.md)
 - [lpg_local_peering](lpg_local_peering/README.md)
 - [devops_build_only](devops_build_only/README.md)
+- [devops_build_and_deploy_oke](devops_build_and_deploy_oke/README.md)
 
 ---
 
@@ -23,6 +24,7 @@ These patterns focus on OCI network, connectivity, and platform delivery archite
 1. [drg_cross_region](drg_cross_region/README.md)
 2. [lpg_local_peering](lpg_local_peering/README.md)
 3. [devops_build_only](devops_build_only/README.md)
+4. [devops_build_and_deploy_oke](devops_build_and_deploy_oke/README.md)
 
 ---
 
