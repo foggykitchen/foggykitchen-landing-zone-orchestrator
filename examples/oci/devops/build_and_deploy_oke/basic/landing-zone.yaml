@@ -55,7 +55,7 @@ devops:
   build_pipeline:
     name: fk-devops-build-and-deploy-oke-build
     description: Builds the app image and packages the Helm chart for OKE deployment
-    trigger_deploy_pipeline: false
+    trigger_deploy_pipeline: true
     build_stage:
       name: build_and_package
       build_spec_file: build_spec.yaml

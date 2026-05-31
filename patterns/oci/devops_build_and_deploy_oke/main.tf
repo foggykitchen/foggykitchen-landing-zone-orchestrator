@@ -287,7 +287,7 @@ module "devops" {
 }
 
 module "devops_pipeline" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-devops-pipeline.git?ref=v0.1.8"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-devops-pipeline.git?ref=v0.1.11"
 
   project_id = module.devops.project_id
 
@@ -317,57 +317,44 @@ module "devops_pipeline" {
           description   = "OCI Helm chart registry URL."
         }
       ]
-      stages = concat(
-        [
-          {
-            key              = "build"
-            stage_type       = "BUILD"
-            display_name     = try(local.devops.build_pipeline.build_stage.name, "build_and_package")
-            description      = try(local.devops.build_pipeline.build_stage.description, null)
-            build_spec_file  = try(local.devops.build_pipeline.build_stage.build_spec_file, "build_spec.yaml")
-            image            = try(local.devops.build_pipeline.build_stage.image, "OL8_X86_64_STANDARD_10")
-            stage_execution_timeout_in_seconds = try(local.devops.build_pipeline.build_stage.timeout_in_seconds, 36000)
-            build_sources = [
-              {
-                name           = local.devops.github.helm_repository_name
-                branch         = local.helm_branch
-                repository_id  = module.devops.repository_ids[local.helm_repository_key]
-                repository_url = local.devops.github.helm_repository_url
-              },
-              {
-                name           = local.devops.github.app_repository_name
-                branch         = local.app_branch
-                repository_id  = module.devops.repository_ids[local.app_repository_key]
-                repository_url = local.devops.github.app_repository_url
-              }
-            ]
-          },
-          {
-            key              = "deliver"
-            stage_type       = "DELIVER_ARTIFACT"
-            display_name     = "deliver"
-            description      = "deliver"
-            predecessor_keys = ["build"]
-            deliver_artifacts = [
-              {
-                artifact_id   = module.devops.deploy_artifact_ids[local.ocir_artifact_key]
-                artifact_name = "APPLICATION_DOCKER_IMAGE"
-              }
-            ]
-          }
-        ],
-        local.trigger_deploy_pipeline ? [
-          {
-            key                            = "trigger_deploy"
-            stage_type                     = "TRIGGER_DEPLOYMENT_PIPELINE"
-            display_name                   = "trigger_deploy"
-            description                    = "Trigger the OKE deployment pipeline after build and deliver complete"
-            predecessor_keys               = ["deliver"]
-            deploy_pipeline_id             = module.devops_pipeline.deploy_pipeline_ids[local.deploy_pipeline_key]
-            is_pass_all_parameters_enabled = true
-          }
-        ] : []
-      )
+      stages = [
+        {
+          key              = "build"
+          stage_type       = "BUILD"
+          display_name     = try(local.devops.build_pipeline.build_stage.name, "build_and_package")
+          description      = try(local.devops.build_pipeline.build_stage.description, null)
+          build_spec_file  = try(local.devops.build_pipeline.build_stage.build_spec_file, "build_spec.yaml")
+          image            = try(local.devops.build_pipeline.build_stage.image, "OL8_X86_64_STANDARD_10")
+          stage_execution_timeout_in_seconds = try(local.devops.build_pipeline.build_stage.timeout_in_seconds, 36000)
+          build_sources = [
+            {
+              name           = local.devops.github.helm_repository_name
+              branch         = local.helm_branch
+              repository_id  = module.devops.repository_ids[local.helm_repository_key]
+              repository_url = local.devops.github.helm_repository_url
+            },
+            {
+              name           = local.devops.github.app_repository_name
+              branch         = local.app_branch
+              repository_id  = module.devops.repository_ids[local.app_repository_key]
+              repository_url = local.devops.github.app_repository_url
+            }
+          ]
+        },
+        {
+          key              = "deliver"
+          stage_type       = "DELIVER_ARTIFACT"
+          display_name     = "deliver"
+          description      = "deliver"
+          predecessor_keys = ["build"]
+          deliver_artifacts = [
+            {
+              artifact_id   = module.devops.deploy_artifact_ids[local.ocir_artifact_key]
+              artifact_name = "APPLICATION_DOCKER_IMAGE"
+            }
+          ]
+        }
+      ]
     }
   }
 
@@ -400,6 +387,26 @@ module "devops_pipeline" {
           max_history                   = 10
         }
       ]
+    }
+  }
+
+  defined_tags  = local.defined_tags
+  freeform_tags = local.freeform_tags
+}
+
+resource "oci_devops_build_pipeline_stage" "trigger_deploy" {
+  count = local.trigger_deploy_pipeline ? 1 : 0
+
+  build_pipeline_id              = module.devops_pipeline.build_pipeline_ids[local.build_pipeline_key]
+  build_pipeline_stage_type      = "TRIGGER_DEPLOYMENT_PIPELINE"
+  display_name                   = "trigger_deploy"
+  description                    = "Trigger the OKE deployment pipeline after build and deliver complete"
+  deploy_pipeline_id             = module.devops_pipeline.deploy_pipeline_ids[local.deploy_pipeline_key]
+  is_pass_all_parameters_enabled = true
+
+  build_pipeline_stage_predecessor_collection {
+    items {
+      id = module.devops_pipeline.build_stage_ids["${local.build_pipeline_key}:deliver"]
     }
   }
 
