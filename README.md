@@ -173,12 +173,15 @@ The repository composes FoggyKitchen building blocks such as:
 - `terraform-az-fk-loadbalancer`
 - `terraform-az-fk-storage`
 - `terraform-az-fk-private-endpoint`
+- `terraform-az-fk-firewall`
 - `terraform-oci-fk-vcn`
 - `terraform-oci-fk-lpg`
 - `terraform-oci-fk-drg`
 - `terraform-oci-fk-compute`
 - `terraform-oci-fk-loadbalancer`
 - `terraform-oci-fk-ocir`
+- `terraform-oci-fk-oke`
+- `terraform-oci-fk-policy`
 - `terraform-oci-fk-devops`
 - `terraform-oci-fk-devops-pipeline`
 
