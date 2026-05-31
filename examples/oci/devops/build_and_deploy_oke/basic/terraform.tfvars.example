@@ -1,0 +1,12 @@
+tenancy_ocid     = "ocid1.tenancy.oc1..example"
+user_ocid        = "ocid1.user.oc1..example"
+fingerprint      = "aa:bb:cc:dd"
+private_key_path = "~/.oci/oci_api_key.pem"
+compartment_ocid = "ocid1.compartment.oc1..example"
+region           = "eu-frankfurt-1"
+iam_home_region  = "eu-frankfurt-1"
+
+github_pat_secret_ocid             = "ocid1.vaultsecret.oc1..example"
+github_pat_secret_compartment_ocid = "ocid1.compartment.oc1..example"
+ocir_user_name                     = "fr5tvfiq2xhq/your.name@example.com"
+ocir_user_password                 = "replace-with-oci-auth-token"

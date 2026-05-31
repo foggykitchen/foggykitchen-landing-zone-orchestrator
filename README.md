@@ -3,6 +3,7 @@
 FoggyKitchen Landing Zone Orchestrator is a reference architecture layer built on top of public **Terraform / OpenTofu modules** from the FoggyKitchen ecosystem for **Azure** and **OCI**.
 
 It demonstrates how reusable infrastructure modules can be composed into opinionated landing zone patterns: hub-and-spoke networking, private-first compute, private endpoints, DRG cross-region remote peering, local peering, private DNS, and firewall-based transit.
+It also starts to show how the same orchestration model can be extended into **OCI DevOps delivery patterns** built from reusable FoggyKitchen modules.
 
 This repository is a reference implementation and educational architecture pattern.  
 It is **not** a drop-in enterprise landing zone product.  
@@ -119,6 +120,7 @@ Currently implemented:
 - [examples/azure/networking/private_endpoint/storage_private_link](examples/azure/networking/private_endpoint/storage_private_link/README.md)
 - [examples/oci/networking/drg_cross_region/basic](examples/oci/networking/drg_cross_region/basic/README.md)
 - [examples/oci/networking/lpg_local_peering/basic](examples/oci/networking/lpg_local_peering/basic/README.md)
+- [examples/oci/devops/build_only/basic](examples/oci/devops/build_only/basic/README.md)
 
 Shared orchestration patterns:
 
@@ -128,6 +130,7 @@ Shared orchestration patterns:
 - [patterns/azure/private_endpoint](patterns/azure/private_endpoint)
 - [patterns/oci/drg_cross_region](patterns/oci/drg_cross_region)
 - [patterns/oci/lpg_local_peering](patterns/oci/lpg_local_peering)
+- [patterns/oci/devops_build_only](patterns/oci/devops_build_only)
 
 ---
 
@@ -166,6 +169,9 @@ The repository composes FoggyKitchen building blocks such as:
 - `terraform-oci-fk-drg`
 - `terraform-oci-fk-compute`
 - `terraform-oci-fk-loadbalancer`
+- `terraform-oci-fk-ocir`
+- `terraform-oci-fk-devops`
+- `terraform-oci-fk-devops-pipeline`
 
 ---
 
@@ -188,6 +194,7 @@ Then choose one of the example payloads under `examples/`.
 - Harden module source pinning to explicit tags
 - Extend Azure private endpoint coverage beyond Storage
 - Expand OCI examples with more service integrations
+- Expand OCI DevOps patterns beyond build-only into deploy, trigger, canary, and blue-green flows
 
 ---
 

@@ -6,7 +6,7 @@ This directory contains the shared **OCI landing zone orchestration patterns** u
 
 ## 🎯 Purpose
 
-These patterns focus on OCI network and connectivity architectures expressed through payloads and implemented through reusable shared HCL.
+These patterns focus on OCI network, connectivity, and platform delivery architectures expressed through payloads and implemented through reusable shared HCL.
 
 ---
 
@@ -14,6 +14,8 @@ These patterns focus on OCI network and connectivity architectures expressed thr
 
 - [drg_cross_region](drg_cross_region/README.md)
 - [lpg_local_peering](lpg_local_peering/README.md)
+- [devops_build_only](devops_build_only/README.md)
+- [devops_build_and_deploy_oke](devops_build_and_deploy_oke/README.md)
 
 ---
 
@@ -21,6 +23,8 @@ These patterns focus on OCI network and connectivity architectures expressed thr
 
 1. [drg_cross_region](drg_cross_region/README.md)
 2. [lpg_local_peering](lpg_local_peering/README.md)
+3. [devops_build_only](devops_build_only/README.md)
+4. [devops_build_and_deploy_oke](devops_build_and_deploy_oke/README.md)
 
 ---
 

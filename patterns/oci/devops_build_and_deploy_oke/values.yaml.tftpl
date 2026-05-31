@@ -1,0 +1,16 @@
+pod:
+  numberOfNginxReplicas: 2
+
+loadBalancer:
+  lbShape: flexible
+  lbMinShape: 10
+  lbMaxShape: 100
+  lbListenerPort: 80
+
+image:
+  repository: ${image_repository}
+  pullPolicy: IfNotPresent
+  tag: ${image_tag}
+
+imagePullSecrets:
+  - name: ocir-registry-secret

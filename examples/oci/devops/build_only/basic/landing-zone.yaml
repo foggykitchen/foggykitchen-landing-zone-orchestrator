@@ -1,0 +1,57 @@
+landing_zone:
+  name: fk-oci-devops-build-only-dev
+  environment: dev
+  freeform_tags:
+    project: foggykitchen
+    environment: dev
+    managed_by: opentofu
+    landing_zone: fk-oci-devops-build-only-dev
+
+cloud:
+  provider: oci
+  home_region: ${iam_home_region}
+  workload_region: ${workload_region}
+  tenancy_ocid: ${tenancy_ocid}
+  compartment_ocid: ${compartment_ocid}
+
+architecture:
+  topology: devops_build_only
+  access_model: source_mirror
+  delivery_model: build_and_deliver
+
+devops:
+  project:
+    name: fk-devops-build-only-dev
+    description: FoggyKitchen OCI DevOps build-only pattern
+    enable_notifications: true
+    enable_logging: true
+
+  github:
+    repository_name: foggykitchen-hello-world
+    repository_url: https://github.com/foggykitchen/foggykitchen-hello-world.git
+    branch: master
+    pat_secret_ocid: ${github_pat_secret_ocid}
+    pat_secret_compartment_ocid: ${github_pat_secret_compartment_ocid}
+
+  iam:
+    dynamic_group_name: fk-devops-build-only-dev-dg
+    # Optional: set operator_group_name to provision:
+    # Allow group <group-name> to use devops-connection in the target compartment.
+    # operator_group_name: foggykitchen-devops-users
+
+  registry:
+    repository_name: fkhello/fkhello
+
+  build_pipeline:
+    name: fk-devops-build-only-pipeline
+    description: FoggyKitchen OCI DevOps build-only pipeline
+    build_stage:
+      name: build
+      description: Build Docker image from mirrored repository source
+      build_spec_file: build_spec.yaml
+      image: OL8_X86_64_STANDARD_10
+      timeout_in_seconds: 36000
+    deliver_stage:
+      name: deliver
+      description: Deliver OCI Registry artifact metadata
+      artifact_name: APPLICATION_DOCKER_IMAGE
