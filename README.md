@@ -83,6 +83,11 @@ foggykitchen-landing-zone-orchestrator/
 │   │           └── storage_private_link/
 │   ├── oci/
 │   │   ├── README.md
+│   │   ├── devops/
+│   │   │   ├── build_and_deploy_oke/
+│   │   │   │   └── basic/
+│   │   │   └── build_only/
+│   │   │       └── basic/
 │   │   └── networking/
 │   │       ├── README.md
 │   │       ├── drg_cross_region/
@@ -99,6 +104,8 @@ foggykitchen-landing-zone-orchestrator/
 │   │   ├── hub_spoke/
 │   │   └── private_endpoint/
 │   ├── oci/
+│       ├── devops_build_and_deploy_oke/
+│       ├── devops_build_only/
 │       ├── drg_cross_region/
 │       └── lpg_local_peering/
 │   └── multicloud/
@@ -121,6 +128,7 @@ Currently implemented:
 - [examples/oci/networking/drg_cross_region/basic](examples/oci/networking/drg_cross_region/basic/README.md)
 - [examples/oci/networking/lpg_local_peering/basic](examples/oci/networking/lpg_local_peering/basic/README.md)
 - [examples/oci/devops/build_only/basic](examples/oci/devops/build_only/basic/README.md)
+- [examples/oci/devops/build_and_deploy_oke/basic](examples/oci/devops/build_and_deploy_oke/basic/README.md)
 
 Shared orchestration patterns:
 
@@ -131,6 +139,7 @@ Shared orchestration patterns:
 - [patterns/oci/drg_cross_region](patterns/oci/drg_cross_region)
 - [patterns/oci/lpg_local_peering](patterns/oci/lpg_local_peering)
 - [patterns/oci/devops_build_only](patterns/oci/devops_build_only)
+- [patterns/oci/devops_build_and_deploy_oke](patterns/oci/devops_build_and_deploy_oke)
 
 ---
 
