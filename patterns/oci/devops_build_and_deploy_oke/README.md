@@ -29,6 +29,10 @@ This pattern composes:
 
 It extends the public `devops_build_only` pattern with OKE infrastructure, a Helm chart artifact, a DevOps deploy environment, and a Helm deployment stage.
 
+It can also optionally chain the public flow so that the build pipeline triggers the deploy pipeline after `build` and `deliver`, controlled by:
+
+- `devops.build_pipeline.trigger_deploy_pipeline: true`
+
 The pattern supports a split between:
 
 - `cloud.workload_region` for regional DevOps, OCIR, OKE, logging, and notifications resources
@@ -48,7 +52,6 @@ This public pattern intentionally stays at the **basic OKE deployment** level.
 
 It does not currently add:
 
-- automatic build-to-deploy trigger chaining
 - canary rollout stages
 - blue-green rollout stages
 - premium blueprint integrations

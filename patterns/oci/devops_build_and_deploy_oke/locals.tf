@@ -37,6 +37,7 @@ locals {
   deploy_pipeline_key       = "oke"
   app_branch                = try(local.devops.github.app_branch, "master")
   helm_branch               = try(local.devops.github.helm_branch, "main")
+  trigger_deploy_pipeline   = try(local.devops.build_pipeline.trigger_deploy_pipeline, false)
   image_repository_name     = local.devops.registry.image_repository_name
   helm_repository_name      = local.devops.registry.helm_repository_name
   helm_chart_name           = local.devops.helm.chart_name

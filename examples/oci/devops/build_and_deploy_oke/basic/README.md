@@ -11,6 +11,12 @@ It demonstrates a basic public CI/CD flow made of:
 - one build pipeline that builds an image and packages a Helm chart
 - one deploy pipeline that is ready to deploy the chart to OKE
 
+## Architecture Overview
+
+![OCI DevOps Build-And-Deploy-OKE architecture](images/oci_devops_build_and_deploy_oke_basic_architecture.png)
+
+Figure 1. Reference architecture for the public `build-and-deploy-oke` pattern. The build pipeline mirrors the application and Helm repositories, builds and delivers artifacts to OCIR, and can optionally trigger the deploy pipeline. The deploy pipeline then pulls the Helm chart from OCIR and rolls the application out to OKE behind a public load balancer.
+
 ## Files
 
 - `landing-zone.yaml`: payload describing the build-and-deploy-oke pattern
@@ -37,7 +43,7 @@ tofu plan
 - `ocir_user_name` and `ocir_user_password` are used by the Helm build stage to authenticate to OCIR and push chart packages
 - `app_branch` is set to `master` because `foggykitchen-hello-world` still uses `master`
 - `helm_branch` is set to `main` because `helm-foggykitchen-hello-world` uses `main`
-- the public scaffold currently creates separate build and deploy pipelines, but it does not yet wire an automatic build-to-deploy trigger
+- set `devops.build_pipeline.trigger_deploy_pipeline: true` in `landing-zone.yaml` if you want the build pipeline to trigger the deploy pipeline automatically after `build` and `deliver`
 
 ## License
 
