@@ -13,6 +13,11 @@ The documents in this directory explain:
 - how FoggyKitchen modules are mapped into shared patterns
 - how the YAML payload contract is structured
 
+They cover both:
+
+- landing zone networking compositions for Azure and OCI
+- OCI DevOps delivery compositions such as `build_only` and `build_and_deploy_oke`
+
 ---
 
 ## 📚 Documents

@@ -67,6 +67,8 @@ This separation keeps the implementation:
 
 - `drg_cross_region`
 - `lpg_local_peering`
+- `devops_build_only`
+- `devops_build_and_deploy_oke`
 
 ## 🧩 Pattern Responsibilities
 
@@ -135,6 +137,27 @@ Focus:
 - private workloads
 - private load balancer
 
+### OCI DevOps Build-Only
+
+Focus:
+
+- OCI DevOps project composition
+- GitHub connection backed by OCI Vault secret
+- mirrored repository synchronization
+- OCI managed build pipeline using reusable DevOps modules
+- OCIR image artifact delivery
+
+### OCI DevOps Build-And-Deploy-OKE
+
+Focus:
+
+- OCI DevOps build and deploy composition
+- mirrored application and Helm repositories
+- OKE cluster as the deployment target
+- Helm chart delivery through OCIR
+- optional cascade trigger from build pipeline into deploy pipeline
+- public workload exposure through Kubernetes `Service` type `LoadBalancer`
+
 ## ⚖️ Why Thin Composition
 
 This repository intentionally does not reimplement all networking, compute, DNS, firewall, or storage internals.
@@ -157,6 +180,8 @@ Included today:
 - Azure private endpoint pattern for Storage
 - Azure firewall transit pattern
 - OCI DRG cross-region and LPG-based networking patterns
+- OCI DevOps build-only pattern
+- OCI DevOps build-and-deploy-OKE pattern
 
 Not yet treated as first-class pattern families:
 
@@ -166,7 +191,7 @@ Not yet treated as first-class pattern families:
 - OCI block volume patterns
 - advanced multicloud premium blueprints in the private `foggykitchen-landing-zone-blueprint` repository
 - enterprise governance overlays
-- CI/CD and policy-as-code
+- policy-as-code
 
 ---
 

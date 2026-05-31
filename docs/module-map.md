@@ -87,6 +87,11 @@ Uses:
 | `terraform-oci-fk-drg` | Strategic routing and transit layer |
 | `terraform-oci-fk-compute` | Workload layer |
 | `terraform-oci-fk-loadbalancer` | Traffic entry and distribution contract |
+| `terraform-oci-fk-ocir` | OCI Container Registry repository layer |
+| `terraform-oci-fk-oke` | Kubernetes platform layer |
+| `terraform-oci-fk-policy` | IAM and dynamic-group policy layer |
+| `terraform-oci-fk-devops` | Shared OCI DevOps resources such as project, connection, repositories, artifacts, and deploy environments |
+| `terraform-oci-fk-devops-pipeline` | Build and deploy pipeline graph layer |
 
 ---
 
@@ -113,6 +118,42 @@ Uses:
 - `terraform-oci-fk-lpg`
 - `terraform-oci-fk-compute`
 - `terraform-oci-fk-loadbalancer`
+
+### `patterns/oci/devops_build_only`
+
+Uses:
+
+- `terraform-oci-fk-ocir`
+- `terraform-oci-fk-policy`
+- `terraform-oci-fk-devops`
+- `terraform-oci-fk-devops-pipeline`
+
+Focus:
+
+- OCI DevOps project and GitHub connection
+- mirrored source repository
+- build pipeline with `build` and `deliver` stages
+- Docker image artifact delivery into OCIR
+- IAM policies for DevOps dynamic-group access to Vault, repos, and DevOps resources
+
+### `patterns/oci/devops_build_and_deploy_oke`
+
+Uses:
+
+- `terraform-oci-fk-vcn`
+- `terraform-oci-fk-oke`
+- `terraform-oci-fk-ocir`
+- `terraform-oci-fk-policy`
+- `terraform-oci-fk-devops`
+- `terraform-oci-fk-devops-pipeline`
+
+Focus:
+
+- dual mirrored repositories for app and Helm sources
+- build pipeline for image build and Helm chart packaging
+- optional cascade trigger from build pipeline into deploy pipeline
+- OKE deploy environment and Helm deployment stage
+- Kubernetes-side OCIR pull secret provisioning
 
 ---
 
