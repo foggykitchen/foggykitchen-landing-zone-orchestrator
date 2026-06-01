@@ -69,6 +69,7 @@ This separation keeps the implementation:
 - `lpg_local_peering`
 - `devops_build_only`
 - `devops_build_and_deploy_oke`
+- `event_driven_data_pipeline`
 
 ## 🧩 Pattern Responsibilities
 
@@ -158,6 +159,17 @@ Focus:
 - optional cascade trigger from build pipeline into deploy pipeline
 - public workload exposure through Kubernetes `Service` type `LoadBalancer`
 
+### OCI Event-Driven Data Pipeline
+
+Focus:
+
+- public API Gateway entry point
+- private OCI Functions application
+- initiator function publishing into OCI Streaming
+- Service Connector Hub invoking the collector function
+- Autonomous Database bootstrap and final persistence
+- end-to-end asynchronous handoff from HTTP request to stored database record
+
 ## ⚖️ Why Thin Composition
 
 This repository intentionally does not reimplement all networking, compute, DNS, firewall, or storage internals.
@@ -182,6 +194,7 @@ Included today:
 - OCI DRG cross-region and LPG-based networking patterns
 - OCI DevOps build-only pattern
 - OCI DevOps build-and-deploy-OKE pattern
+- OCI event-driven data pipeline pattern
 
 Not yet treated as first-class pattern families:
 
