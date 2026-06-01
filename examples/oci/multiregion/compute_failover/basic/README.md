@@ -31,6 +31,10 @@ tofu plan
 - it intentionally excludes file replication and database replication
 - standby capacity is smaller by default to model a lightweight warm standby
 - per-site autoscaling can be enabled with `primary_site.enable_autoscale` and `standby_site.enable_autoscale`
+- the default workload is a minimal `nginx` landing page, but you can inject site-specific bootstrap content with:
+  - `workload.compute.cloud_init_override.primary`
+  - `workload.compute.cloud_init_override.standby`
+  - or per-site overrides under `primary_site.cloud_init_override` and `standby_site.cloud_init_override`
 
 ## License
 

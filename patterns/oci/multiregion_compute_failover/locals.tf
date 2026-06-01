@@ -77,7 +77,7 @@ locals {
   dns_policy_name = try(local.dns.display_name, "${local.project_name}-dns-steering")
   anchor_record   = try(local.dns.anchor_record_address, null)
 
-  primary_user_data = base64encode(<<-EOT
+  primary_default_user_data = <<-EOT
     #cloud-config
     package_update: true
     packages:
@@ -91,9 +91,8 @@ locals {
       - systemctl enable nginx
       - systemctl restart nginx
     EOT
-  )
 
-  standby_user_data = base64encode(<<-EOT
+  standby_default_user_data = <<-EOT
     #cloud-config
     package_update: true
     packages:
@@ -107,5 +106,8 @@ locals {
       - systemctl enable nginx
       - systemctl restart nginx
     EOT
-  )
+
+  primary_user_data = base64encode(try(local.primary.cloud_init_override, local.workload.compute.cloud_init_override.primary, local.primary_default_user_data))
+
+  standby_user_data = base64encode(try(local.standby.cloud_init_override, local.workload.compute.cloud_init_override.standby, local.standby_default_user_data))
 }

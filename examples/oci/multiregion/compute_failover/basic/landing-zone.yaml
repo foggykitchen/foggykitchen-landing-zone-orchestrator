@@ -36,6 +36,33 @@ workload:
       memory_in_gbs: 8
     ssh_authorized_keys:
       - ${admin_ssh_public_key}
+    cloud_init_override:
+      primary: |
+        #cloud-config
+        package_update: true
+        packages:
+          - nginx
+        write_files:
+          - path: /usr/share/nginx/html/index.html
+            permissions: "0644"
+            content: |
+              <html><body><h1>fk-multiregion-primary</h1><p>FoggyKitchen multiregion compute failover - primary site</p></body></html>
+        runcmd:
+          - systemctl enable nginx
+          - systemctl restart nginx
+      standby: |
+        #cloud-config
+        package_update: true
+        packages:
+          - nginx
+        write_files:
+          - path: /usr/share/nginx/html/index.html
+            permissions: "0644"
+            content: |
+              <html><body><h1>fk-multiregion-standby</h1><p>FoggyKitchen multiregion compute failover - standby site</p></body></html>
+        runcmd:
+          - systemctl enable nginx
+          - systemctl restart nginx
   load_balancer:
     shape: flexible
     shape_details:
