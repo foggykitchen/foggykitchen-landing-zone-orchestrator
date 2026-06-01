@@ -17,6 +17,7 @@ They cover both:
 
 - landing zone networking compositions for Azure and OCI
 - OCI DevOps delivery compositions such as `build_only` and `build_and_deploy_oke`
+- OCI Functions-based data patterns such as `event_driven_data_pipeline` and `bulk_ingestion_pipeline`
 
 ---
 

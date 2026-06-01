@@ -14,6 +14,7 @@ Current emphasis:
 - DRG and LPG-based connectivity models
 - DevOps-oriented build and delivery patterns
 - functions-oriented event-driven data patterns
+- functions-oriented bulk and event-driven data patterns
 
 ---
 

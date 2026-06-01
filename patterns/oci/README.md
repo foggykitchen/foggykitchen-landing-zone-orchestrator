@@ -16,6 +16,7 @@ These patterns focus on OCI network, connectivity, and platform delivery archite
 - [lpg_local_peering](lpg_local_peering/README.md)
 - [devops_build_only](devops_build_only/README.md)
 - [devops_build_and_deploy_oke](devops_build_and_deploy_oke/README.md)
+- [bulk_ingestion_pipeline](bulk_ingestion_pipeline/README.md)
 - [event_driven_data_pipeline](event_driven_data_pipeline/README.md)
 
 ---
@@ -26,7 +27,8 @@ These patterns focus on OCI network, connectivity, and platform delivery archite
 2. [lpg_local_peering](lpg_local_peering/README.md)
 3. [devops_build_only](devops_build_only/README.md)
 4. [devops_build_and_deploy_oke](devops_build_and_deploy_oke/README.md)
-5. [event_driven_data_pipeline](event_driven_data_pipeline/README.md)
+5. [bulk_ingestion_pipeline](bulk_ingestion_pipeline/README.md)
+6. [event_driven_data_pipeline](event_driven_data_pipeline/README.md)
 
 ---
 

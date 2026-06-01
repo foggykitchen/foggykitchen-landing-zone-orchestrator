@@ -69,6 +69,7 @@ This separation keeps the implementation:
 - `lpg_local_peering`
 - `devops_build_only`
 - `devops_build_and_deploy_oke`
+- `bulk_ingestion_pipeline`
 - `event_driven_data_pipeline`
 
 ## 🧩 Pattern Responsibilities
@@ -170,6 +171,17 @@ Focus:
 - Autonomous Database bootstrap and final persistence
 - end-to-end asynchronous handoff from HTTP request to stored database record
 
+### OCI Bulk Ingestion Pipeline
+
+Focus:
+
+- Object Storage bucket as the ingestion entry point
+- OCI Events invoking the bulk loader function
+- private OCI Functions application for bootstrap, bulk expansion, and collection
+- OCI Streaming as the asynchronous fan-out buffer
+- Service Connector Hub invoking the collector function
+- Autonomous Database bootstrap and final persistence for uploaded records
+
 ## ⚖️ Why Thin Composition
 
 This repository intentionally does not reimplement all networking, compute, DNS, firewall, or storage internals.
@@ -194,6 +206,7 @@ Included today:
 - OCI DRG cross-region and LPG-based networking patterns
 - OCI DevOps build-only pattern
 - OCI DevOps build-and-deploy-OKE pattern
+- OCI bulk ingestion pipeline pattern
 - OCI event-driven data pipeline pattern
 
 Not yet treated as first-class pattern families:

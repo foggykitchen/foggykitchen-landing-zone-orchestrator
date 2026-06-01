@@ -1,0 +1,48 @@
+landing_zone:
+  name: fk-oci-bulk-ingestion-pipeline-dev
+  defined_tags: {}
+  freeform_tags:
+    project: foggykitchen
+    environment: dev
+    landing_zone: fk-oci-bulk-ingestion-pipeline-dev
+    managed_by: opentofu
+
+cloud:
+  tenancy_ocid: ${tenancy_ocid}
+  compartment_ocid: ${compartment_ocid}
+  home_region: ${iam_home_region}
+  workload_region: ${workload_region}
+
+architecture:
+  network:
+    vcn_cidr: 10.80.0.0/16
+    functions_subnet_cidr: 10.80.20.0/24
+
+functions:
+  source_path: ${functions_base_path}
+  project:
+    name: fk-bulk-ingestion-pipeline-dev
+    description: FoggyKitchen OCI bulk ingestion pipeline pattern
+  iam:
+    dynamic_group_name: fk-bulk-ingestion-pipeline-dev-dg
+  runtime:
+    ocir_user_name: ${ocir_user_name}
+    ocir_user_password: ${ocir_user_password}
+    debug_mode: true
+    bulkload_name: fnbulkload
+    collector_name: fncollector
+    adb_setup_name: fnadbsetup
+  streaming:
+    stream_pool_name: fk-bulk-ingestion-pipeline-pool
+    stream_name: fk-bulk-ingestion-pipeline-stream
+
+data:
+  objectstorage:
+    bucket_name: FoggyKitchenIOTBucket
+    event_rule_name: fk-bulk-ingestion-pipeline-object-create
+  adb:
+    database_name: FoggyKitchenADB
+    admin_password: ${adb_admin_password}
+    app_user_name: APPUSER
+    app_user_password: ${adb_app_user_password}
+    sqlnet_alias: foggykitchenadb_medium

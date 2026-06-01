@@ -92,6 +92,8 @@ Uses:
 | `terraform-oci-fk-policy` | IAM and dynamic-group policy layer |
 | `terraform-oci-fk-api-gateway` | Public API ingress and route publishing layer |
 | `terraform-oci-fk-function` | OCI Functions application and function packaging layer |
+| `terraform-oci-fk-objectstorage` | Object Storage bucket and namespace-facing ingestion layer |
+| `terraform-oci-fk-event` | OCI Events rule and action routing layer |
 | `terraform-oci-fk-streaming` | Event buffer and stream pool layer |
 | `terraform-oci-fk-sch` | Service Connector Hub event routing layer |
 | `terraform-oci-fk-adb` | Autonomous Database persistence layer |
@@ -179,6 +181,27 @@ Focus:
 - Service Connector Hub consuming the stream and invoking the collector
 - ADB bootstrap function plus final persistence into Autonomous Database
 - end-to-end asynchronous data flow from HTTP request to stored database record
+
+### `patterns/oci/bulk_ingestion_pipeline`
+
+Uses:
+
+- `terraform-oci-fk-vcn`
+- `terraform-oci-fk-policy`
+- `terraform-oci-fk-function`
+- `terraform-oci-fk-objectstorage`
+- `terraform-oci-fk-event`
+- `terraform-oci-fk-streaming`
+- `terraform-oci-fk-sch`
+- `terraform-oci-fk-adb`
+
+Focus:
+
+- bucket-driven ingestion without an HTTP entry point
+- OCI Events invoking the bulk loader function on object creation
+- bulk expansion into per-record messages in OCI Streaming
+- Service Connector Hub invoking the collector function
+- ADB bootstrap plus final persistence into Autonomous Database
 
 ---
 
