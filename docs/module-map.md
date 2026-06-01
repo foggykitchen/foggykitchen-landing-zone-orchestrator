@@ -90,6 +90,11 @@ Uses:
 | `terraform-oci-fk-ocir` | OCI Container Registry repository layer |
 | `terraform-oci-fk-oke` | Kubernetes platform layer |
 | `terraform-oci-fk-policy` | IAM and dynamic-group policy layer |
+| `terraform-oci-fk-api-gateway` | Public API ingress and route publishing layer |
+| `terraform-oci-fk-function` | OCI Functions application and function packaging layer |
+| `terraform-oci-fk-streaming` | Event buffer and stream pool layer |
+| `terraform-oci-fk-sch` | Service Connector Hub event routing layer |
+| `terraform-oci-fk-adb` | Autonomous Database persistence layer |
 | `terraform-oci-fk-devops` | Shared OCI DevOps resources such as project, connection, repositories, artifacts, and deploy environments |
 | `terraform-oci-fk-devops-pipeline` | Build and deploy pipeline graph layer |
 
@@ -154,6 +159,26 @@ Focus:
 - optional cascade trigger from build pipeline into deploy pipeline
 - OKE deploy environment and Helm deployment stage
 - Kubernetes-side OCIR pull secret provisioning
+
+### `patterns/oci/event_driven_data_pipeline`
+
+Uses:
+
+- `terraform-oci-fk-vcn`
+- `terraform-oci-fk-policy`
+- `terraform-oci-fk-api-gateway`
+- `terraform-oci-fk-function`
+- `terraform-oci-fk-streaming`
+- `terraform-oci-fk-sch`
+- `terraform-oci-fk-adb`
+
+Focus:
+
+- public API Gateway entry point into a private Functions application
+- initiator function publishing into OCI Streaming
+- Service Connector Hub consuming the stream and invoking the collector
+- ADB bootstrap function plus final persistence into Autonomous Database
+- end-to-end asynchronous data flow from HTTP request to stored database record
 
 ---
 
