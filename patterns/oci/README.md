@@ -12,6 +12,7 @@ These patterns focus on OCI network, connectivity, and platform delivery archite
 
 ## 📂 Available Patterns
 
+- [authenticated_serverless_api](authenticated_serverless_api/README.md)
 - [drg_cross_region](drg_cross_region/README.md)
 - [lpg_local_peering](lpg_local_peering/README.md)
 - [devops_build_only](devops_build_only/README.md)
@@ -23,12 +24,13 @@ These patterns focus on OCI network, connectivity, and platform delivery archite
 
 ## 🧭 Reading Order
 
-1. [drg_cross_region](drg_cross_region/README.md)
-2. [lpg_local_peering](lpg_local_peering/README.md)
-3. [devops_build_only](devops_build_only/README.md)
-4. [devops_build_and_deploy_oke](devops_build_and_deploy_oke/README.md)
-5. [bulk_ingestion_pipeline](bulk_ingestion_pipeline/README.md)
-6. [event_driven_data_pipeline](event_driven_data_pipeline/README.md)
+1. [authenticated_serverless_api](authenticated_serverless_api/README.md)
+2. [drg_cross_region](drg_cross_region/README.md)
+3. [lpg_local_peering](lpg_local_peering/README.md)
+4. [devops_build_only](devops_build_only/README.md)
+5. [devops_build_and_deploy_oke](devops_build_and_deploy_oke/README.md)
+6. [bulk_ingestion_pipeline](bulk_ingestion_pipeline/README.md)
+7. [event_driven_data_pipeline](event_driven_data_pipeline/README.md)
 
 ---
 

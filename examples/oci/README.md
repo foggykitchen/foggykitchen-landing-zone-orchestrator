@@ -13,6 +13,7 @@ Current emphasis:
 - networking-oriented landing zone patterns
 - DRG and LPG-based connectivity models
 - DevOps-oriented build and delivery patterns
+- functions-oriented authenticated API patterns
 - functions-oriented event-driven data patterns
 - functions-oriented bulk and event-driven data patterns
 

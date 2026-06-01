@@ -3,7 +3,7 @@
 FoggyKitchen Landing Zone Orchestrator is a reference architecture layer built on top of public **Terraform / OpenTofu modules** from the FoggyKitchen ecosystem for **Azure** and **OCI**.
 
 It demonstrates how reusable infrastructure modules can be composed into opinionated landing zone patterns: hub-and-spoke networking, private-first compute, private endpoints, DRG cross-region remote peering, local peering, private DNS, and firewall-based transit.
-It also starts to show how the same orchestration model can be extended into **OCI DevOps delivery patterns** built from reusable FoggyKitchen modules.
+It also starts to show how the same orchestration model can be extended into **OCI DevOps delivery patterns** and **OCI Functions patterns** built from reusable FoggyKitchen modules.
 
 This repository is a reference implementation and educational architecture pattern.  
 It is **not** a drop-in enterprise landing zone product.  
@@ -37,6 +37,7 @@ Depending on the selected pattern and payload, the repository can compose:
 - OCI same-region LPG local peering landing zones
 - OCI DevOps build and deploy patterns
 - OCI OKE deployment target patterns
+- OCI authenticated serverless API patterns
 - OCI Functions-based event-driven data patterns
 - OCI bulk ingestion pipelines
 - Private-first compute placement
@@ -93,6 +94,8 @@ foggykitchen-landing-zone-orchestrator/
 │   │   │   └── build_only/
 │   │   │       └── basic/
 │   │   ├── functions/
+│   │   │   ├── authenticated_serverless_api/
+│   │   │   │   └── basic/
 │   │   │   ├── bulk_ingestion_pipeline/
 │   │   │   │   └── basic/
 │   │   │   └── event_driven_data_pipeline/
@@ -113,6 +116,7 @@ foggykitchen-landing-zone-orchestrator/
 │   │   ├── hub_spoke/
 │   │   └── private_endpoint/
 │   ├── oci/
+│       ├── authenticated_serverless_api/
 │       ├── devops_build_and_deploy_oke/
 │       ├── devops_build_only/
 │       ├── bulk_ingestion_pipeline/
@@ -140,6 +144,7 @@ Currently implemented:
 - [examples/oci/networking/lpg_local_peering/basic](examples/oci/networking/lpg_local_peering/basic/README.md)
 - [examples/oci/devops/build_only/basic](examples/oci/devops/build_only/basic/README.md)
 - [examples/oci/devops/build_and_deploy_oke/basic](examples/oci/devops/build_and_deploy_oke/basic/README.md)
+- [examples/oci/functions/authenticated_serverless_api/basic](examples/oci/functions/authenticated_serverless_api/basic/README.md)
 - [examples/oci/functions/bulk_ingestion_pipeline/basic](examples/oci/functions/bulk_ingestion_pipeline/basic/README.md)
 - [examples/oci/functions/event_driven_data_pipeline/basic](examples/oci/functions/event_driven_data_pipeline/basic/README.md)
 
@@ -153,6 +158,7 @@ Shared orchestration patterns:
 - [patterns/oci/lpg_local_peering](patterns/oci/lpg_local_peering)
 - [patterns/oci/devops_build_only](patterns/oci/devops_build_only)
 - [patterns/oci/devops_build_and_deploy_oke](patterns/oci/devops_build_and_deploy_oke)
+- [patterns/oci/authenticated_serverless_api](patterns/oci/authenticated_serverless_api)
 - [patterns/oci/bulk_ingestion_pipeline](patterns/oci/bulk_ingestion_pipeline)
 - [patterns/oci/event_driven_data_pipeline](patterns/oci/event_driven_data_pipeline)
 

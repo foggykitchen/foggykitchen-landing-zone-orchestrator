@@ -162,6 +162,22 @@ Focus:
 - OKE deploy environment and Helm deployment stage
 - Kubernetes-side OCIR pull secret provisioning
 
+### `patterns/oci/authenticated_serverless_api`
+
+Uses:
+
+- `terraform-oci-fk-vcn`
+- `terraform-oci-fk-policy`
+- `terraform-oci-fk-function`
+- `terraform-oci-fk-api-gateway`
+
+Focus:
+
+- public API Gateway front door
+- custom auth function for protected requests
+- private backend function behind the authorizer
+- lightweight serverless access pattern without persistence or async middleware
+
 ### `patterns/oci/event_driven_data_pipeline`
 
 Uses:

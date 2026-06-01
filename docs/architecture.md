@@ -65,6 +65,7 @@ This separation keeps the implementation:
 
 ### OCI
 
+- `authenticated_serverless_api`
 - `drg_cross_region`
 - `lpg_local_peering`
 - `devops_build_only`
@@ -160,6 +161,16 @@ Focus:
 - optional cascade trigger from build pipeline into deploy pipeline
 - public workload exposure through Kubernetes `Service` type `LoadBalancer`
 
+### OCI Authenticated Serverless API
+
+Focus:
+
+- public API Gateway entry point
+- private OCI Functions application
+- custom authentication through a dedicated auth function
+- protected backend function invocation behind the authorizer
+- lightweight access-control-oriented serverless pattern without data services
+
 ### OCI Event-Driven Data Pipeline
 
 Focus:
@@ -206,6 +217,7 @@ Included today:
 - OCI DRG cross-region and LPG-based networking patterns
 - OCI DevOps build-only pattern
 - OCI DevOps build-and-deploy-OKE pattern
+- OCI authenticated serverless API pattern
 - OCI bulk ingestion pipeline pattern
 - OCI event-driven data pipeline pattern
 

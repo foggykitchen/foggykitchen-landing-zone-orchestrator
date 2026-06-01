@@ -4,6 +4,7 @@ This directory contains **OCI Functions-focused payload examples** organized by 
 
 ## Available OCI Functions Domains
 
+- [Authenticated Serverless API examples](authenticated_serverless_api/README.md)
 - [Bulk Ingestion Pipeline examples](bulk_ingestion_pipeline/README.md)
 - [Event-Driven Data Pipeline examples](event_driven_data_pipeline/README.md)
 
