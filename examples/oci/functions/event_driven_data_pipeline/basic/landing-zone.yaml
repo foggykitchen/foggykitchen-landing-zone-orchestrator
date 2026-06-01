@@ -1,0 +1,51 @@
+landing_zone:
+  name: fk-oci-event-driven-data-pipeline-dev
+  defined_tags: {}
+  freeform_tags:
+    project: foggykitchen
+    environment: dev
+    landing_zone: fk-oci-event-driven-data-pipeline-dev
+    managed_by: opentofu
+
+cloud:
+  tenancy_ocid: ${tenancy_ocid}
+  compartment_ocid: ${compartment_ocid}
+  home_region: ${iam_home_region}
+  workload_region: ${workload_region}
+
+architecture:
+  network:
+    vcn_cidr: 10.70.0.0/16
+    api_gateway_subnet_cidr: 10.70.10.0/24
+    functions_subnet_cidr: 10.70.20.0/24
+
+functions:
+  source_path: ${functions_base_path}
+  project:
+    name: fk-event-driven-data-pipeline-dev
+    description: FoggyKitchen OCI event-driven data pipeline pattern
+  iam:
+    dynamic_group_name: fk-event-driven-data-pipeline-dev-dg
+  runtime:
+    ocir_user_name: ${ocir_user_name}
+    ocir_user_password: ${ocir_user_password}
+    debug_mode: true
+    initiator_name: fninitiator
+    collector_name: fncollector
+    adb_setup_name: fnadbsetup
+  streaming:
+    stream_pool_name: fk-event-driven-data-pipeline-pool
+    stream_name: fk-event-driven-data-pipeline-stream
+  api:
+    gateway_name: fk-event-driven-data-pipeline-gateway
+    path_prefix: /v1
+    route_name: fninitiator
+    route_path: /fninitiator
+
+data:
+  adb:
+    database_name: FoggyKitchenADB
+    admin_password: ${adb_admin_password}
+    app_user_name: APPUSER
+    app_user_password: ${adb_app_user_password}
+    sqlnet_alias: foggykitchenadb_medium
