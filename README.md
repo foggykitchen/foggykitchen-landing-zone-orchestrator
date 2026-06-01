@@ -88,6 +88,9 @@ foggykitchen-landing-zone-orchestrator/
 │   │   │   │   └── basic/
 │   │   │   └── build_only/
 │   │   │       └── basic/
+│   │   ├── functions/
+│   │   │   └── event_driven_data_pipeline/
+│   │   │       └── basic/
 │   │   └── networking/
 │   │       ├── README.md
 │   │       ├── drg_cross_region/
@@ -106,6 +109,7 @@ foggykitchen-landing-zone-orchestrator/
 │   ├── oci/
 │       ├── devops_build_and_deploy_oke/
 │       ├── devops_build_only/
+│       ├── event_driven_data_pipeline/
 │       ├── drg_cross_region/
 │       └── lpg_local_peering/
 │   └── multicloud/
@@ -129,6 +133,7 @@ Currently implemented:
 - [examples/oci/networking/lpg_local_peering/basic](examples/oci/networking/lpg_local_peering/basic/README.md)
 - [examples/oci/devops/build_only/basic](examples/oci/devops/build_only/basic/README.md)
 - [examples/oci/devops/build_and_deploy_oke/basic](examples/oci/devops/build_and_deploy_oke/basic/README.md)
+- [examples/oci/functions/event_driven_data_pipeline/basic](examples/oci/functions/event_driven_data_pipeline/basic/README.md)
 
 Shared orchestration patterns:
 
@@ -140,6 +145,7 @@ Shared orchestration patterns:
 - [patterns/oci/lpg_local_peering](patterns/oci/lpg_local_peering)
 - [patterns/oci/devops_build_only](patterns/oci/devops_build_only)
 - [patterns/oci/devops_build_and_deploy_oke](patterns/oci/devops_build_and_deploy_oke)
+- [patterns/oci/event_driven_data_pipeline](patterns/oci/event_driven_data_pipeline)
 
 ---
 
@@ -184,6 +190,10 @@ The repository composes FoggyKitchen building blocks such as:
 - `terraform-oci-fk-policy`
 - `terraform-oci-fk-devops`
 - `terraform-oci-fk-devops-pipeline`
+- `terraform-oci-fk-function`
+- `terraform-oci-fk-streaming`
+- `terraform-oci-fk-sch`
+- `terraform-oci-fk-adb`
 
 ---
 

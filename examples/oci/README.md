@@ -13,6 +13,7 @@ Current emphasis:
 - networking-oriented landing zone patterns
 - DRG and LPG-based connectivity models
 - DevOps-oriented build and delivery patterns
+- functions-oriented event-driven data patterns
 
 ---
 
@@ -20,6 +21,7 @@ Current emphasis:
 
 - [Networking examples](networking/README.md)
 - [DevOps examples](devops/README.md)
+- [Functions examples](functions/README.md)
 
 ---
 
