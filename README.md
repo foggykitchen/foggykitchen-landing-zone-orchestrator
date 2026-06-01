@@ -35,6 +35,10 @@ Depending on the selected pattern and payload, the repository can compose:
 - Azure firewall transit landing zones
 - OCI DRG cross-region landing zones
 - OCI same-region LPG local peering landing zones
+- OCI DevOps build and deploy patterns
+- OCI OKE deployment target patterns
+- OCI Functions-based event-driven data patterns
+- OCI bulk ingestion pipelines
 - Private-first compute placement
 - Private DNS integration
 - Internal load balancing
