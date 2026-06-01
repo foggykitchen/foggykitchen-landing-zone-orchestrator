@@ -12,6 +12,7 @@ Current emphasis:
 
 - networking-oriented landing zone patterns
 - DRG and LPG-based connectivity models
+- multiregion compute failover patterns
 - DevOps-oriented build and delivery patterns
 - functions-oriented authenticated API patterns
 - functions-oriented event-driven data patterns
@@ -22,6 +23,7 @@ Current emphasis:
 ## 📂 Available OCI Domains
 
 - [Networking examples](networking/README.md)
+- [Multiregion examples](multiregion/README.md)
 - [DevOps examples](devops/README.md)
 - [Functions examples](functions/README.md)
 

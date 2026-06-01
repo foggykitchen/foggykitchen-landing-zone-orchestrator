@@ -66,6 +66,7 @@ This separation keeps the implementation:
 ### OCI
 
 - `authenticated_serverless_api`
+- `multiregion_compute_failover`
 - `drg_cross_region`
 - `lpg_local_peering`
 - `devops_build_only`
@@ -171,6 +172,18 @@ Focus:
 - protected backend function invocation behind the authorizer
 - lightweight access-control-oriented serverless pattern without data services
 
+### OCI Multiregion Compute Failover
+
+Focus:
+
+- two OCI regions with asymmetric primary and standby capacity
+- one DRG and one VCN per region
+- cross-region RPC-based remote peering between both DRGs
+- one public load balancer per region
+- one instance pool per region
+- OCI DNS Steering failover across the two public load balancer endpoints
+- intentionally stateless public failover without storage or database replication
+
 ### OCI Event-Driven Data Pipeline
 
 Focus:
@@ -215,6 +228,7 @@ Included today:
 - Azure private endpoint pattern for Storage
 - Azure firewall transit pattern
 - OCI DRG cross-region and LPG-based networking patterns
+- OCI multiregion compute failover pattern
 - OCI DevOps build-only pattern
 - OCI DevOps build-and-deploy-OKE pattern
 - OCI authenticated serverless API pattern
