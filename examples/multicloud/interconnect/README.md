@@ -25,6 +25,20 @@ It is treated as a premium blueprint because it includes:
 - cross-cloud validation requirements
 - more monetizable architecture content than the single-cloud examples
 
+The implementation is available separately in the private:
+
+- `foggykitchen-landing-zone-blueprint`
+
+repository.
+
+---
+
+## 📅 Need Help
+
+If you want to discuss architecture, implementation, or hands-on delivery support, book a consulting session here:
+
+- https://calendly.com/foggykitchen/foggykitchen-60-min-zoom-consultation
+
 ---
 
 ## 🪪 License

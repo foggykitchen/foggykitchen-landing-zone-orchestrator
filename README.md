@@ -9,6 +9,8 @@ This repository is a reference implementation and educational architecture patte
 It is **not** a drop-in enterprise landing zone product.  
 Review security, governance, compliance, identity, networking, and operational requirements before using it in production.
 
+Support expectations are documented in [SUPPORT.md](SUPPORT.md).
+
 ---
 
 ## 🎯 Purpose
