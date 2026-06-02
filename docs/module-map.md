@@ -83,6 +83,7 @@ Uses:
 | Module | Role in the landing zone |
 | --- | --- |
 | `terraform-oci-fk-vcn` | Network boundary |
+| `terraform-oci-fk-nsg` | Subnet-adjacent security boundary |
 | `terraform-oci-fk-lpg` | Same-region local peering |
 | `terraform-oci-fk-drg` | Strategic routing and transit layer |
 | `terraform-oci-fk-compute` | Workload layer |
@@ -126,6 +127,22 @@ Uses:
 - `terraform-oci-fk-lpg`
 - `terraform-oci-fk-compute`
 - `terraform-oci-fk-loadbalancer`
+
+### `patterns/oci/adb_private_access`
+
+Uses:
+
+- `terraform-oci-fk-vcn`
+- `terraform-oci-fk-nsg`
+- `terraform-oci-fk-adb`
+- `terraform-oci-fk-compute`
+
+Focus:
+
+- one public validation subnet and one private database subnet
+- NSG-protected ADB private endpoint wiring
+- lightweight public compute host for private SQL*Net reachability tests
+- single-region private database access without DR, cloning, or schema bootstrap
 
 ### `patterns/oci/multiregion_compute_failover`
 

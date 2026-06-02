@@ -16,6 +16,7 @@ The documents in this directory explain:
 They cover both:
 
 - landing zone networking compositions for Azure and OCI
+- OCI private ADB access compositions
 - OCI multiregion compute failover compositions
 - OCI DevOps delivery compositions such as `build_only` and `build_and_deploy_oke`
 - OCI Functions-based API and data patterns such as `authenticated_serverless_api`, `event_driven_data_pipeline`, and `bulk_ingestion_pipeline`

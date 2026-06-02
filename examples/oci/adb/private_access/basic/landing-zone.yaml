@@ -1,0 +1,44 @@
+landing_zone:
+  name: fk-oci-adb-private-access-dev
+  defined_tags: {}
+  freeform_tags:
+    project: foggykitchen
+    environment: dev
+    landing_zone: fk-oci-adb-private-access-dev
+    managed_by: opentofu
+
+cloud:
+  tenancy_ocid: ${tenancy_ocid}
+  compartment_ocid: ${compartment_ocid}
+  workload_region: ${workload_region}
+
+architecture:
+  network:
+    vcn_cidr: 10.120.0.0/16
+    client_subnet_cidr: 10.120.10.0/24
+    adb_subnet_cidr: 10.120.20.0/24
+
+workload:
+  client:
+    name: fk-adb-private-client
+    ssh_ingress_cidr: 0.0.0.0/0
+    ssh_authorized_keys:
+      - ${admin_ssh_public_key}
+    shape: VM.Standard.E5.Flex
+    operating_system: Oracle Linux
+    operating_system_version: "9"
+    shape_config:
+      ocpus: 1
+      memory_in_gbs: 8
+
+data:
+  adb:
+    database_name: FoggyKitchenADB
+    display_name: FoggyKitchenADB
+    admin_password: ${adb_admin_password}
+    db_workload: OLTP
+    cpu_core_count: 1
+    storage_size_tbs: 1
+    free_tier: false
+    private_endpoint_label: fkadbpe
+    is_auto_scaling_enabled: false
