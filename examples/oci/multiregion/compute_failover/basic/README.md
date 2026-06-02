@@ -17,6 +17,36 @@ It demonstrates:
 
 Figure 1. `multiregion_compute_failover` runtime model: a primary site in `eu-frankfurt-1` and a standby site in `eu-amsterdam-1` each expose a public load balancer backed by an OCI instance pool, both VCNs are connected through DRG remote peering, and OCI DNS Steering performs failover between the two public entry points.
 
+## OCI Console Verification
+
+![OCI multiregion DNS steering policy overview](images/oci_multiregion_compute_failover_basic_oci_console1.png)
+
+Figure 2. OCI DNS Steering policy overview showing the active failover template, attached health monitor, and the multiregion policy bound to the demo domain.
+
+![OCI multiregion DNS steering answers and health](images/oci_multiregion_compute_failover_basic_oci_console2.png)
+
+Figure 3. DNS steering answers and health state for both regions. The primary `eu-frankfurt-1` and standby `eu-amsterdam-1` public load balancer addresses are both healthy and eligible for failover.
+
+![OCI multiregion primary load balancer](images/oci_multiregion_compute_failover_basic_oci_console3.png)
+
+Figure 4. Primary site load balancer in `eu-frankfurt-1` with public IP `89.168.69.168` and healthy backend set.
+
+![OCI multiregion primary instance pool](images/oci_multiregion_compute_failover_basic_oci_console7.png)
+
+Figure 5. Primary instance pool running two application nodes behind the primary load balancer.
+
+![OCI multiregion standby load balancer](images/oci_multiregion_compute_failover_basic_oci_console19.png)
+
+Figure 6. Standby site load balancer in `eu-amsterdam-1` with public IP `144.21.38.103`, ready to serve traffic after DNS failover.
+
+![OCI multiregion standby backend health](images/oci_multiregion_compute_failover_basic_oci_console20.png)
+
+Figure 7. Standby backend set showing a healthy backend instance that becomes active during failover.
+
+![OCI multiregion primary DRG remote peering](images/oci_multiregion_compute_failover_basic_oci_console11.png)
+
+Figure 8. Primary DRG remote peering attachment linking `eu-frankfurt-1` to the standby region over OCI Remote Peering Connections.
+
 ## Usage
 
 ```bash
