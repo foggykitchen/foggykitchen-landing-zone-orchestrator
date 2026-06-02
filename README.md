@@ -3,7 +3,7 @@
 FoggyKitchen Landing Zone Orchestrator is a reference architecture layer built on top of public **Terraform / OpenTofu modules** from the FoggyKitchen ecosystem for **Azure** and **OCI**.
 
 It demonstrates how reusable infrastructure modules can be composed into opinionated landing zone patterns: hub-and-spoke networking, private-first compute, private endpoints, DRG cross-region remote peering, local peering, private DNS, firewall-based transit, and OCI multiregion failover.
-It also starts to show how the same orchestration model can be extended into **OCI ADB private access**, **OCI DevOps delivery patterns**, and **OCI Functions patterns** built from reusable FoggyKitchen modules.
+It also starts to show how the same orchestration model can be extended into OCI ADB private access, OCI DevOps delivery patterns, and OCI Functions patterns built from reusable FoggyKitchen modules.
 
 This repository is a reference implementation and educational architecture pattern.  
 It is **not** a drop-in enterprise landing zone product.  
