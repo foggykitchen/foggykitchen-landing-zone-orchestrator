@@ -10,6 +10,7 @@ The goal of this section is to group OCI examples in a way that stays readable a
 
 Current emphasis:
 
+- ADB-oriented private access patterns
 - networking-oriented landing zone patterns
 - DRG and LPG-based connectivity models
 - multiregion compute failover patterns
@@ -22,6 +23,7 @@ Current emphasis:
 
 ## 📂 Available OCI Domains
 
+- [ADB examples](adb/README.md)
 - [Networking examples](networking/README.md)
 - [Multiregion examples](multiregion/README.md)
 - [DevOps examples](devops/README.md)

@@ -65,6 +65,7 @@ This separation keeps the implementation:
 
 ### OCI
 
+- `adb_private_access`
 - `authenticated_serverless_api`
 - `multiregion_compute_failover`
 - `drg_cross_region`
@@ -172,6 +173,16 @@ Focus:
 - protected backend function invocation behind the authorizer
 - lightweight access-control-oriented serverless pattern without data services
 
+### OCI ADB Private Access
+
+Focus:
+
+- one VCN with separate public client and private ADB subnets
+- Autonomous Database Serverless deployed behind a private endpoint
+- NSG-enforced SQL*Net reachability into the database subnet
+- lightweight public validation host for proving private database access
+- single-region private access pattern without DR or schema bootstrap
+
 ### OCI Multiregion Compute Failover
 
 Focus:
@@ -229,6 +240,7 @@ Included today:
 - Azure firewall transit pattern
 - OCI DRG cross-region and LPG-based networking patterns
 - OCI multiregion compute failover pattern
+- OCI private ADB access pattern
 - OCI DevOps build-only pattern
 - OCI DevOps build-and-deploy-OKE pattern
 - OCI authenticated serverless API pattern

@@ -3,7 +3,7 @@
 FoggyKitchen Landing Zone Orchestrator is a reference architecture layer built on top of public **Terraform / OpenTofu modules** from the FoggyKitchen ecosystem for **Azure** and **OCI**.
 
 It demonstrates how reusable infrastructure modules can be composed into opinionated landing zone patterns: hub-and-spoke networking, private-first compute, private endpoints, DRG cross-region remote peering, local peering, private DNS, firewall-based transit, and OCI multiregion failover.
-It also starts to show how the same orchestration model can be extended into **OCI DevOps delivery patterns** and **OCI Functions patterns** built from reusable FoggyKitchen modules.
+It also starts to show how the same orchestration model can be extended into **OCI ADB private access**, **OCI DevOps delivery patterns**, and **OCI Functions patterns** built from reusable FoggyKitchen modules.
 
 This repository is a reference implementation and educational architecture pattern.  
 It is **not** a drop-in enterprise landing zone product.  
@@ -36,6 +36,7 @@ Depending on the selected pattern and payload, the repository can compose:
 - OCI DRG cross-region landing zones
 - OCI same-region LPG local peering landing zones
 - OCI multiregion compute failover patterns
+- OCI private Autonomous Database patterns
 - OCI DevOps build and deploy patterns
 - OCI OKE deployment target patterns
 - OCI authenticated serverless API patterns
@@ -89,6 +90,9 @@ foggykitchen-landing-zone-orchestrator/
 │   │           └── storage_private_link/
 │   ├── oci/
 │   │   ├── README.md
+│   │   ├── adb/
+│   │   │   └── private_access/
+│   │   │       └── basic/
 │   │   ├── devops/
 │   │   │   ├── build_and_deploy_oke/
 │   │   │   │   └── basic/
@@ -120,6 +124,7 @@ foggykitchen-landing-zone-orchestrator/
 │   │   ├── hub_spoke/
 │   │   └── private_endpoint/
 │   ├── oci/
+│       ├── adb_private_access/
 │       ├── authenticated_serverless_api/
 │       ├── devops_build_and_deploy_oke/
 │       ├── devops_build_only/
@@ -148,6 +153,7 @@ Currently implemented:
 - [examples/oci/networking/drg_cross_region/basic](examples/oci/networking/drg_cross_region/basic/README.md)
 - [examples/oci/networking/lpg_local_peering/basic](examples/oci/networking/lpg_local_peering/basic/README.md)
 - [examples/oci/multiregion/compute_failover/basic](examples/oci/multiregion/compute_failover/basic/README.md)
+- [examples/oci/adb/private_access/basic](examples/oci/adb/private_access/basic/README.md)
 - [examples/oci/devops/build_only/basic](examples/oci/devops/build_only/basic/README.md)
 - [examples/oci/devops/build_and_deploy_oke/basic](examples/oci/devops/build_and_deploy_oke/basic/README.md)
 - [examples/oci/functions/authenticated_serverless_api/basic](examples/oci/functions/authenticated_serverless_api/basic/README.md)
@@ -163,6 +169,7 @@ Shared orchestration patterns:
 - [patterns/oci/drg_cross_region](patterns/oci/drg_cross_region)
 - [patterns/oci/lpg_local_peering](patterns/oci/lpg_local_peering)
 - [patterns/oci/multiregion_compute_failover](patterns/oci/multiregion_compute_failover)
+- [patterns/oci/adb_private_access](patterns/oci/adb_private_access)
 - [patterns/oci/devops_build_only](patterns/oci/devops_build_only)
 - [patterns/oci/devops_build_and_deploy_oke](patterns/oci/devops_build_and_deploy_oke)
 - [patterns/oci/authenticated_serverless_api](patterns/oci/authenticated_serverless_api)
@@ -203,6 +210,7 @@ The repository composes FoggyKitchen building blocks such as:
 - `terraform-az-fk-private-endpoint`
 - `terraform-az-fk-firewall`
 - `terraform-oci-fk-vcn`
+- `terraform-oci-fk-nsg`
 - `terraform-oci-fk-lpg`
 - `terraform-oci-fk-drg`
 - `terraform-oci-fk-compute`
