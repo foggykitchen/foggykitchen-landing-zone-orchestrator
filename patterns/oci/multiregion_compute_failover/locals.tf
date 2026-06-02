@@ -71,40 +71,109 @@ locals {
     minimum_bandwidth_in_mbps = 10
     maximum_bandwidth_in_mbps = 100
   })
+  primary_lb_name        = try(local.workload.load_balancer.primary_name, "fkpri")
+  standby_lb_name        = try(local.workload.load_balancer.standby_name, "fkstd")
+  primary_backendset_name = try(local.workload.load_balancer.primary_backend_set_name, "fkpri-bes")
+  standby_backendset_name = try(local.workload.load_balancer.standby_backend_set_name, "fkstd-bes")
 
   dns_zone_name   = local.dns.zone_name
   dns_domain_name = local.dns.domain_name
   dns_policy_name = try(local.dns.display_name, "${local.project_name}-dns-steering")
   anchor_record   = try(local.dns.anchor_record_address, null)
+  dns_rules = try(local.dns.rules, [
+    {
+      rule_type = "FILTER"
+      default_answer_data = [
+        {
+          answer_condition = "answer.isDisabled != true"
+          should_keep      = true
+        }
+      ]
+    },
+    {
+      rule_type = "HEALTH"
+    },
+    {
+      rule_type = "PRIORITY"
+      default_answer_data = [
+        {
+          answer_condition = "answer.pool == 'primary'"
+          value            = 0
+        },
+        {
+          answer_condition = "answer.pool == 'standby'"
+          value            = 1
+        }
+      ]
+    },
+    {
+      rule_type     = "LIMIT"
+      default_count = 1
+    }
+  ])
 
   primary_default_user_data = <<-EOT
     #cloud-config
-    package_update: true
-    packages:
-      - nginx
     write_files:
-      - path: /usr/share/nginx/html/index.html
+      - path: /opt/foggykitchen-site/index.html
         permissions: "0644"
         content: |
           <html><body><h1>${local.primary_name}</h1><p>FoggyKitchen multiregion compute failover - primary site</p></body></html>
+      - path: /etc/systemd/system/foggykitchen-demo.service
+        permissions: "0644"
+        content: |
+          [Unit]
+          Description=FoggyKitchen multiregion demo HTTP service
+          After=network-online.target
+          Wants=network-online.target
+
+          [Service]
+          Type=simple
+          WorkingDirectory=/opt/foggykitchen-site
+          ExecStart=/usr/bin/python3 -m http.server 80 --directory /opt/foggykitchen-site
+          Restart=always
+          RestartSec=5
+
+          [Install]
+          WantedBy=multi-user.target
     runcmd:
-      - systemctl enable nginx
-      - systemctl restart nginx
+      - mkdir -p /opt/foggykitchen-site
+      - systemctl disable --now firewalld || true
+      - systemctl daemon-reload
+      - systemctl enable foggykitchen-demo.service
+      - systemctl restart foggykitchen-demo.service
     EOT
 
   standby_default_user_data = <<-EOT
     #cloud-config
-    package_update: true
-    packages:
-      - nginx
     write_files:
-      - path: /usr/share/nginx/html/index.html
+      - path: /opt/foggykitchen-site/index.html
         permissions: "0644"
         content: |
           <html><body><h1>${local.standby_name}</h1><p>FoggyKitchen multiregion compute failover - standby site</p></body></html>
+      - path: /etc/systemd/system/foggykitchen-demo.service
+        permissions: "0644"
+        content: |
+          [Unit]
+          Description=FoggyKitchen multiregion demo HTTP service
+          After=network-online.target
+          Wants=network-online.target
+
+          [Service]
+          Type=simple
+          WorkingDirectory=/opt/foggykitchen-site
+          ExecStart=/usr/bin/python3 -m http.server 80 --directory /opt/foggykitchen-site
+          Restart=always
+          RestartSec=5
+
+          [Install]
+          WantedBy=multi-user.target
     runcmd:
-      - systemctl enable nginx
-      - systemctl restart nginx
+      - mkdir -p /opt/foggykitchen-site
+      - systemctl disable --now firewalld || true
+      - systemctl daemon-reload
+      - systemctl enable foggykitchen-demo.service
+      - systemctl restart foggykitchen-demo.service
     EOT
 
   primary_user_data = base64encode(try(local.primary.cloud_init_override, local.workload.compute.cloud_init_override.primary, local.primary_default_user_data))

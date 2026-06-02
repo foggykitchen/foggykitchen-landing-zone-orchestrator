@@ -39,30 +39,64 @@ workload:
     cloud_init_override:
       primary: |
         #cloud-config
-        package_update: true
-        packages:
-          - nginx
         write_files:
-          - path: /usr/share/nginx/html/index.html
+          - path: /opt/foggykitchen-site/index.html
             permissions: "0644"
             content: |
               <html><body><h1>fk-multiregion-primary</h1><p>FoggyKitchen multiregion compute failover - primary site</p></body></html>
+          - path: /etc/systemd/system/foggykitchen-demo.service
+            permissions: "0644"
+            content: |
+              [Unit]
+              Description=FoggyKitchen multiregion demo HTTP service
+              After=network-online.target
+              Wants=network-online.target
+
+              [Service]
+              Type=simple
+              WorkingDirectory=/opt/foggykitchen-site
+              ExecStart=/usr/bin/python3 -m http.server 80 --directory /opt/foggykitchen-site
+              Restart=always
+              RestartSec=5
+
+              [Install]
+              WantedBy=multi-user.target
         runcmd:
-          - systemctl enable nginx
-          - systemctl restart nginx
+          - mkdir -p /opt/foggykitchen-site
+          - systemctl disable --now firewalld || true
+          - systemctl daemon-reload
+          - systemctl enable foggykitchen-demo.service
+          - systemctl restart foggykitchen-demo.service
       standby: |
         #cloud-config
-        package_update: true
-        packages:
-          - nginx
         write_files:
-          - path: /usr/share/nginx/html/index.html
+          - path: /opt/foggykitchen-site/index.html
             permissions: "0644"
             content: |
               <html><body><h1>fk-multiregion-standby</h1><p>FoggyKitchen multiregion compute failover - standby site</p></body></html>
+          - path: /etc/systemd/system/foggykitchen-demo.service
+            permissions: "0644"
+            content: |
+              [Unit]
+              Description=FoggyKitchen multiregion demo HTTP service
+              After=network-online.target
+              Wants=network-online.target
+
+              [Service]
+              Type=simple
+              WorkingDirectory=/opt/foggykitchen-site
+              ExecStart=/usr/bin/python3 -m http.server 80 --directory /opt/foggykitchen-site
+              Restart=always
+              RestartSec=5
+
+              [Install]
+              WantedBy=multi-user.target
         runcmd:
-          - systemctl enable nginx
-          - systemctl restart nginx
+          - mkdir -p /opt/foggykitchen-site
+          - systemctl disable --now firewalld || true
+          - systemctl daemon-reload
+          - systemctl enable foggykitchen-demo.service
+          - systemctl restart foggykitchen-demo.service
   load_balancer:
     shape: flexible
     shape_details:

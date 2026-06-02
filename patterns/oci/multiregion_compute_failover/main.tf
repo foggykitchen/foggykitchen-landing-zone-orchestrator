@@ -317,7 +317,9 @@ module "drg_standby" {
 module "lb_primary" {
   source = "git::https://github.com/foggykitchen/terraform-oci-fk-loadbalancer.git?ref=main"
 
-  name             = "${local.primary_name}-lb"
+  name             = local.primary_lb_name
+  display_name     = "${local.primary_name}-lb"
+  backend_set_name = local.primary_backendset_name
   compartment_ocid = local.compartment_ocid
   subnet_ids       = [module.vcn_primary.subnet_ids["lb_public"]]
   is_private       = false
@@ -336,7 +338,9 @@ module "lb_standby" {
     oci = oci.standby
   }
 
-  name             = "${local.standby_name}-lb"
+  name             = local.standby_lb_name
+  display_name     = "${local.standby_name}-lb"
+  backend_set_name = local.standby_backendset_name
   compartment_ocid = local.compartment_ocid
   subnet_ids       = [module.vcn_standby.subnet_ids["lb_public"]]
   is_private       = false
@@ -423,6 +427,7 @@ module "dns_steering" {
   create_anchor_record  = local.anchor_record != null
   anchor_record_address = local.anchor_record
   ttl                   = 30
+  rules                 = local.dns_rules
   defined_tags          = local.defined_tags
   freeform_tags         = local.freeform_tags
 
