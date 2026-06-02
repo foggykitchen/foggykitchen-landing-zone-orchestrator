@@ -14,3 +14,8 @@ output "adb_wallet" {
   value     = module.landing_zone.adb_wallet
   sensitive = true
 }
+
+output "generated_admin_ssh_private_key_pem" {
+  value     = try(tls_private_key.generated[0].private_key_pem, null)
+  sensitive = true
+}

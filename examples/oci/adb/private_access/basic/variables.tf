@@ -28,5 +28,6 @@ variable "adb_admin_password" {
 }
 
 variable "admin_ssh_public_key" {
-  type = string
+  type    = string
+  default = ""
 }

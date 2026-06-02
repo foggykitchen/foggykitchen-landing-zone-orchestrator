@@ -6,5 +6,9 @@ terraform {
       source  = "oracle/oci"
       version = ">= 6.21.0"
     }
+    tls = {
+      source  = "hashicorp/tls"
+      version = ">= 4.0.0"
+    }
   }
 }
