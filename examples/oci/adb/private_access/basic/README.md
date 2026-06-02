@@ -8,6 +8,12 @@ It is inspired by:
 
 but reshaped into a reusable `foggykitchen-landing-zone-orchestrator` pattern and payload.
 
+## Architecture Overview
+
+<img src="images/oci_adb_private_access_basic_architecture.png" width="900"/>
+
+**Figure 1.** `adb_private_access` composes one VCN with a public validation host subnet, one private ADB subnet, an NSG-protected ADB private endpoint, and the OCI gateway path required for private database reachability and package access.
+
 ## What This Example Deploys
 
 - one VCN
