@@ -353,7 +353,7 @@ module "lb_standby" {
 }
 
 module "compute_primary" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-compute.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-compute.git?ref=v0.2.2"
 
   name                          = "${local.primary_name}-pool"
   tenancy_ocid                  = local.tenancy_ocid
@@ -381,7 +381,7 @@ module "compute_primary" {
 }
 
 module "compute_standby" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-compute.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-compute.git?ref=v0.2.2"
 
   providers = {
     oci = oci.standby

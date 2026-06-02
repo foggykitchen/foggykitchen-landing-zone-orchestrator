@@ -79,7 +79,7 @@ module "load_balancer" {
 
 module "compute" {
   for_each = local.compute.enabled ? local.compute_instances : {}
-  source   = "git::https://github.com/foggykitchen/terraform-oci-fk-compute.git?ref=main"
+  source   = "git::https://github.com/foggykitchen/terraform-oci-fk-compute.git?ref=v0.2.2"
 
   name             = each.value.name
   compartment_ocid = local.compartment_ocid
