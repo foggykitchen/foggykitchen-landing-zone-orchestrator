@@ -1,0 +1,137 @@
+landing_zone:
+  name: fk-oci-multiregion-compute-failover-dev
+  defined_tags: {}
+  freeform_tags:
+    project: foggykitchen
+    environment: dev
+    landing_zone: fk-oci-multiregion-compute-failover-dev
+    managed_by: opentofu
+
+cloud:
+  tenancy_ocid: ${tenancy_ocid}
+  compartment_ocid: ${compartment_ocid}
+  home_region: ${iam_home_region}
+  primary_region: ${primary_region}
+  standby_region: ${standby_region}
+
+architecture:
+  network:
+    primary_vcn_cidr: 10.100.0.0/16
+    primary_lb_subnet_cidr: 10.100.10.0/24
+    primary_app_subnet_cidr: 10.100.20.0/24
+    standby_vcn_cidr: 10.110.0.0/16
+    standby_lb_subnet_cidr: 10.110.10.0/24
+    standby_app_subnet_cidr: 10.110.20.0/24
+
+workload:
+  project:
+    name: fk-multiregion-compute-failover-dev
+    description: FoggyKitchen OCI multiregion stateless compute failover pattern
+  compute:
+    shape: VM.Standard.E5.Flex
+    operating_system: Oracle Linux
+    operating_system_version: "9"
+    shape_config:
+      ocpus: 1
+      memory_in_gbs: 8
+    ssh_authorized_keys:
+      - ${admin_ssh_public_key}
+    cloud_init_override:
+      primary: |
+        #cloud-config
+        write_files:
+          - path: /opt/foggykitchen-site/index.html
+            permissions: "0644"
+            content: |
+              <html><body><h1>fk-multiregion-primary</h1><p>FoggyKitchen multiregion compute failover - primary site</p></body></html>
+          - path: /etc/systemd/system/foggykitchen-demo.service
+            permissions: "0644"
+            content: |
+              [Unit]
+              Description=FoggyKitchen multiregion demo HTTP service
+              After=network-online.target
+              Wants=network-online.target
+
+              [Service]
+              Type=simple
+              WorkingDirectory=/opt/foggykitchen-site
+              ExecStart=/usr/bin/python3 -m http.server 80 --directory /opt/foggykitchen-site
+              Restart=always
+              RestartSec=5
+
+              [Install]
+              WantedBy=multi-user.target
+        runcmd:
+          - mkdir -p /opt/foggykitchen-site
+          - systemctl disable --now firewalld || true
+          - systemctl daemon-reload
+          - systemctl enable foggykitchen-demo.service
+          - systemctl restart foggykitchen-demo.service
+      standby: |
+        #cloud-config
+        write_files:
+          - path: /opt/foggykitchen-site/index.html
+            permissions: "0644"
+            content: |
+              <html><body><h1>fk-multiregion-standby</h1><p>FoggyKitchen multiregion compute failover - standby site</p></body></html>
+          - path: /etc/systemd/system/foggykitchen-demo.service
+            permissions: "0644"
+            content: |
+              [Unit]
+              Description=FoggyKitchen multiregion demo HTTP service
+              After=network-online.target
+              Wants=network-online.target
+
+              [Service]
+              Type=simple
+              WorkingDirectory=/opt/foggykitchen-site
+              ExecStart=/usr/bin/python3 -m http.server 80 --directory /opt/foggykitchen-site
+              Restart=always
+              RestartSec=5
+
+              [Install]
+              WantedBy=multi-user.target
+        runcmd:
+          - mkdir -p /opt/foggykitchen-site
+          - systemctl disable --now firewalld || true
+          - systemctl daemon-reload
+          - systemctl enable foggykitchen-demo.service
+          - systemctl restart foggykitchen-demo.service
+  load_balancer:
+    shape: flexible
+    shape_details:
+      minimum_bandwidth_in_mbps: 10
+      maximum_bandwidth_in_mbps: 100
+    health_checker:
+      protocol: HTTP
+      port: 80
+      url_path: /
+    listener:
+      name: http
+      port: 80
+      protocol: HTTP
+  primary_site:
+    name: fk-multiregion-primary
+    instance_pool_size: 2
+    enable_autoscale: false
+    autoscaling:
+      min_instances: 2
+      initial_instances: 2
+      max_instances: 4
+      scale_out_cpu_threshold: 70
+      scale_in_cpu_threshold: 25
+  standby_site:
+    name: fk-multiregion-standby
+    instance_pool_size: 1
+    enable_autoscale: false
+    autoscaling:
+      min_instances: 1
+      initial_instances: 1
+      max_instances: 2
+      scale_out_cpu_threshold: 70
+      scale_in_cpu_threshold: 25
+
+dns:
+  display_name: fk-multiregion-compute-failover-dns
+  zone_name: foggykitchen-multiregion-demo.com
+  domain_name: app.foggykitchen-multiregion-demo.com

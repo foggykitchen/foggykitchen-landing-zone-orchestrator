@@ -2,7 +2,7 @@
 
 FoggyKitchen Landing Zone Orchestrator is a reference architecture layer built on top of public **Terraform / OpenTofu modules** from the FoggyKitchen ecosystem for **Azure** and **OCI**.
 
-It demonstrates how reusable infrastructure modules can be composed into opinionated landing zone patterns: hub-and-spoke networking, private-first compute, private endpoints, DRG cross-region remote peering, local peering, private DNS, and firewall-based transit.
+It demonstrates how reusable infrastructure modules can be composed into opinionated landing zone patterns: hub-and-spoke networking, private-first compute, private endpoints, DRG cross-region remote peering, local peering, private DNS, firewall-based transit, and OCI multiregion failover.
 It also starts to show how the same orchestration model can be extended into **OCI DevOps delivery patterns** and **OCI Functions patterns** built from reusable FoggyKitchen modules.
 
 This repository is a reference implementation and educational architecture pattern.  
@@ -35,6 +35,7 @@ Depending on the selected pattern and payload, the repository can compose:
 - Azure firewall transit landing zones
 - OCI DRG cross-region landing zones
 - OCI same-region LPG local peering landing zones
+- OCI multiregion compute failover patterns
 - OCI DevOps build and deploy patterns
 - OCI OKE deployment target patterns
 - OCI authenticated serverless API patterns
@@ -100,6 +101,9 @@ foggykitchen-landing-zone-orchestrator/
 │   │   │   │   └── basic/
 │   │   │   └── event_driven_data_pipeline/
 │   │   │       └── basic/
+│   │   ├── multiregion/
+│   │   │   └── compute_failover/
+│   │   │       └── basic/
 │   │   └── networking/
 │   │       ├── README.md
 │   │       ├── drg_cross_region/
@@ -122,7 +126,8 @@ foggykitchen-landing-zone-orchestrator/
 │       ├── bulk_ingestion_pipeline/
 │       ├── event_driven_data_pipeline/
 │       ├── drg_cross_region/
-│       └── lpg_local_peering/
+│       ├── lpg_local_peering/
+│       └── multiregion_compute_failover/
 │   └── multicloud/
 │       └── README.md
 ├── scripts/
@@ -142,6 +147,7 @@ Currently implemented:
 - [examples/azure/networking/private_endpoint/storage_private_link](examples/azure/networking/private_endpoint/storage_private_link/README.md)
 - [examples/oci/networking/drg_cross_region/basic](examples/oci/networking/drg_cross_region/basic/README.md)
 - [examples/oci/networking/lpg_local_peering/basic](examples/oci/networking/lpg_local_peering/basic/README.md)
+- [examples/oci/multiregion/compute_failover/basic](examples/oci/multiregion/compute_failover/basic/README.md)
 - [examples/oci/devops/build_only/basic](examples/oci/devops/build_only/basic/README.md)
 - [examples/oci/devops/build_and_deploy_oke/basic](examples/oci/devops/build_and_deploy_oke/basic/README.md)
 - [examples/oci/functions/authenticated_serverless_api/basic](examples/oci/functions/authenticated_serverless_api/basic/README.md)
@@ -156,6 +162,7 @@ Shared orchestration patterns:
 - [patterns/azure/private_endpoint](patterns/azure/private_endpoint)
 - [patterns/oci/drg_cross_region](patterns/oci/drg_cross_region)
 - [patterns/oci/lpg_local_peering](patterns/oci/lpg_local_peering)
+- [patterns/oci/multiregion_compute_failover](patterns/oci/multiregion_compute_failover)
 - [patterns/oci/devops_build_only](patterns/oci/devops_build_only)
 - [patterns/oci/devops_build_and_deploy_oke](patterns/oci/devops_build_and_deploy_oke)
 - [patterns/oci/authenticated_serverless_api](patterns/oci/authenticated_serverless_api)
@@ -200,6 +207,7 @@ The repository composes FoggyKitchen building blocks such as:
 - `terraform-oci-fk-drg`
 - `terraform-oci-fk-compute`
 - `terraform-oci-fk-loadbalancer`
+- `terraform-oci-fk-dns-steering`
 - `terraform-oci-fk-ocir`
 - `terraform-oci-fk-oke`
 - `terraform-oci-fk-policy`

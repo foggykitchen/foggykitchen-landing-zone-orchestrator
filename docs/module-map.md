@@ -87,6 +87,7 @@ Uses:
 | `terraform-oci-fk-drg` | Strategic routing and transit layer |
 | `terraform-oci-fk-compute` | Workload layer |
 | `terraform-oci-fk-loadbalancer` | Traffic entry and distribution contract |
+| `terraform-oci-fk-dns-steering` | Multiregion DNS failover and traffic steering layer |
 | `terraform-oci-fk-ocir` | OCI Container Registry repository layer |
 | `terraform-oci-fk-oke` | Kubernetes platform layer |
 | `terraform-oci-fk-policy` | IAM and dynamic-group policy layer |
@@ -125,6 +126,25 @@ Uses:
 - `terraform-oci-fk-lpg`
 - `terraform-oci-fk-compute`
 - `terraform-oci-fk-loadbalancer`
+
+### `patterns/oci/multiregion_compute_failover`
+
+Uses:
+
+- `terraform-oci-fk-vcn`
+- `terraform-oci-fk-drg`
+- `terraform-oci-fk-compute`
+- `terraform-oci-fk-loadbalancer`
+- `terraform-oci-fk-dns-steering`
+
+Focus:
+
+- primary and standby regional sites with separate OCI VCNs
+- DRG remote peering to keep the sites network-connected
+- one load balancer and one instance pool per site
+- lightweight warm-standby sizing by payload
+- OCI DNS Steering failover across the public load balancer endpoints
+- public stateless DR pattern without storage or database replication
 
 ### `patterns/oci/devops_build_only`
 
