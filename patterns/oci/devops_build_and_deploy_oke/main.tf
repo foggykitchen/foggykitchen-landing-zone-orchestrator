@@ -287,7 +287,7 @@ module "devops" {
 }
 
 module "devops_pipeline" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-devops-pipeline.git?ref=v0.1.11"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-devops-pipeline.git?ref=v0.1.14"
 
   project_id = module.devops.project_id
 
