@@ -198,37 +198,38 @@ That code is **not part of the free public distribution** of this repository. Th
 
 The repository composes FoggyKitchen building blocks such as:
 
-- `terraform-az-fk-vnet`
-- `terraform-az-fk-vnet-peering`
-- `terraform-az-fk-routing`
-- `terraform-az-fk-nsg`
-- `terraform-az-fk-public-ip`
-- `terraform-az-fk-natgw`
-- `terraform-az-fk-bastion`
-- `terraform-az-fk-private-dns`
-- `terraform-az-fk-compute`
-- `terraform-az-fk-loadbalancer`
-- `terraform-az-fk-storage`
-- `terraform-az-fk-private-endpoint`
-- `terraform-az-fk-firewall`
-- `terraform-oci-fk-vcn`
-- `terraform-oci-fk-nsg`
-- `terraform-oci-fk-lpg`
-- `terraform-oci-fk-drg`
-- `terraform-oci-fk-compute`
-- `terraform-oci-fk-loadbalancer`
-- `terraform-oci-fk-dns-steering`
-- `terraform-oci-fk-ocir`
-- `terraform-oci-fk-oke`
-- `terraform-oci-fk-policy`
-- `terraform-oci-fk-devops`
-- `terraform-oci-fk-devops-pipeline`
-- `terraform-oci-fk-function`
-- `terraform-oci-fk-objectstorage`
-- `terraform-oci-fk-event`
-- `terraform-oci-fk-streaming`
-- `terraform-oci-fk-sch`
-- `terraform-oci-fk-adb`
+- [terraform-az-fk-vnet](https://github.com/foggykitchen/terraform-az-fk-vnet)
+- [terraform-az-fk-vnet-peering](https://github.com/foggykitchen/terraform-az-fk-vnet-peering)
+- [terraform-az-fk-routing](https://github.com/foggykitchen/terraform-az-fk-routing)
+- [terraform-az-fk-nsg](https://github.com/foggykitchen/terraform-az-fk-nsg)
+- [terraform-az-fk-public-ip](https://github.com/foggykitchen/terraform-az-fk-public-ip)
+- [terraform-az-fk-natgw](https://github.com/foggykitchen/terraform-az-fk-natgw)
+- [terraform-az-fk-bastion](https://github.com/foggykitchen/terraform-az-fk-bastion)
+- [terraform-az-fk-private-dns](https://github.com/foggykitchen/terraform-az-fk-private-dns)
+- [terraform-az-fk-compute](https://github.com/foggykitchen/terraform-az-fk-compute)
+- [terraform-az-fk-loadbalancer](https://github.com/foggykitchen/terraform-az-fk-loadbalancer)
+- [terraform-az-fk-storage](https://github.com/foggykitchen/terraform-az-fk-storage)
+- [terraform-az-fk-private-endpoint](https://github.com/foggykitchen/terraform-az-fk-private-endpoint)
+- [terraform-az-fk-firewall](https://github.com/foggykitchen/terraform-az-fk-firewall)
+- [terraform-oci-fk-vcn](https://github.com/foggykitchen/terraform-oci-fk-vcn)
+- [terraform-oci-fk-nsg](https://github.com/foggykitchen/terraform-oci-fk-nsg)
+- [terraform-oci-fk-lpg](https://github.com/foggykitchen/terraform-oci-fk-lpg)
+- [terraform-oci-fk-drg](https://github.com/foggykitchen/terraform-oci-fk-drg)
+- [terraform-oci-fk-compute](https://github.com/foggykitchen/terraform-oci-fk-compute)
+- [terraform-oci-fk-loadbalancer](https://github.com/foggykitchen/terraform-oci-fk-loadbalancer)
+- [terraform-oci-fk-dns-steering](https://github.com/foggykitchen/terraform-oci-fk-dns-steering)
+- [terraform-oci-fk-ocir](https://github.com/foggykitchen/terraform-oci-fk-ocir)
+- [terraform-oci-fk-oke](https://github.com/foggykitchen/terraform-oci-fk-oke)
+- [terraform-oci-fk-policy](https://github.com/foggykitchen/terraform-oci-fk-policy)
+- [terraform-oci-fk-devops](https://github.com/foggykitchen/terraform-oci-fk-devops)
+- [terraform-oci-fk-devops-pipeline](https://github.com/foggykitchen/terraform-oci-fk-devops-pipeline)
+- [terraform-oci-fk-api-gateway](https://github.com/foggykitchen/terraform-oci-fk-api-gateway)
+- [terraform-oci-fk-function](https://github.com/foggykitchen/terraform-oci-fk-function)
+- [terraform-oci-fk-objectstorage](https://github.com/foggykitchen/terraform-oci-fk-objectstorage)
+- [terraform-oci-fk-event](https://github.com/foggykitchen/terraform-oci-fk-event)
+- [terraform-oci-fk-streaming](https://github.com/foggykitchen/terraform-oci-fk-streaming)
+- [terraform-oci-fk-sch](https://github.com/foggykitchen/terraform-oci-fk-sch)
+- [terraform-oci-fk-adb](https://github.com/foggykitchen/terraform-oci-fk-adb)
 
 ---
 
