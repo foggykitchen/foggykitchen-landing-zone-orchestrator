@@ -70,6 +70,50 @@ The core idea is simple:
 
 The payload controls naming, topology, feature flags, CIDR ranges, subnet intent, routing intent, and workload placement. Module sources remain explicit and static in HCL.
 
+Minimal example:
+
+```yaml
+landing_zone:
+  name: fk-azure-lz-dev
+  environment: dev
+
+cloud:
+  provider: azure
+  location: westeurope
+
+architecture:
+  topology: hub_spoke
+  access_model: private_first
+  routing_model: none
+  security_model: deny_by_default
+
+features:
+  vnet_peering: true
+  nsg: true
+  compute: false
+
+networking:
+  hub:
+    name: vnet-fk-hub-dev
+    address_space:
+      - 10.10.0.0/16
+    subnets:
+      shared:
+        name: snet-fk-shared-services
+        cidr: 10.10.1.0/24
+  spokes:
+    app:
+      name: vnet-fk-app-dev
+      address_space:
+        - 10.20.0.0/16
+      subnets:
+        backend:
+          name: snet-fk-app-backend
+          cidr: 10.20.2.0/24
+```
+
+See the runnable payloads under [examples/](examples/) for complete provider, variable, and validation context.
+
 ---
 
 ## 📂 Repository Structure
