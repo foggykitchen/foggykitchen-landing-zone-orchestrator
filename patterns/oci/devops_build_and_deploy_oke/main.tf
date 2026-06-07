@@ -208,7 +208,7 @@ module "ocir_helm" {
 }
 
 module "devops" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-devops.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-devops.git?ref=v0.1.2"
 
   compartment_ocid           = local.compartment_ocid
   project_name               = local.project_name
@@ -287,7 +287,7 @@ module "devops" {
 }
 
 module "devops_pipeline" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-devops-pipeline.git?ref=v0.1.14"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-devops-pipeline.git?ref=v0.1.17"
 
   project_id = module.devops.project_id
 
