@@ -72,9 +72,9 @@ If you need:
 
 that is available separately as a paid service.
 
-Consulting link:
+Consulting is handled through FoggyKitchen Private Workspace for Professional+ subscribers. Start here:
 
-- https://calendly.com/foggykitchen/foggykitchen-60-min-zoom-consultation
+- https://foggykitchen.com/consulting
 
 ---
 
