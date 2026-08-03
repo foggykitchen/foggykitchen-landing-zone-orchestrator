@@ -26,9 +26,11 @@ The multicloud implementations are **not included here as free code**.
 
 This applies in particular to:
 
-- OCI-Azure interconnect blueprints
+- [OCI-Azure interconnect blueprints](https://github.com/foggykitchen/foggykitchen-landing-zone-orchestrator/tree/main/examples/multicloud/interconnect)
 - more advanced cross-cloud edge compositions
 - monetizable reference scenarios that go beyond the public orchestrator baseline
+
+Access to private blueprints requires a [FoggyKitchen Professional+ subscription](https://foggykitchen.com/membership). For consulting and hands-on delivery support, use [FoggyKitchen Consulting](https://foggykitchen.com/consulting).
 
 ---
 
