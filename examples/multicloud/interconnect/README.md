@@ -29,7 +29,7 @@ The implementation is available separately in the private:
 
 - `foggykitchen-landing-zone-blueprint`
 
-repository. Access to private blueprints, including this interconnect implementation, requires a FoggyKitchen Professional+ subscription.
+repository. Access to private blueprints, including this interconnect implementation, requires a [FoggyKitchen Professional+ subscription](https://foggykitchen.com/membership).
 
 ---
 
