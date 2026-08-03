@@ -37,7 +37,7 @@ repository.
 
 If you want to discuss architecture, implementation, or hands-on delivery support, book a consulting session here:
 
-- https://calendly.com/foggykitchen/foggykitchen-60-min-zoom-consultation
+- https://foggykitchen.com/consulting
 
 ---
 
