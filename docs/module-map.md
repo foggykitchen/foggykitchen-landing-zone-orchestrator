@@ -27,6 +27,7 @@ The goal of this map is to show how the repository turns individual modules into
 | `terraform-az-fk-storage` | Storage service layer |
 | `terraform-az-fk-private-endpoint` | Private service exposure |
 | `terraform-az-fk-firewall` | Central inspection and transit boundary |
+| `terraform-az-fk-pg` | PostgreSQL Flexible Server service layer |
 
 ---
 
@@ -75,6 +76,26 @@ Uses:
 - `terraform-az-fk-public-ip`
 - `terraform-az-fk-firewall`
 - `terraform-az-fk-compute`
+
+### `patterns/azure/database_private_access`
+
+Uses:
+
+- `terraform-az-fk-vnet`
+- `terraform-az-fk-private-dns`
+- `terraform-az-fk-nsg`
+- `terraform-az-fk-bastion`
+- `terraform-az-fk-pg`
+- `terraform-az-fk-compute`
+
+Focus:
+
+- one VNet with a client subnet, `AzureBastionSubnet`, and delegated PostgreSQL subnet
+- PostgreSQL Flexible Server private access through delegated subnet and Private DNS
+- public network access disabled and no PostgreSQL firewall rules
+- one Azure Bastion host for operator SSH access to the private validation host
+- one subnet-associated NSG for Bastion-to-validation-host SSH and PostgreSQL access from the client subnet
+- lightweight validation host for private TCP `5432` checks
 
 ---
 

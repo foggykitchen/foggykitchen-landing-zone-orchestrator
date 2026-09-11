@@ -35,6 +35,7 @@ Depending on the selected pattern and payload, the repository can compose:
 - Azure hub-and-spoke landing zones
 - Azure private endpoint landing zones
 - Azure firewall transit landing zones
+- Azure private database landing zones
 - OCI DRG cross-region landing zones
 - OCI same-region LPG local peering landing zones
 - OCI multiregion compute failover patterns
@@ -124,6 +125,10 @@ foggykitchen-landing-zone-orchestrator/
 ├── examples/
 │   ├── azure/
 │   │   ├── README.md
+│   │   ├── database/
+│   │   │   └── postgresql/
+│   │   │       └── private_access/
+│   │   │           └── basic/
 │   │   └── networking/
 │   │       ├── README.md
 │   │       ├── firewall_transit/
@@ -166,6 +171,7 @@ foggykitchen-landing-zone-orchestrator/
 │           └── README.md
 ├── patterns/
 │   ├── azure/
+│   │   ├── database_private_access/
 │   │   ├── firewall_transit/
 │   │   ├── hub_spoke/
 │   │   └── private_endpoint/
