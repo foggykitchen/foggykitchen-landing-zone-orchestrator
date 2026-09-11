@@ -27,7 +27,7 @@ Examples under `examples/` should stay thin and delegate architecture logic to t
 - [hub_spoke](azure/hub_spoke)
 - [private_endpoint](azure/private_endpoint)
 - [firewall_transit](azure/firewall_transit)
-- [database_private_access](azure/database_private_access)
+- [postgresql_private_access](azure/postgresql_private_access)
 
 ### OCI
 
@@ -58,7 +58,7 @@ Recommended order:
 
 - `azure/hub_spoke` is the shared base for the Azure networking-oriented patterns
 - `azure/private_endpoint` extends the shared Azure networking foundation
-- `azure/database_private_access` keeps the first Azure database pattern minimal and self-contained
+- `azure/postgresql_private_access` keeps the first Azure database pattern minimal and self-contained
 - advanced multicloud implementations are intentionally distributed outside this public repository
 
 ---
