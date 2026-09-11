@@ -1,4 +1,4 @@
-# Azure PostgreSQL Private Access - Basic Example
+# Azure PostgreSQL Private Access - Delegated Subnet Example
 
 This example composes **Azure Database for PostgreSQL Flexible Server** with delegated-subnet private access, Azure Bastion operator access, and a small private validation host in the same VNet.
 
@@ -6,25 +6,9 @@ It is reshaped into a reusable `foggykitchen-landing-zone-orchestrator` pattern 
 
 ## Architecture Overview
 
-![Azure PostgreSQL private access basic architecture](diagrams/azure_postgresql_private_access_basic_architecture.jpg)
+<img src="diagrams/azure_postgresql_private_access_delegated_subnet_architecture.jpg" width="900"/>
 
-The `database_private_access` pattern composes one VNet with a validation host subnet, `AzureBastionSubnet`, one PostgreSQL delegated subnet, one subnet-associated NSG, one Azure Bastion host, one Private DNS Zone linked to the VNet, and one PostgreSQL Flexible Server with public network access disabled.
-
-## Deployment Screenshots
-
-![Resource Group overview](diagrams/azure_postgresql_private_access_basic_resource_group_overview.jpg)
-
-![VNet subnets](diagrams/azure_postgresql_private_access_basic_vnet_subnets.jpg)
-
-![PostgreSQL networking](diagrams/azure_postgresql_private_access_basic_postgresql_networking.jpg)
-
-![Private DNS Zone](diagrams/azure_postgresql_private_access_basic_private_dns_zone.jpg)
-
-![Azure Bastion overview](diagrams/azure_postgresql_private_access_basic_bastion_overview.jpg)
-
-![Validation VM networking](diagrams/azure_postgresql_private_access_basic_validation_vm_networking.jpg)
-
-![NSG rules](diagrams/azure_postgresql_private_access_basic_nsg_rules.jpg)
+**Figure 1.** `postgresql_private_access` composes one VNet with a validation host subnet, `AzureBastionSubnet`, one PostgreSQL delegated subnet, one subnet-associated NSG, one Azure Bastion host, one Private DNS Zone linked to the VNet, and one PostgreSQL Flexible Server with public network access disabled.
 
 ## What This Example Deploys
 
@@ -42,7 +26,7 @@ The `database_private_access` pattern composes one VNet with a validation host s
 
 ## Pattern
 
-- [`patterns/azure/database_private_access`](../../../../../../patterns/azure/database_private_access/README.md)
+- [`patterns/azure/postgresql_private_access`](../../../../../../patterns/azure/postgresql_private_access/README.md)
 
 ## Files
 
@@ -82,7 +66,15 @@ Expected result:
 - public network access on PostgreSQL Flexible Server remains disabled
 - no PostgreSQL firewall rules are created
 
-Validation output from the deployed example:
+## Validation Result
+
+The example was validated end-to-end with:
+
+- validation host private IP: `10.130.10.4`
+- PostgreSQL Flexible Server FQDN: `fk-pg-private-dev.postgres.database.azure.com`
+- PostgreSQL private endpoint IP resolved through Private DNS: `10.130.20.4`
+
+Observed connectivity check through Azure Bastion:
 
 ```text
 == client host ==
@@ -98,6 +90,36 @@ vm-fk-pg-client
 Connection to fk-pg-private-dev.postgres.database.azure.com (10.130.20.4) 5432 port [tcp/postgresql] succeeded!
 ```
 
+## Azure Portal Verification
+
+<img src="diagrams/azure_postgresql_private_access_delegated_subnet_resource_group_overview.jpg" width="900"/>
+
+**Figure 2.** The Resource Group contains the VNet, Azure Bastion host, Bastion public IP, PostgreSQL Flexible Server, Private DNS Zone, validation VM, NIC, and NSG resources created by the example.
+
+<img src="diagrams/azure_postgresql_private_access_delegated_subnet_vnet_subnets.jpg" width="900"/>
+
+**Figure 3.** The VNet contains the `AzureBastionSubnet`, client subnet, and delegated PostgreSQL Flexible Server subnet used by the pattern.
+
+<img src="diagrams/azure_postgresql_private_access_delegated_subnet_postgresql_networking.jpg" width="900"/>
+
+**Figure 4.** PostgreSQL Flexible Server is configured for private access through the delegated subnet with public network access disabled.
+
+<img src="diagrams/azure_postgresql_private_access_delegated_subnet_private_dns_zone.jpg" width="900"/>
+
+**Figure 5.** The Private DNS Zone is linked to the VNet and resolves the PostgreSQL Flexible Server name to the private address used by clients inside the VNet.
+
+<img src="diagrams/azure_postgresql_private_access_delegated_subnet_bastion_overview.jpg" width="900"/>
+
+**Figure 6.** Azure Bastion provides the operator access path to the private validation host without assigning a public IP to the VM.
+
+<img src="diagrams/azure_postgresql_private_access_delegated_subnet_validation_vm_networking.jpg" width="900"/>
+
+**Figure 7.** The validation VM is attached to the client subnet with private networking only.
+
+<img src="diagrams/azure_postgresql_private_access_delegated_subnet_nsg_rules.jpg" width="900"/>
+
+**Figure 8.** The NSG allows SSH from `AzureBastionSubnet` to the client subnet and PostgreSQL TCP `5432` from the client subnet to the delegated database subnet.
+
 ## Destroy
 
 ```bash
@@ -107,7 +129,7 @@ tofu destroy
 ## Notes
 
 - `postgresql_admin_password` and `admin_ssh_public_key` are sensitive Terraform variables and are injected into `landing-zone.yaml` with `templatefile`.
-- This basic variant does not configure Microsoft Entra authentication, customer-managed keys, or Azure Monitor diagnostics.
+- This delegated-subnet variant does not configure Microsoft Entra authentication, customer-managed keys, or Azure Monitor diagnostics.
 - Private Endpoint mode, richer app-to-data topologies, cross-region replicas, disaster recovery, schema bootstrap, and governance belong in later PRs or the private blueprint layer.
 - `terraform-az-fk-compute v0.3.5` deploys the validation host with a private NIC. Azure Bastion provides the operator access path.
 

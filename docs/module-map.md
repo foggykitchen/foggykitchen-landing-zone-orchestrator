@@ -77,7 +77,7 @@ Uses:
 - `terraform-az-fk-firewall`
 - `terraform-az-fk-compute`
 
-### `patterns/azure/database_private_access`
+### `patterns/azure/postgresql_private_access`
 
 Uses:
 

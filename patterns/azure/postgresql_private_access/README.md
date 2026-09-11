@@ -1,4 +1,4 @@
-# Azure Database Private Access Pattern
+# Azure PostgreSQL Private Access Pattern
 
 This pattern composes Azure networking, Azure Bastion, Private DNS, subnet-level NSG rules, PostgreSQL Flexible Server, and a lightweight validation host into a public reference architecture for **private PostgreSQL access**.
 
@@ -34,11 +34,11 @@ The pattern consumes:
 - `data.postgresql.server`
 - `data.postgresql.database`
 
-Optional `data.postgresql.entra`, `data.postgresql.cmk`, and `data.postgresql.diagnostics` blocks are decoded defensively but rejected by this basic pattern until a secure variant wires them explicitly.
+Optional `data.postgresql.entra`, `data.postgresql.cmk`, and `data.postgresql.diagnostics` blocks are decoded defensively but rejected by this delegated-subnet pattern until a secure variant wires them explicitly.
 
 ## Example
 
-- [`examples/azure/database/postgresql/private_access/basic`](../../../examples/azure/database/postgresql/private_access/basic/README.md)
+- [`examples/azure/database/postgresql/private_access/delegated_subnet`](../../../examples/azure/database/postgresql/private_access/delegated_subnet/README.md)
 
 ## License
 
