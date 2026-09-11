@@ -64,6 +64,7 @@ This separation keeps the implementation:
 - `firewall_transit`
 - `postgresql_private_access`
 - `sql_private_access`
+- `mysql_private_access`
 
 ### OCI
 
@@ -149,6 +150,17 @@ Focus:
 - Azure Bastion for operator SSH access to the private validation host
 - NSG-enforced Bastion-to-client SSH and client-to-Private-Endpoint TCP `1433` reachability boundaries
 - single-region Azure SQL baseline without Entra administrator, TDE CMK, diagnostics, DR, app-to-data topology, or governance
+
+### Azure MySQL Private Access
+
+Focus:
+
+- one VNet with separate client, Bastion, and delegated MySQL subnets
+- MySQL Flexible Server deployed with delegated-subnet private access
+- Private DNS Zone ending with `mysql.database.azure.com` linked to the VNet for MySQL name resolution
+- Azure Bastion for operator SSH access to the private validation host
+- NSG-enforced Bastion-to-client SSH and client-to-MySQL TCP `3306` reachability boundaries
+- single-region MySQL baseline without Private Endpoint mode, secure variant controls, DR, app-to-data topology, or governance
 
 ### OCI DRG Cross-Region
 

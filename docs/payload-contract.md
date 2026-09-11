@@ -332,6 +332,83 @@ data:
 
 The Azure SQL pattern supports only Private Endpoint mode. `data.sql.entra`, `data.sql.cmk`, and `data.sql.diagnostics` are reserved for a later secure variant.
 
+`mysql_private_access` focuses on:
+
+- `architecture.private_access`
+- `architecture.network`
+- `workload.client`
+- `data.mysql`
+
+For MySQL delegated-subnet private access, the current contract is:
+
+- `architecture.private_access.mode`
+- `architecture.network.vnet.name`
+- `architecture.network.vnet.cidr`
+- `architecture.network.client_subnet.name`
+- `architecture.network.client_subnet.cidr`
+- `architecture.network.bastion_subnet.cidr`
+- `architecture.network.delegated_subnet.name`
+- `architecture.network.delegated_subnet.cidr`
+- `workload.client.name`
+- `workload.client.shape`
+- `workload.client.admin_username`
+- `workload.client.ssh_authorized_keys`
+- `data.mysql.server.name`
+- `data.mysql.server.private_dns_zone_name`
+- `data.mysql.server.version`
+- `data.mysql.server.sku`
+- `data.mysql.server.storage`
+- `data.mysql.server.storage.size_gb`
+- `data.mysql.server.admin_login`
+- `data.mysql.server.admin_password`
+- `data.mysql.database.name`
+- optional `data.mysql.database.charset`
+- optional `data.mysql.database.collation`
+
+Example:
+
+```yaml
+architecture:
+  private_access:
+    mode: delegated_subnet
+  network:
+    vnet:
+      name: vnet-fk-azure-mysql-private-access-dev
+      cidr: 10.150.0.0/16
+    client_subnet:
+      name: snet-fk-mysql-client
+      cidr: 10.150.10.0/24
+    bastion_subnet:
+      cidr: 10.150.30.0/26
+    delegated_subnet:
+      name: snet-fk-mysql-flexible
+      cidr: 10.150.20.0/24
+
+workload:
+  client:
+    name: vm-fk-mysql-client
+    shape: Standard_B1s
+    admin_username: azureuser
+    ssh_authorized_keys:
+      - ssh-rsa REPLACE_WITH_PUBLIC_KEY_ONLY
+
+data:
+  mysql:
+    server:
+      name: fk-mysql-private-dev
+      private_dns_zone_name: fk-azure-mysql-private-access-dev.mysql.database.azure.com
+      version: "8.0.21"
+      sku: GP_Standard_D2ds_v4
+      storage:
+        size_gb: 32
+      admin_login: mysqladmin
+      admin_password: REPLACE_WITH_STRONG_PASSWORD
+    database:
+      name: foggydb
+```
+
+The MySQL pattern supports only Azure Database for MySQL Flexible Server with delegated-subnet private access. For this mode, the Private DNS Zone must end with `mysql.database.azure.com`. `data.mysql.entra`, `data.mysql.cmk`, and `data.mysql.diagnostics` are reserved for a later secure variant.
+
 ---
 
 ## ☁️ OCI Payload Shape

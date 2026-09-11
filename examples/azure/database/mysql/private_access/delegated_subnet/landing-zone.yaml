@@ -1,0 +1,51 @@
+landing_zone:
+  name: fk-azure-mysql-private-access-dev
+  default_tags:
+    project: foggykitchen
+    environment: dev
+    landing_zone: fk-azure-mysql-private-access-dev
+    managed_by: opentofu
+
+cloud:
+  subscription_id: ${jsonencode(subscription_id)}
+  tenant_id: ${jsonencode(tenant_id)}
+  location: westeurope
+  resource_group:
+    name: rg-fk-azure-mysql-private-access-dev
+
+architecture:
+  private_access:
+    mode: delegated_subnet
+  network:
+    vnet:
+      name: vnet-fk-azure-mysql-private-access-dev
+      cidr: 10.150.0.0/16
+    client_subnet:
+      name: snet-fk-mysql-client
+      cidr: 10.150.10.0/24
+    bastion_subnet:
+      cidr: 10.150.30.0/26
+    delegated_subnet:
+      name: snet-fk-mysql-flexible
+      cidr: 10.150.20.0/24
+
+workload:
+  client:
+    name: vm-fk-mysql-client
+    shape: Standard_B1s
+    admin_username: azureuser
+    ssh_authorized_keys: ${jsonencode(ssh_authorized_keys)}
+
+data:
+  mysql:
+    server:
+      name: fk-mysql-private-dev
+      private_dns_zone_name: fk-azure-mysql-private-access-dev.mysql.database.azure.com
+      version: "8.0.21"
+      sku: GP_Standard_D2ds_v4
+      storage:
+        size_gb: 32
+      admin_login: mysqladmin
+      admin_password: ${jsonencode(mysql_admin_password)}
+    database:
+      name: foggydb

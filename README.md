@@ -129,6 +129,9 @@ foggykitchen-landing-zone-orchestrator/
 │   │   │   ├── postgresql/
 │   │   │   │   └── private_access/
 │   │   │   │       └── delegated_subnet/
+│   │   │   ├── mysql/
+│   │   │   │   └── private_access/
+│   │   │   │       └── delegated_subnet/
 │   │   │   └── sql/
 │   │   │       └── private_access/
 │   │   │           └── private_endpoint/
@@ -175,6 +178,7 @@ foggykitchen-landing-zone-orchestrator/
 ├── patterns/
 │   ├── azure/
 │   │   ├── postgresql_private_access/
+│   │   ├── mysql_private_access/
 │   │   ├── sql_private_access/
 │   │   ├── firewall_transit/
 │   │   ├── hub_spoke/
@@ -207,6 +211,7 @@ Currently implemented:
 - [examples/azure/networking/firewall_transit/basic](examples/azure/networking/firewall_transit/basic/README.md)
 - [examples/azure/networking/private_endpoint/storage_private_link](examples/azure/networking/private_endpoint/storage_private_link/README.md)
 - [examples/azure/database/postgresql/private_access/delegated_subnet](examples/azure/database/postgresql/private_access/delegated_subnet/README.md)
+- [examples/azure/database/mysql/private_access/delegated_subnet](examples/azure/database/mysql/private_access/delegated_subnet/README.md)
 - [examples/azure/database/sql/private_access/private_endpoint](examples/azure/database/sql/private_access/private_endpoint/README.md)
 - [examples/oci/networking/drg_cross_region/basic](examples/oci/networking/drg_cross_region/basic/README.md)
 - [examples/oci/networking/lpg_local_peering/basic](examples/oci/networking/lpg_local_peering/basic/README.md)
@@ -225,6 +230,7 @@ Shared orchestration patterns:
 - [patterns/azure/firewall_transit](patterns/azure/firewall_transit)
 - [patterns/azure/private_endpoint](patterns/azure/private_endpoint)
 - [patterns/azure/postgresql_private_access](patterns/azure/postgresql_private_access)
+- [patterns/azure/mysql_private_access](patterns/azure/mysql_private_access)
 - [patterns/azure/sql_private_access](patterns/azure/sql_private_access)
 - [patterns/oci/drg_cross_region](patterns/oci/drg_cross_region)
 - [patterns/oci/lpg_local_peering](patterns/oci/lpg_local_peering)
@@ -271,6 +277,7 @@ The repository composes FoggyKitchen building blocks such as:
 - [terraform-az-fk-firewall](https://github.com/foggykitchen/terraform-az-fk-firewall)
 - [terraform-az-fk-pg](https://github.com/foggykitchen/terraform-az-fk-pg)
 - [terraform-az-fk-sql](https://github.com/foggykitchen/terraform-az-fk-sql)
+- [terraform-az-fk-mysql](https://github.com/foggykitchen/terraform-az-fk-mysql)
 - [terraform-oci-fk-vcn](https://github.com/foggykitchen/terraform-oci-fk-vcn)
 - [terraform-oci-fk-nsg](https://github.com/foggykitchen/terraform-oci-fk-nsg)
 - [terraform-oci-fk-lpg](https://github.com/foggykitchen/terraform-oci-fk-lpg)
