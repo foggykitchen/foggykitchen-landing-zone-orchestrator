@@ -6,6 +6,7 @@ Azure database examples show how the public orchestrator composes focused databa
 
 - [PostgreSQL](postgresql/README.md)
 - [SQL](sql/README.md)
+- [MySQL](mysql/README.md)
 
 ## License
 

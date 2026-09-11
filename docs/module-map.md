@@ -29,6 +29,7 @@ The goal of this map is to show how the repository turns individual modules into
 | `terraform-az-fk-firewall` | Central inspection and transit boundary |
 | `terraform-az-fk-pg` | PostgreSQL Flexible Server service layer |
 | `terraform-az-fk-sql` | Azure SQL Database service layer |
+| `terraform-az-fk-mysql` | MySQL Flexible Server service layer |
 
 ---
 
@@ -119,6 +120,26 @@ Focus:
 - one Azure Bastion host for operator SSH access to the private validation host
 - one subnet-associated NSG for Bastion-to-validation-host SSH and Azure SQL access from the client subnet
 - lightweight validation host for private TCP `1433` checks
+
+### `patterns/azure/mysql_private_access`
+
+Uses:
+
+- `terraform-az-fk-vnet`
+- `terraform-az-fk-private-dns`
+- `terraform-az-fk-nsg`
+- `terraform-az-fk-bastion`
+- `terraform-az-fk-mysql`
+- `terraform-az-fk-compute`
+
+Focus:
+
+- one VNet with a client subnet, `AzureBastionSubnet`, and delegated MySQL subnet
+- MySQL Flexible Server private access through delegated subnet and Private DNS
+- public network access disabled and no MySQL firewall rules
+- one Azure Bastion host for operator SSH access to the private validation host
+- one subnet-associated NSG for Bastion-to-validation-host SSH and MySQL access from the client subnet
+- lightweight validation host for private TCP `3306` checks
 
 ---
 

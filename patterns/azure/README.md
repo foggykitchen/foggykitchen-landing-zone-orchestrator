@@ -17,6 +17,7 @@ These patterns turn Azure-focused YAML payloads into reusable architecture imple
 - [firewall_transit](firewall_transit/README.md)
 - [postgresql_private_access](postgresql_private_access/README.md)
 - [sql_private_access](sql_private_access/README.md)
+- [mysql_private_access](mysql_private_access/README.md)
 
 ---
 
@@ -27,6 +28,7 @@ These patterns turn Azure-focused YAML payloads into reusable architecture imple
 3. [firewall_transit](firewall_transit/README.md)
 4. [postgresql_private_access](postgresql_private_access/README.md)
 5. [sql_private_access](sql_private_access/README.md)
+6. [mysql_private_access](mysql_private_access/README.md)
 
 ---
 
