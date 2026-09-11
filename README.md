@@ -126,9 +126,12 @@ foggykitchen-landing-zone-orchestrator/
 │   ├── azure/
 │   │   ├── README.md
 │   │   ├── database/
-│   │   │   └── postgresql/
+│   │   │   ├── postgresql/
+│   │   │   │   └── private_access/
+│   │   │   │       └── delegated_subnet/
+│   │   │   └── sql/
 │   │   │       └── private_access/
-│   │   │           └── basic/
+│   │   │           └── private_endpoint/
 │   │   └── networking/
 │   │       ├── README.md
 │   │       ├── firewall_transit/
@@ -172,6 +175,7 @@ foggykitchen-landing-zone-orchestrator/
 ├── patterns/
 │   ├── azure/
 │   │   ├── postgresql_private_access/
+│   │   ├── sql_private_access/
 │   │   ├── firewall_transit/
 │   │   ├── hub_spoke/
 │   │   └── private_endpoint/
@@ -202,10 +206,12 @@ Currently implemented:
 - [examples/azure/networking/hub_spoke/routing](examples/azure/networking/hub_spoke/routing/README.md)
 - [examples/azure/networking/firewall_transit/basic](examples/azure/networking/firewall_transit/basic/README.md)
 - [examples/azure/networking/private_endpoint/storage_private_link](examples/azure/networking/private_endpoint/storage_private_link/README.md)
+- [examples/azure/database/postgresql/private_access/delegated_subnet](examples/azure/database/postgresql/private_access/delegated_subnet/README.md)
+- [examples/azure/database/sql/private_access/private_endpoint](examples/azure/database/sql/private_access/private_endpoint/README.md)
 - [examples/oci/networking/drg_cross_region/basic](examples/oci/networking/drg_cross_region/basic/README.md)
 - [examples/oci/networking/lpg_local_peering/basic](examples/oci/networking/lpg_local_peering/basic/README.md)
 - [examples/oci/multiregion/compute_failover/basic](examples/oci/multiregion/compute_failover/basic/README.md)
-- [examples/oci/adb/private_access/delegated_subnet](examples/oci/adb/private_access/delegated_subnet/README.md)
+- [examples/oci/adb/private_access/basic](examples/oci/adb/private_access/basic/README.md)
 - [examples/oci/devops/build_only/basic](examples/oci/devops/build_only/basic/README.md)
 - [examples/oci/devops/build_and_deploy_oke/basic](examples/oci/devops/build_and_deploy_oke/basic/README.md)
 - [examples/oci/functions/authenticated_serverless_api/basic](examples/oci/functions/authenticated_serverless_api/basic/README.md)
@@ -218,6 +224,8 @@ Shared orchestration patterns:
 - [patterns/azure/hub_spoke](patterns/azure/hub_spoke)
 - [patterns/azure/firewall_transit](patterns/azure/firewall_transit)
 - [patterns/azure/private_endpoint](patterns/azure/private_endpoint)
+- [patterns/azure/postgresql_private_access](patterns/azure/postgresql_private_access)
+- [patterns/azure/sql_private_access](patterns/azure/sql_private_access)
 - [patterns/oci/drg_cross_region](patterns/oci/drg_cross_region)
 - [patterns/oci/lpg_local_peering](patterns/oci/lpg_local_peering)
 - [patterns/oci/multiregion_compute_failover](patterns/oci/multiregion_compute_failover)
@@ -261,6 +269,8 @@ The repository composes FoggyKitchen building blocks such as:
 - [terraform-az-fk-storage](https://github.com/foggykitchen/terraform-az-fk-storage)
 - [terraform-az-fk-private-endpoint](https://github.com/foggykitchen/terraform-az-fk-private-endpoint)
 - [terraform-az-fk-firewall](https://github.com/foggykitchen/terraform-az-fk-firewall)
+- [terraform-az-fk-pg](https://github.com/foggykitchen/terraform-az-fk-pg)
+- [terraform-az-fk-sql](https://github.com/foggykitchen/terraform-az-fk-sql)
 - [terraform-oci-fk-vcn](https://github.com/foggykitchen/terraform-oci-fk-vcn)
 - [terraform-oci-fk-nsg](https://github.com/foggykitchen/terraform-oci-fk-nsg)
 - [terraform-oci-fk-lpg](https://github.com/foggykitchen/terraform-oci-fk-lpg)

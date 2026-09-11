@@ -1,0 +1,51 @@
+landing_zone:
+  name: fk-azure-sql-private-access-dev
+  default_tags:
+    project: foggykitchen
+    environment: dev
+    managed_by: opentofu
+  tags:
+    landing_zone: fk-azure-sql-private-access-dev
+
+cloud:
+  subscription_id: ${subscription_id}
+  tenant_id: ${tenant_id}
+  location: westeurope
+  resource_group:
+    name: rg-fk-azure-sql-private-access-dev
+
+architecture:
+  private_access:
+    mode: private_endpoint
+  network:
+    vnet:
+      name: vnet-fk-azure-sql-private-access-dev
+      cidr: 10.140.0.0/16
+    client_subnet:
+      name: snet-fk-sql-client
+      cidr: 10.140.10.0/24
+    private_endpoint_subnet:
+      name: snet-fk-sql-private-endpoint
+      cidr: 10.140.20.0/24
+    bastion_subnet:
+      cidr: 10.140.30.0/26
+
+workload:
+  client:
+    name: vm-fk-sql-client
+    shape: Standard_B1s
+    admin_username: azureuser
+    ssh_authorized_keys: ${jsonencode(ssh_authorized_keys)}
+
+data:
+  sql:
+    server:
+      name: fk-sql-private-dev
+      private_dns_zone_name: privatelink.database.windows.net
+      version: "12.0"
+      admin_login: sqladmin
+      admin_password: ${sql_admin_password}
+    database:
+      name: foggydb
+      sku_name: S0
+      max_size_gb: 2
