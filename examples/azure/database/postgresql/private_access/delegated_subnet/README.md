@@ -6,25 +6,11 @@ It is reshaped into a reusable `foggykitchen-landing-zone-orchestrator` pattern 
 
 ## Architecture Overview
 
-![Azure PostgreSQL private access delegated-subnet architecture](diagrams/azure_postgresql_private_access_delegated_subnet_architecture.jpg)
+<img src="diagrams/azure_postgresql_private_access_delegated_subnet_architecture.jpg" alt="Azure PostgreSQL private access delegated-subnet architecture" width="900"/>
+
+**Figure 1.** Azure PostgreSQL delegated-subnet private access architecture.
 
 The `postgresql_private_access` pattern composes one VNet with a validation host subnet, `AzureBastionSubnet`, one PostgreSQL delegated subnet, one subnet-associated NSG, one Azure Bastion host, one Private DNS Zone linked to the VNet, and one PostgreSQL Flexible Server with public network access disabled.
-
-## Deployment Screenshots
-
-![Resource Group overview](diagrams/azure_postgresql_private_access_delegated_subnet_resource_group_overview.jpg)
-
-![VNet subnets](diagrams/azure_postgresql_private_access_delegated_subnet_vnet_subnets.jpg)
-
-![PostgreSQL networking](diagrams/azure_postgresql_private_access_delegated_subnet_postgresql_networking.jpg)
-
-![Private DNS Zone](diagrams/azure_postgresql_private_access_delegated_subnet_private_dns_zone.jpg)
-
-![Azure Bastion overview](diagrams/azure_postgresql_private_access_delegated_subnet_bastion_overview.jpg)
-
-![Validation VM networking](diagrams/azure_postgresql_private_access_delegated_subnet_validation_vm_networking.jpg)
-
-![NSG rules](diagrams/azure_postgresql_private_access_delegated_subnet_nsg_rules.jpg)
 
 ## What This Example Deploys
 
@@ -82,7 +68,9 @@ Expected result:
 - public network access on PostgreSQL Flexible Server remains disabled
 - no PostgreSQL firewall rules are created
 
-Validation output from the deployed example:
+## Validation Result
+
+Validation output from the deployed example through Azure Bastion:
 
 ```text
 == client host ==
@@ -97,6 +85,36 @@ vm-fk-pg-client
 == postgres tcp 5432 ==
 Connection to fk-pg-private-dev.postgres.database.azure.com (10.130.20.4) 5432 port [tcp/postgresql] succeeded!
 ```
+
+## Azure Portal Verification
+
+<img src="diagrams/azure_postgresql_private_access_delegated_subnet_resource_group_overview.jpg" alt="Resource Group overview" width="900"/>
+
+**Figure 2.** Resource Group overview after deployment.
+
+<img src="diagrams/azure_postgresql_private_access_delegated_subnet_vnet_subnets.jpg" alt="VNet subnets" width="900"/>
+
+**Figure 3.** VNet subnets for client, Bastion, and PostgreSQL delegated private access.
+
+<img src="diagrams/azure_postgresql_private_access_delegated_subnet_postgresql_networking.jpg" alt="PostgreSQL networking" width="900"/>
+
+**Figure 4.** PostgreSQL Flexible Server networking with public access disabled.
+
+<img src="diagrams/azure_postgresql_private_access_delegated_subnet_private_dns_zone.jpg" alt="Private DNS Zone" width="900"/>
+
+**Figure 5.** Private DNS Zone linked to the VNet.
+
+<img src="diagrams/azure_postgresql_private_access_delegated_subnet_bastion_overview.jpg" alt="Azure Bastion overview" width="900"/>
+
+**Figure 6.** Azure Bastion used for operator access to the private validation host.
+
+<img src="diagrams/azure_postgresql_private_access_delegated_subnet_validation_vm_networking.jpg" alt="Validation VM networking" width="900"/>
+
+**Figure 7.** Validation VM with private networking only.
+
+<img src="diagrams/azure_postgresql_private_access_delegated_subnet_nsg_rules.jpg" alt="NSG rules" width="900"/>
+
+**Figure 8.** NSG rules for Bastion SSH and PostgreSQL reachability.
 
 ## Destroy
 

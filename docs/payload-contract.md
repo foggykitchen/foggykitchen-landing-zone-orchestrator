@@ -259,6 +259,79 @@ data:
 
 The first public Azure database pattern supports only PostgreSQL Flexible Server with delegated-subnet private access. `data.postgresql.entra`, `data.postgresql.cmk`, and `data.postgresql.diagnostics` are reserved for a later secure variant.
 
+`sql_private_access` focuses on:
+
+- `architecture.private_access`
+- `architecture.network`
+- `workload.client`
+- `data.sql`
+
+For Azure SQL Private Endpoint access, the current contract is:
+
+- `architecture.private_access.mode`
+- `architecture.network.vnet.name`
+- `architecture.network.vnet.cidr`
+- `architecture.network.client_subnet.name`
+- `architecture.network.client_subnet.cidr`
+- `architecture.network.bastion_subnet.cidr`
+- `architecture.network.private_endpoint_subnet.name`
+- `architecture.network.private_endpoint_subnet.cidr`
+- `workload.client.name`
+- `workload.client.shape`
+- `workload.client.admin_username`
+- `workload.client.ssh_authorized_keys`
+- `data.sql.server.name`
+- `data.sql.server.private_dns_zone_name`
+- `data.sql.server.version`
+- `data.sql.server.admin_login`
+- `data.sql.server.admin_password`
+- `data.sql.database.name`
+- `data.sql.database.sku_name`
+- `data.sql.database.max_size_gb`
+
+Example:
+
+```yaml
+architecture:
+  private_access:
+    mode: private_endpoint
+  network:
+    vnet:
+      name: vnet-fk-azure-sql-private-access-dev
+      cidr: 10.140.0.0/16
+    client_subnet:
+      name: snet-fk-sql-client
+      cidr: 10.140.10.0/24
+    private_endpoint_subnet:
+      name: snet-fk-sql-private-endpoint
+      cidr: 10.140.20.0/24
+    bastion_subnet:
+      cidr: 10.140.30.0/26
+
+workload:
+  client:
+    name: vm-fk-sql-client
+    shape: Standard_B1s
+    admin_username: azureuser
+    ssh_authorized_keys:
+      - ssh-rsa REPLACE_WITH_PUBLIC_KEY_ONLY
+
+data:
+  sql:
+    server:
+      name: fk-sql-private-dev
+      private_dns_zone_name: privatelink.database.windows.net
+      version: "12.0"
+      admin_login: sqladmin
+      admin_password: REPLACE_WITH_STRONG_PASSWORD
+    database:
+      name: foggydb
+      sku_name: S0
+      max_size_gb: 2
+```
+
+The Azure SQL pattern supports only Private Endpoint mode. `data.sql.entra`, `data.sql.cmk`, and `data.sql.diagnostics` are reserved for a later secure variant.
+
 ---
 
 ## ☁️ OCI Payload Shape

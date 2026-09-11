@@ -63,6 +63,7 @@ This separation keeps the implementation:
 - `private_endpoint`
 - `firewall_transit`
 - `postgresql_private_access`
+- `sql_private_access`
 
 ### OCI
 
@@ -136,6 +137,18 @@ Focus:
 - NSG-enforced Bastion-to-client SSH and client-to-PostgreSQL reachability boundaries
 - lightweight validation host for proving private database access
 - single-region PostgreSQL baseline without Private Endpoint mode, secure variant controls, other database engines, DR, app-to-data topology, or governance
+
+### Azure SQL Private Access
+
+Focus:
+
+- one VNet with separate client, Bastion, and Private Endpoint subnets
+- Azure SQL logical server deployed with public network access disabled
+- Azure SQL Private Endpoint using subresource `sqlServer`
+- Private DNS Zone `privatelink.database.windows.net` linked to the VNet
+- Azure Bastion for operator SSH access to the private validation host
+- NSG-enforced Bastion-to-client SSH and client-to-Private-Endpoint TCP `1433` reachability boundaries
+- single-region Azure SQL baseline without Entra administrator, TDE CMK, diagnostics, DR, app-to-data topology, or governance
 
 ### OCI DRG Cross-Region
 
