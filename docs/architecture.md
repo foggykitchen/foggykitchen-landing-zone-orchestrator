@@ -62,6 +62,7 @@ This separation keeps the implementation:
 - `hub_spoke`
 - `private_endpoint`
 - `firewall_transit`
+- `database_private_access`
 
 ### OCI
 
@@ -123,6 +124,18 @@ Focus:
 - centralized east-west inspection
 - centralized north-south egress
 - route tables pointing to Azure Firewall private IP
+
+### Azure Database Private Access
+
+Focus:
+
+- one VNet with separate client, Bastion, and delegated PostgreSQL subnets
+- PostgreSQL Flexible Server deployed with delegated-subnet private access
+- Private DNS Zone linked to the VNet for PostgreSQL name resolution
+- Azure Bastion for operator SSH access to the private validation host
+- NSG-enforced Bastion-to-client SSH and client-to-PostgreSQL reachability boundaries
+- lightweight validation host for proving private database access
+- single-region PostgreSQL baseline without Private Endpoint mode, secure variant controls, other database engines, DR, app-to-data topology, or governance
 
 ### OCI DRG Cross-Region
 

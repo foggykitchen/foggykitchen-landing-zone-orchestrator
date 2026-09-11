@@ -15,6 +15,7 @@ These patterns turn Azure-focused YAML payloads into reusable architecture imple
 - [hub_spoke](hub_spoke/README.md)
 - [private_endpoint](private_endpoint/README.md)
 - [firewall_transit](firewall_transit/README.md)
+- [database_private_access](database_private_access/README.md)
 
 ---
 
@@ -23,6 +24,7 @@ These patterns turn Azure-focused YAML payloads into reusable architecture imple
 1. [hub_spoke](hub_spoke/README.md)
 2. [private_endpoint](private_endpoint/README.md)
 3. [firewall_transit](firewall_transit/README.md)
+4. [database_private_access](database_private_access/README.md)
 
 ---
 

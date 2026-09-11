@@ -67,6 +67,7 @@ Common Azure payload sections may include:
 - `storage`
 - `private_endpoints`
 - `firewall`
+- `data`
 
 Not every Azure pattern uses all sections.
 
@@ -184,6 +185,79 @@ Operational note for local applies:
 - `firewall`
 - `routing`
 - `compute`
+
+`database_private_access` focuses on:
+
+- `architecture.private_access`
+- `architecture.network`
+- `workload.client`
+- `data.postgresql`
+
+For PostgreSQL delegated-subnet private access, the current contract is:
+
+- `architecture.private_access.mode`
+- `architecture.network.vnet.name`
+- `architecture.network.vnet.cidr`
+- `architecture.network.client_subnet.name`
+- `architecture.network.client_subnet.cidr`
+- `architecture.network.bastion_subnet.cidr`
+- `architecture.network.delegated_subnet.name`
+- `architecture.network.delegated_subnet.cidr`
+- `workload.client.name`
+- `workload.client.shape`
+- `workload.client.admin_username`
+- `workload.client.ssh_authorized_keys`
+- `data.postgresql.server.name`
+- `data.postgresql.server.private_dns_zone_name`
+- `data.postgresql.server.version`
+- `data.postgresql.server.sku`
+- `data.postgresql.server.storage_mb`
+- `data.postgresql.server.admin_login`
+- `data.postgresql.server.admin_password`
+- `data.postgresql.database.name`
+
+Example:
+
+```yaml
+architecture:
+  private_access:
+    mode: delegated_subnet
+  network:
+    vnet:
+      name: vnet-fk-azure-pg-private-access-dev
+      cidr: 10.130.0.0/16
+    client_subnet:
+      name: snet-fk-pg-client
+      cidr: 10.130.10.0/24
+    bastion_subnet:
+      cidr: 10.130.30.0/26
+    delegated_subnet:
+      name: snet-fk-pg-flexible
+      cidr: 10.130.20.0/24
+
+workload:
+  client:
+    name: vm-fk-pg-client
+    shape: Standard_B1s
+    admin_username: azureuser
+    ssh_authorized_keys:
+      - ssh-rsa REPLACE_WITH_PUBLIC_KEY_ONLY
+
+data:
+  postgresql:
+    server:
+      name: fk-pg-private-dev
+      private_dns_zone_name: fk-azure-pg-private-access-dev.postgres.database.azure.com
+      version: "16"
+      sku: GP_Standard_D2s_v3
+      storage_mb: 32768
+      admin_login: pgadmin
+      admin_password: REPLACE_WITH_STRONG_PASSWORD
+    database:
+      name: foggydb
+```
+
+The first public Azure database pattern supports only PostgreSQL Flexible Server with delegated-subnet private access. `data.postgresql.entra`, `data.postgresql.cmk`, and `data.postgresql.diagnostics` are reserved for a later secure variant.
 
 ---
 
