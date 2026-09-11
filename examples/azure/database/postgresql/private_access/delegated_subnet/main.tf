@@ -1,5 +1,5 @@
 module "landing_zone" {
-  source = "../../../../../../patterns/azure/database_private_access"
+  source = "../../../../../../patterns/azure/postgresql_private_access"
 
   payload_file = "${path.module}/landing-zone.yaml"
   payload_template_vars = {

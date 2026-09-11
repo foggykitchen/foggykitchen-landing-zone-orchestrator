@@ -186,7 +186,7 @@ Operational note for local applies:
 - `routing`
 - `compute`
 
-`database_private_access` focuses on:
+`postgresql_private_access` focuses on:
 
 - `architecture.private_access`
 - `architecture.network`

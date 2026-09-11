@@ -171,7 +171,7 @@ foggykitchen-landing-zone-orchestrator/
 │           └── README.md
 ├── patterns/
 │   ├── azure/
-│   │   ├── database_private_access/
+│   │   ├── postgresql_private_access/
 │   │   ├── firewall_transit/
 │   │   ├── hub_spoke/
 │   │   └── private_endpoint/
@@ -205,7 +205,7 @@ Currently implemented:
 - [examples/oci/networking/drg_cross_region/basic](examples/oci/networking/drg_cross_region/basic/README.md)
 - [examples/oci/networking/lpg_local_peering/basic](examples/oci/networking/lpg_local_peering/basic/README.md)
 - [examples/oci/multiregion/compute_failover/basic](examples/oci/multiregion/compute_failover/basic/README.md)
-- [examples/oci/adb/private_access/basic](examples/oci/adb/private_access/basic/README.md)
+- [examples/oci/adb/private_access/delegated_subnet](examples/oci/adb/private_access/delegated_subnet/README.md)
 - [examples/oci/devops/build_only/basic](examples/oci/devops/build_only/basic/README.md)
 - [examples/oci/devops/build_and_deploy_oke/basic](examples/oci/devops/build_and_deploy_oke/basic/README.md)
 - [examples/oci/functions/authenticated_serverless_api/basic](examples/oci/functions/authenticated_serverless_api/basic/README.md)

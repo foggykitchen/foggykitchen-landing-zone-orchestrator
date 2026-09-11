@@ -10,7 +10,7 @@ resource "terraform_data" "scope_guardrails" {
   lifecycle {
     precondition {
       condition     = local.private_access_mode == "delegated_subnet"
-      error_message = "database_private_access currently supports only private_access.mode = \"delegated_subnet\"."
+      error_message = "postgresql_private_access currently supports only private_access.mode = \"delegated_subnet\"."
     }
 
     precondition {

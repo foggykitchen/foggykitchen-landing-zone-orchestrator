@@ -62,7 +62,7 @@ This separation keeps the implementation:
 - `hub_spoke`
 - `private_endpoint`
 - `firewall_transit`
-- `database_private_access`
+- `postgresql_private_access`
 
 ### OCI
 
