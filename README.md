@@ -2,8 +2,8 @@
 
 FoggyKitchen Landing Zone Orchestrator is a reference architecture layer built on top of public **Terraform / OpenTofu modules** from the FoggyKitchen ecosystem for **Azure** and **OCI**.
 
-It demonstrates how reusable infrastructure modules can be composed into opinionated landing zone patterns: hub-and-spoke networking, private-first compute, private endpoints, DRG cross-region remote peering, local peering, private DNS, firewall-based transit, and OCI multiregion failover.
-It also starts to show how the same orchestration model can be extended into OCI ADB private access, OCI DevOps delivery patterns, and OCI Functions patterns built from reusable FoggyKitchen modules.
+It demonstrates how reusable infrastructure modules can be composed into opinionated landing zone patterns: hub-and-spoke networking, private-first compute, private endpoints, Azure private database access, DRG cross-region remote peering, local peering, private DNS, firewall-based transit, and OCI multiregion failover.
+It also shows how the same orchestration model can be extended into OCI ADB private access, OCI DevOps delivery patterns, and OCI Functions patterns built from reusable FoggyKitchen modules.
 
 This repository is a reference implementation and educational architecture pattern.  
 It is **not** a drop-in enterprise landing zone product.  
@@ -132,6 +132,9 @@ foggykitchen-landing-zone-orchestrator/
 │   │   │   ├── mysql/
 │   │   │   │   └── private_access/
 │   │   │   │       └── delegated_subnet/
+│   │   │   ├── cosmosdb/
+│   │   │   │   └── private_access/
+│   │   │   │       └── private_endpoint/
 │   │   │   └── sql/
 │   │   │       └── private_access/
 │   │   │           └── private_endpoint/
@@ -179,6 +182,7 @@ foggykitchen-landing-zone-orchestrator/
 │   ├── azure/
 │   │   ├── postgresql_private_access/
 │   │   ├── mysql_private_access/
+│   │   ├── cosmosdb_private_access/
 │   │   ├── sql_private_access/
 │   │   ├── firewall_transit/
 │   │   ├── hub_spoke/
@@ -212,6 +216,7 @@ Currently implemented:
 - [examples/azure/networking/private_endpoint/storage_private_link](examples/azure/networking/private_endpoint/storage_private_link/README.md)
 - [examples/azure/database/postgresql/private_access/delegated_subnet](examples/azure/database/postgresql/private_access/delegated_subnet/README.md)
 - [examples/azure/database/mysql/private_access/delegated_subnet](examples/azure/database/mysql/private_access/delegated_subnet/README.md)
+- [examples/azure/database/cosmosdb/private_access/private_endpoint](examples/azure/database/cosmosdb/private_access/private_endpoint/README.md)
 - [examples/azure/database/sql/private_access/private_endpoint](examples/azure/database/sql/private_access/private_endpoint/README.md)
 - [examples/oci/networking/drg_cross_region/basic](examples/oci/networking/drg_cross_region/basic/README.md)
 - [examples/oci/networking/lpg_local_peering/basic](examples/oci/networking/lpg_local_peering/basic/README.md)
@@ -231,6 +236,7 @@ Shared orchestration patterns:
 - [patterns/azure/private_endpoint](patterns/azure/private_endpoint)
 - [patterns/azure/postgresql_private_access](patterns/azure/postgresql_private_access)
 - [patterns/azure/mysql_private_access](patterns/azure/mysql_private_access)
+- [patterns/azure/cosmosdb_private_access](patterns/azure/cosmosdb_private_access)
 - [patterns/azure/sql_private_access](patterns/azure/sql_private_access)
 - [patterns/oci/drg_cross_region](patterns/oci/drg_cross_region)
 - [patterns/oci/lpg_local_peering](patterns/oci/lpg_local_peering)
@@ -241,6 +247,31 @@ Shared orchestration patterns:
 - [patterns/oci/authenticated_serverless_api](patterns/oci/authenticated_serverless_api)
 - [patterns/oci/bulk_ingestion_pipeline](patterns/oci/bulk_ingestion_pipeline)
 - [patterns/oci/event_driven_data_pipeline](patterns/oci/event_driven_data_pipeline)
+
+---
+
+## Azure Database Coverage
+
+The public orchestrator includes focused, single-region Azure private database landing-zone patterns. Each pattern keeps networking self-contained instead of reusing the full hub-spoke pattern, and uses Azure Bastion for operator access to a private validation host.
+
+Current Azure database examples:
+
+- PostgreSQL Flexible Server with delegated-subnet private access: [examples/azure/database/postgresql/private_access/delegated_subnet](examples/azure/database/postgresql/private_access/delegated_subnet/README.md)
+- MySQL Flexible Server with delegated-subnet private access: [examples/azure/database/mysql/private_access/delegated_subnet](examples/azure/database/mysql/private_access/delegated_subnet/README.md)
+- Azure SQL Database with Private Endpoint access: [examples/azure/database/sql/private_access/private_endpoint](examples/azure/database/sql/private_access/private_endpoint/README.md)
+- Cosmos DB SQL API with Private Endpoint access: [examples/azure/database/cosmosdb/private_access/private_endpoint](examples/azure/database/cosmosdb/private_access/private_endpoint/README.md)
+
+These patterns compose the database module with only the infrastructure required for private validation:
+
+- `terraform-az-fk-vnet`
+- `terraform-az-fk-private-dns`
+- `terraform-az-fk-nsg`
+- `terraform-az-fk-bastion`
+- `terraform-az-fk-compute`
+- `terraform-az-fk-private-endpoint` where the engine uses Private Endpoint mode
+- the engine-specific database module: `terraform-az-fk-pg`, `terraform-az-fk-mysql`, `terraform-az-fk-sql`, or `terraform-az-fk-cosmosdb`
+
+Secure variants, additional engine modes, multi-region replication or failover, app-to-data hub-spoke topologies, centralized inspection, schema bootstrap, and governance are intentionally outside this public pattern tier.
 
 ---
 
@@ -278,6 +309,7 @@ The repository composes FoggyKitchen building blocks such as:
 - [terraform-az-fk-pg](https://github.com/foggykitchen/terraform-az-fk-pg)
 - [terraform-az-fk-sql](https://github.com/foggykitchen/terraform-az-fk-sql)
 - [terraform-az-fk-mysql](https://github.com/foggykitchen/terraform-az-fk-mysql)
+- [terraform-az-fk-cosmosdb](https://github.com/foggykitchen/terraform-az-fk-cosmosdb)
 - [terraform-oci-fk-vcn](https://github.com/foggykitchen/terraform-oci-fk-vcn)
 - [terraform-oci-fk-nsg](https://github.com/foggykitchen/terraform-oci-fk-nsg)
 - [terraform-oci-fk-lpg](https://github.com/foggykitchen/terraform-oci-fk-lpg)

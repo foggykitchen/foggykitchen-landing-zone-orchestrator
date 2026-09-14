@@ -30,6 +30,7 @@ Examples under `examples/` should stay thin and delegate architecture logic to t
 - [postgresql_private_access](azure/postgresql_private_access)
 - [sql_private_access](azure/sql_private_access)
 - [mysql_private_access](azure/mysql_private_access)
+- [cosmosdb_private_access](azure/cosmosdb_private_access)
 
 ### OCI
 
@@ -63,6 +64,7 @@ Recommended order:
 - `azure/postgresql_private_access` keeps the first Azure database pattern minimal and self-contained
 - `azure/sql_private_access` adds the first Azure database Private Endpoint pattern while keeping the network self-contained
 - `azure/mysql_private_access` mirrors the delegated-subnet database shape for MySQL Flexible Server
+- `azure/cosmosdb_private_access` adds Cosmos DB SQL API Private Endpoint access with a self-contained validation network
 - advanced multicloud implementations are intentionally distributed outside this public repository
 
 ---
