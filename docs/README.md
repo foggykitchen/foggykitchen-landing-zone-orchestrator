@@ -16,6 +16,7 @@ The documents in this directory explain:
 They cover both:
 
 - landing zone networking compositions for Azure and OCI
+- Azure private database compositions for PostgreSQL, MySQL, SQL Database, and Cosmos DB
 - OCI private ADB access compositions
 - OCI multiregion compute failover compositions
 - OCI DevOps delivery compositions such as `build_only` and `build_and_deploy_oke`
@@ -29,6 +30,21 @@ They cover both:
 - [Design Decisions](design-decisions.md)
 - [Module Map](module-map.md)
 - [Payload Contract](payload-contract.md)
+
+---
+
+## Azure Database Coverage
+
+The public orchestrator currently includes Azure private database landing-zone patterns for:
+
+| Engine | Pattern | Current private-access modes |
+| --- | --- | --- |
+| PostgreSQL Flexible Server | `patterns/azure/postgresql_private_access` | delegated subnet, Private Endpoint |
+| Azure Database for MySQL Flexible Server | `patterns/azure/mysql_private_access` | delegated subnet |
+| Azure SQL Database | `patterns/azure/sql_private_access` | Private Endpoint |
+| Cosmos DB SQL API | `patterns/azure/cosmosdb_private_access` | Private Endpoint |
+
+These patterns use self-contained single-region VNets with Azure Bastion and a private validation host. They do not reuse the broader `hub_spoke` topology.
 
 ---
 

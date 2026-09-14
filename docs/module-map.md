@@ -34,6 +34,19 @@ The goal of this map is to show how the repository turns individual modules into
 
 ---
 
+## Azure Database Composition Summary
+
+| Pattern | Database module | Private access modules | Current modes |
+| --- | --- | --- | --- |
+| `patterns/azure/postgresql_private_access` | `terraform-az-fk-pg` | `terraform-az-fk-private-dns`; `terraform-az-fk-private-endpoint` for Private Endpoint mode | delegated subnet, Private Endpoint |
+| `patterns/azure/mysql_private_access` | `terraform-az-fk-mysql` | `terraform-az-fk-private-dns` | delegated subnet |
+| `patterns/azure/sql_private_access` | `terraform-az-fk-sql` | `terraform-az-fk-private-dns`, `terraform-az-fk-private-endpoint` | Private Endpoint |
+| `patterns/azure/cosmosdb_private_access` | `terraform-az-fk-cosmosdb` | `terraform-az-fk-private-dns`, `terraform-az-fk-private-endpoint` | Private Endpoint |
+
+All Azure database private-access patterns also compose `terraform-az-fk-vnet`, `terraform-az-fk-nsg`, `terraform-az-fk-bastion`, and `terraform-az-fk-compute` for the self-contained network and validation host.
+
+---
+
 ## 🧩 Azure Pattern Usage
 
 ### `patterns/azure/hub_spoke`

@@ -178,6 +178,24 @@ Operational note for local applies:
 - this is not architecture intent and therefore does not live in YAML
 - it exists only to allow the local OpenTofu runner to create Azure Files data-plane resources while the Storage Account remains locked down by network rules
 
+### Azure Database Private Access Summary
+
+Azure database private-access patterns use the same top-level shape:
+
+- `architecture.private_access.mode`
+- `architecture.network`
+- `workload.client`
+- `data.<engine>`
+
+| Pattern | Data block | Current mode values | Mode-specific network key | Azure target |
+| --- | --- | --- | --- | --- |
+| `postgresql_private_access` | `data.postgresql` | `delegated_subnet`, `private_endpoint` | `delegated_subnet` or `private_endpoint_subnet` | PostgreSQL delegated subnet or `postgresqlServer` Private Endpoint |
+| `mysql_private_access` | `data.mysql` | `delegated_subnet` | `delegated_subnet` | MySQL delegated subnet |
+| `sql_private_access` | `data.sql` | `private_endpoint` | `private_endpoint_subnet` | Azure SQL `sqlServer` Private Endpoint |
+| `cosmosdb_private_access` | `data.cosmosdb` | `private_endpoint` | `private_endpoint_subnet` | Cosmos DB SQL API `Sql` Private Endpoint |
+
+These payloads describe a self-contained single-region VNet with Azure Bastion, a private validation host, Private DNS, and no public database exposure.
+
 `firewall_transit` focuses on:
 
 - `networking`

@@ -79,6 +79,28 @@ This separation keeps the implementation:
 - `bulk_ingestion_pipeline`
 - `event_driven_data_pipeline`
 
+## Azure Database Coverage
+
+Azure database private-access patterns share a deliberately small topology:
+
+- one self-contained single-region VNet
+- one client subnet for the validation host
+- one `AzureBastionSubnet` for operator access
+- either one delegated database subnet or one Private Endpoint subnet
+- one subnet-associated NSG for validation-path controls
+- Private DNS linked to the VNet
+- public database access disabled
+
+| Engine | Pattern | Mode | Azure access target | Validation port |
+| --- | --- | --- | --- | --- |
+| PostgreSQL Flexible Server | `postgresql_private_access` | delegated subnet | `Microsoft.DBforPostgreSQL/flexibleServers` subnet delegation | `5432` |
+| PostgreSQL Flexible Server | `postgresql_private_access` | Private Endpoint | `postgresqlServer` with `privatelink.postgres.database.azure.com` | `5432` |
+| Azure Database for MySQL Flexible Server | `mysql_private_access` | delegated subnet | `Microsoft.DBforMySQL/flexibleServers` subnet delegation | `3306` |
+| Azure SQL Database | `sql_private_access` | Private Endpoint | `sqlServer` with `privatelink.database.windows.net` | `1433` |
+| Cosmos DB SQL API | `cosmosdb_private_access` | Private Endpoint | `Sql` with `privatelink.documents.azure.com` | `443` |
+
+These patterns intentionally do not model multi-spoke app-to-data routing, cross-region database replication, secure variants with identity/CMK/diagnostics, or governance concerns.
+
 ## 🧩 Pattern Responsibilities
 
 ### Azure Hub-and-Spoke
