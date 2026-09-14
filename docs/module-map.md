@@ -89,12 +89,13 @@ Uses:
 - `terraform-az-fk-nsg`
 - `terraform-az-fk-bastion`
 - `terraform-az-fk-pg`
+- `terraform-az-fk-private-endpoint`
 - `terraform-az-fk-compute`
 
 Focus:
 
-- one VNet with a client subnet, `AzureBastionSubnet`, and delegated PostgreSQL subnet
-- PostgreSQL Flexible Server private access through delegated subnet and Private DNS
+- one VNet with a client subnet, `AzureBastionSubnet`, and either a delegated PostgreSQL subnet or Private Endpoint subnet
+- PostgreSQL Flexible Server private access through delegated subnet and Private DNS, or Private Endpoint and Private DNS Zone Group
 - public network access disabled and no PostgreSQL firewall rules
 - one Azure Bastion host for operator SSH access to the private validation host
 - one subnet-associated NSG for Bastion-to-validation-host SSH and PostgreSQL access from the client subnet

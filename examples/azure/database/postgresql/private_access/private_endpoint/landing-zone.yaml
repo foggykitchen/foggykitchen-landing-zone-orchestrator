@@ -1,0 +1,50 @@
+landing_zone:
+  name: fk-azure-pg-pe-private-access-dev
+  default_tags:
+    project: foggykitchen
+    environment: dev
+    landing_zone: fk-azure-pg-pe-private-access-dev
+    managed_by: opentofu
+
+cloud:
+  subscription_id: ${jsonencode(subscription_id)}
+  tenant_id: ${jsonencode(tenant_id)}
+  location: westeurope
+  resource_group:
+    name: rg-fk-azure-pg-pe-private-access-dev
+
+architecture:
+  private_access:
+    mode: private_endpoint
+  network:
+    vnet:
+      name: vnet-fk-azure-pg-pe-private-access-dev
+      cidr: 10.170.0.0/16
+    client_subnet:
+      name: snet-fk-pg-pe-client
+      cidr: 10.170.10.0/24
+    private_endpoint_subnet:
+      name: snet-fk-pg-private-endpoint
+      cidr: 10.170.20.0/24
+    bastion_subnet:
+      cidr: 10.170.30.0/26
+
+workload:
+  client:
+    name: vm-fk-pg-pe-client
+    shape: Standard_B1s
+    admin_username: azureuser
+    ssh_authorized_keys: ${jsonencode(ssh_authorized_keys)}
+
+data:
+  postgresql:
+    server:
+      name: fk-pg-pe-private-dev
+      private_dns_zone_name: privatelink.postgres.database.azure.com
+      version: "16"
+      sku: GP_Standard_D2s_v3
+      storage_mb: 32768
+      admin_login: pgadmin
+      admin_password: ${jsonencode(postgresql_admin_password)}
+    database:
+      name: foggydb

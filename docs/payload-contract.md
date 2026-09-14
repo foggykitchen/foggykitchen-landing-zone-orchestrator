@@ -193,7 +193,7 @@ Operational note for local applies:
 - `workload.client`
 - `data.postgresql`
 
-For PostgreSQL delegated-subnet private access, the current contract is:
+For PostgreSQL private access, the shared contract is:
 
 - `architecture.private_access.mode`
 - `architecture.network.vnet.name`
@@ -201,8 +201,6 @@ For PostgreSQL delegated-subnet private access, the current contract is:
 - `architecture.network.client_subnet.name`
 - `architecture.network.client_subnet.cidr`
 - `architecture.network.bastion_subnet.cidr`
-- `architecture.network.delegated_subnet.name`
-- `architecture.network.delegated_subnet.cidr`
 - `workload.client.name`
 - `workload.client.shape`
 - `workload.client.admin_username`
@@ -216,7 +214,12 @@ For PostgreSQL delegated-subnet private access, the current contract is:
 - `data.postgresql.server.admin_password`
 - `data.postgresql.database.name`
 
-Example:
+For `architecture.private_access.mode = delegated_subnet`, the pattern also consumes:
+
+- `architecture.network.delegated_subnet.name`
+- `architecture.network.delegated_subnet.cidr`
+
+Delegated-subnet example:
 
 ```yaml
 architecture:
@@ -257,7 +260,53 @@ data:
       name: foggydb
 ```
 
-The first public Azure database pattern supports only PostgreSQL Flexible Server with delegated-subnet private access. `data.postgresql.entra`, `data.postgresql.cmk`, and `data.postgresql.diagnostics` are reserved for a later secure variant.
+For `architecture.private_access.mode = private_endpoint`, the pattern also consumes:
+
+- `architecture.network.private_endpoint_subnet.name`
+- `architecture.network.private_endpoint_subnet.cidr`
+
+Private Endpoint example:
+
+```yaml
+architecture:
+  private_access:
+    mode: private_endpoint
+  network:
+    vnet:
+      name: vnet-fk-azure-pg-pe-private-access-dev
+      cidr: 10.170.0.0/16
+    client_subnet:
+      name: snet-fk-pg-pe-client
+      cidr: 10.170.10.0/24
+    private_endpoint_subnet:
+      name: snet-fk-pg-private-endpoint
+      cidr: 10.170.20.0/24
+    bastion_subnet:
+      cidr: 10.170.30.0/26
+
+workload:
+  client:
+    name: vm-fk-pg-pe-client
+    shape: Standard_B1s
+    admin_username: azureuser
+    ssh_authorized_keys:
+      - ssh-rsa REPLACE_WITH_PUBLIC_KEY_ONLY
+
+data:
+  postgresql:
+    server:
+      name: fk-pg-pe-private-dev
+      private_dns_zone_name: privatelink.postgres.database.azure.com
+      version: "16"
+      sku: GP_Standard_D2s_v3
+      storage_mb: 32768
+      admin_login: pgadmin
+      admin_password: REPLACE_WITH_STRONG_PASSWORD
+    database:
+      name: foggydb
+```
+
+The PostgreSQL Private Endpoint subresource is `postgresqlServer` and the Private DNS Zone is `privatelink.postgres.database.azure.com`. `data.postgresql.entra`, `data.postgresql.cmk`, and `data.postgresql.diagnostics` are reserved for a later secure variant.
 
 `sql_private_access` focuses on:
 

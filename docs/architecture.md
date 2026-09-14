@@ -132,13 +132,14 @@ Focus:
 
 Focus:
 
-- one VNet with separate client, Bastion, and delegated PostgreSQL subnets
-- PostgreSQL Flexible Server deployed with delegated-subnet private access
+- one VNet with separate client, Bastion, and database-facing subnets
+- PostgreSQL Flexible Server deployed with delegated-subnet private access or Private Endpoint access
 - Private DNS Zone linked to the VNet for PostgreSQL name resolution
+- PostgreSQL Private Endpoint using subresource `postgresqlServer` when the Private Endpoint variant is selected
 - Azure Bastion for operator SSH access to the private validation host
 - NSG-enforced Bastion-to-client SSH and client-to-PostgreSQL reachability boundaries
 - lightweight validation host for proving private database access
-- single-region PostgreSQL baseline without Private Endpoint mode, secure variant controls, other database engines, DR, app-to-data topology, or governance
+- single-region PostgreSQL baseline without secure variant controls, other database engines, DR, app-to-data topology, or governance
 
 ### Azure SQL Private Access
 

@@ -4,7 +4,11 @@ output "postgresql_private_access" {
     flexible_server_name          = module.postgresql.name
     flexible_server_fqdn          = module.postgresql.fqdn
     database_ids                  = module.postgresql.database_ids
-    delegated_subnet_id           = module.vnet.subnet_ids[local.database_subnet_name]
+    delegated_subnet_id           = local.is_delegated_subnet ? module.vnet.subnet_ids[local.database_subnet_name] : null
+    private_endpoint_subnet_id    = local.is_private_endpoint ? module.vnet.subnet_ids[local.private_endpoint_subnet_name] : null
+    private_endpoint_id           = local.is_private_endpoint ? module.postgresql_private_endpoint[0].private_endpoint_id : null
+    private_endpoint_name         = local.is_private_endpoint ? module.postgresql_private_endpoint[0].private_endpoint_name : null
+    private_endpoint_private_ips  = local.is_private_endpoint ? data.azurerm_network_interface.postgresql_private_endpoint[0].private_ip_addresses : []
     private_dns_zone_id           = module.private_dns.private_dns_zone_ids[local.private_dns_zone_name]
     public_network_access_enabled = module.postgresql.public_network_access_enabled
   }
@@ -34,14 +38,16 @@ output "bastion" {
 
 output "network" {
   value = {
-    vnet_id              = module.vnet.vnet_id
-    vnet_name            = module.vnet.vnet_name
-    client_subnet_id     = module.vnet.subnet_ids[local.client_subnet_name]
-    bastion_subnet_id    = module.vnet.subnet_ids[local.bastion_subnet_name]
-    delegated_subnet_id  = module.vnet.subnet_ids[local.database_subnet_name]
-    client_subnet_cidr   = local.client_subnet_cidr
-    bastion_subnet_cidr  = local.bastion_subnet_cidr
-    database_subnet_cidr = local.database_subnet_cidr
-    nsg_id               = module.database_nsg.id
+    vnet_id                      = module.vnet.vnet_id
+    vnet_name                    = module.vnet.vnet_name
+    client_subnet_id             = module.vnet.subnet_ids[local.client_subnet_name]
+    bastion_subnet_id            = module.vnet.subnet_ids[local.bastion_subnet_name]
+    delegated_subnet_id          = local.is_delegated_subnet ? module.vnet.subnet_ids[local.database_subnet_name] : null
+    private_endpoint_subnet_id   = local.is_private_endpoint ? module.vnet.subnet_ids[local.private_endpoint_subnet_name] : null
+    client_subnet_cidr           = local.client_subnet_cidr
+    bastion_subnet_cidr          = local.bastion_subnet_cidr
+    database_subnet_cidr         = local.is_delegated_subnet ? local.database_subnet_cidr : null
+    private_endpoint_subnet_cidr = local.is_private_endpoint ? local.private_endpoint_subnet_cidr : null
+    nsg_id                       = module.database_nsg.id
   }
 }

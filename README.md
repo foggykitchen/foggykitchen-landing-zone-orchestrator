@@ -35,7 +35,7 @@ Depending on the selected pattern and payload, the repository can compose:
 - Azure hub-and-spoke landing zones
 - Azure private endpoint landing zones
 - Azure firewall transit landing zones
-- Azure PostgreSQL Flexible Server private-access landing zones with delegated subnet
+- Azure PostgreSQL Flexible Server private-access landing zones with delegated subnet or Private Endpoint
 - Azure Database for MySQL Flexible Server private-access landing zones with delegated subnet
 - Azure SQL Database private-access landing zones with Private Endpoint
 - Azure Cosmos DB SQL API private-access landing zones with Private Endpoint
@@ -131,7 +131,8 @@ foggykitchen-landing-zone-orchestrator/
 │   │   ├── database/
 │   │   │   ├── postgresql/
 │   │   │   │   └── private_access/
-│   │   │   │       └── delegated_subnet/
+│   │   │   │       ├── delegated_subnet/
+│   │   │   │       └── private_endpoint/
 │   │   │   ├── mysql/
 │   │   │   │   └── private_access/
 │   │   │   │       └── delegated_subnet/
@@ -218,6 +219,7 @@ Currently implemented:
 - [examples/azure/networking/firewall_transit/basic](examples/azure/networking/firewall_transit/basic/README.md)
 - [examples/azure/networking/private_endpoint/storage_private_link](examples/azure/networking/private_endpoint/storage_private_link/README.md)
 - [examples/azure/database/postgresql/private_access/delegated_subnet](examples/azure/database/postgresql/private_access/delegated_subnet/README.md)
+- [examples/azure/database/postgresql/private_access/private_endpoint](examples/azure/database/postgresql/private_access/private_endpoint/README.md)
 - [examples/azure/database/mysql/private_access/delegated_subnet](examples/azure/database/mysql/private_access/delegated_subnet/README.md)
 - [examples/azure/database/cosmosdb/private_access/private_endpoint](examples/azure/database/cosmosdb/private_access/private_endpoint/README.md)
 - [examples/azure/database/sql/private_access/private_endpoint](examples/azure/database/sql/private_access/private_endpoint/README.md)
@@ -260,9 +262,18 @@ The public orchestrator includes focused, single-region Azure private database l
 Current Azure database examples:
 
 - PostgreSQL Flexible Server with delegated-subnet private access: [examples/azure/database/postgresql/private_access/delegated_subnet](examples/azure/database/postgresql/private_access/delegated_subnet/README.md)
+- PostgreSQL Flexible Server with Private Endpoint access: [examples/azure/database/postgresql/private_access/private_endpoint](examples/azure/database/postgresql/private_access/private_endpoint/README.md)
 - MySQL Flexible Server with delegated-subnet private access: [examples/azure/database/mysql/private_access/delegated_subnet](examples/azure/database/mysql/private_access/delegated_subnet/README.md)
 - Azure SQL Database with Private Endpoint access: [examples/azure/database/sql/private_access/private_endpoint](examples/azure/database/sql/private_access/private_endpoint/README.md)
 - Cosmos DB SQL API with Private Endpoint access: [examples/azure/database/cosmosdb/private_access/private_endpoint](examples/azure/database/cosmosdb/private_access/private_endpoint/README.md)
+
+| Engine | Pattern | Private access mode | Service-specific network target |
+| --- | --- | --- | --- |
+| PostgreSQL Flexible Server | `patterns/azure/postgresql_private_access` | delegated subnet | `Microsoft.DBforPostgreSQL/flexibleServers` delegation |
+| PostgreSQL Flexible Server | `patterns/azure/postgresql_private_access` | Private Endpoint | `postgresqlServer` subresource with `privatelink.postgres.database.azure.com` |
+| MySQL Flexible Server | `patterns/azure/mysql_private_access` | delegated subnet | `Microsoft.DBforMySQL/flexibleServers` delegation |
+| Azure SQL Database | `patterns/azure/sql_private_access` | Private Endpoint | `sqlServer` subresource with `privatelink.database.windows.net` |
+| Cosmos DB SQL API | `patterns/azure/cosmosdb_private_access` | Private Endpoint | `Sql` subresource with `privatelink.documents.azure.com` |
 
 These patterns compose the database module with only the infrastructure required for private validation:
 
