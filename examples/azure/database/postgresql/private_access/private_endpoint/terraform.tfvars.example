@@ -1,0 +1,5 @@
+subscription_id = "00000000-0000-0000-0000-000000000000"
+tenant_id       = "00000000-0000-0000-0000-000000000000"
+
+postgresql_admin_password = "REPLACE_WITH_STRONG_PASSWORD"
+admin_ssh_public_key      = "ssh-rsa REPLACE_WITH_PUBLIC_KEY_ONLY"

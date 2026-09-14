@@ -20,16 +20,20 @@ locals {
   postgresql = try(local.data_layer.postgresql, {})
 
   private_access_mode = nonsensitive(try(local.access.mode, "delegated_subnet"))
+  is_delegated_subnet = local.private_access_mode == "delegated_subnet"
+  is_private_endpoint = local.private_access_mode == "private_endpoint"
 
-  vnet_name             = nonsensitive(try(local.network.vnet.name, "${local.project_name}-vnet"))
-  vnet_cidr             = nonsensitive(try(local.network.vnet.cidr, "10.130.0.0/16"))
-  client_subnet_name    = nonsensitive(try(local.network.client_subnet.name, "snet-${local.project_name}-client"))
-  client_subnet_cidr    = nonsensitive(try(local.network.client_subnet.cidr, "10.130.10.0/24"))
-  bastion_subnet_name   = "AzureBastionSubnet"
-  bastion_subnet_cidr   = nonsensitive(try(local.network.bastion_subnet.cidr, "10.130.30.0/26"))
-  database_subnet_name  = nonsensitive(try(local.network.delegated_subnet.name, "snet-${local.project_name}-postgresql"))
-  database_subnet_cidr  = nonsensitive(try(local.network.delegated_subnet.cidr, "10.130.20.0/24"))
-  private_dns_zone_name = nonsensitive(try(local.postgresql.private_dns_zone_name, "${local.project_name}.postgres.database.azure.com"))
+  vnet_name                    = nonsensitive(try(local.network.vnet.name, "${local.project_name}-vnet"))
+  vnet_cidr                    = nonsensitive(try(local.network.vnet.cidr, "10.130.0.0/16"))
+  client_subnet_name           = nonsensitive(try(local.network.client_subnet.name, "snet-${local.project_name}-client"))
+  client_subnet_cidr           = nonsensitive(try(local.network.client_subnet.cidr, "10.130.10.0/24"))
+  bastion_subnet_name          = "AzureBastionSubnet"
+  bastion_subnet_cidr          = nonsensitive(try(local.network.bastion_subnet.cidr, "10.130.30.0/26"))
+  database_subnet_name         = nonsensitive(try(local.network.delegated_subnet.name, "snet-${local.project_name}-postgresql"))
+  database_subnet_cidr         = nonsensitive(try(local.network.delegated_subnet.cidr, "10.130.20.0/24"))
+  private_endpoint_subnet_name = nonsensitive(try(local.network.private_endpoint_subnet.name, "snet-${local.project_name}-private-endpoint"))
+  private_endpoint_subnet_cidr = nonsensitive(try(local.network.private_endpoint_subnet.cidr, "10.130.20.0/24"))
+  private_dns_zone_name        = nonsensitive(try(local.postgresql.private_dns_zone_name, local.is_private_endpoint ? "privatelink.postgres.database.azure.com" : "${local.project_name}.postgres.database.azure.com"))
 
   client_name                = nonsensitive(try(local.client.name, "${local.project_name}-client"))
   client_shape               = nonsensitive(try(local.client.shape, "Standard_B1s"))
