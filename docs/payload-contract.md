@@ -411,6 +411,83 @@ The MySQL pattern supports only Azure Database for MySQL Flexible Server with de
 
 ---
 
+`cosmosdb_private_access` focuses on:
+
+- `architecture.private_access`
+- `architecture.network`
+- `workload.client`
+- `data.cosmosdb`
+
+For Cosmos DB SQL API Private Endpoint access, the current contract is:
+
+- `architecture.private_access.mode`
+- `architecture.network.vnet.name`
+- `architecture.network.vnet.cidr`
+- `architecture.network.client_subnet.name`
+- `architecture.network.client_subnet.cidr`
+- `architecture.network.bastion_subnet.cidr`
+- `architecture.network.private_endpoint_subnet.name`
+- `architecture.network.private_endpoint_subnet.cidr`
+- `workload.client.name`
+- `workload.client.shape`
+- `workload.client.admin_username`
+- `workload.client.ssh_authorized_keys`
+- `data.cosmosdb.account.name`
+- `data.cosmosdb.account.private_dns_zone_name`
+- `data.cosmosdb.account.kind`
+- `data.cosmosdb.sql_database.name`
+- optional `data.cosmosdb.sql_database.throughput`
+- `data.cosmosdb.sql_container.name`
+- `data.cosmosdb.sql_container.partition_key_paths`
+- optional `data.cosmosdb.sql_container.partition_key_version`
+
+Example:
+
+```yaml
+architecture:
+  private_access:
+    mode: private_endpoint
+  network:
+    vnet:
+      name: vnet-fk-azure-cosmosdb-private-access-dev
+      cidr: 10.160.0.0/16
+    client_subnet:
+      name: snet-fk-cosmosdb-client
+      cidr: 10.160.10.0/24
+    private_endpoint_subnet:
+      name: snet-fk-cosmosdb-private-endpoint
+      cidr: 10.160.20.0/24
+    bastion_subnet:
+      cidr: 10.160.30.0/26
+
+workload:
+  client:
+    name: vm-fk-cosmosdb-client
+    shape: Standard_B1s
+    admin_username: azureuser
+    ssh_authorized_keys:
+      - ssh-rsa REPLACE_WITH_PUBLIC_KEY_ONLY
+
+data:
+  cosmosdb:
+    account:
+      name: fk-cosmosdb-private-dev
+      private_dns_zone_name: privatelink.documents.azure.com
+      kind: GlobalDocumentDB
+    sql_database:
+      name: foggydb
+      throughput: 400
+    sql_container:
+      name: items
+      partition_key_paths:
+        - /partitionKey
+      partition_key_version: 2
+```
+
+The Cosmos DB pattern supports only the SQL API with Private Endpoint access. The Private Endpoint subresource is `Sql` and the Private DNS Zone is `privatelink.documents.azure.com`. Cosmos DB has no Entra administrator concept; a later secure variant should use `local_authentication_enabled = false` with data-plane RBAC role assignments and `key_vault_key_id` / `default_identity_type` for customer-managed keys. `data.cosmosdb.identity`, `data.cosmosdb.cmk`, `data.cosmosdb.diagnostics`, and `data.cosmosdb.rbac` are reserved for a later secure variant.
+
+---
+
 ## ☁️ OCI Payload Shape
 
 Common OCI payload sections may include:

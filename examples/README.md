@@ -19,7 +19,7 @@ Examples are grouped by:
 - cloud
 - architecture domain
 - specific pattern
-- variant, such as `basic`
+- variant, such as `basic`, `delegated_subnet`, or `private_endpoint`
 
 ---
 

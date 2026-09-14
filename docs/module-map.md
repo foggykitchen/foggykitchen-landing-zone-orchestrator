@@ -30,6 +30,7 @@ The goal of this map is to show how the repository turns individual modules into
 | `terraform-az-fk-pg` | PostgreSQL Flexible Server service layer |
 | `terraform-az-fk-sql` | Azure SQL Database service layer |
 | `terraform-az-fk-mysql` | MySQL Flexible Server service layer |
+| `terraform-az-fk-cosmosdb` | Cosmos DB SQL API service layer |
 
 ---
 
@@ -140,6 +141,29 @@ Focus:
 - one Azure Bastion host for operator SSH access to the private validation host
 - one subnet-associated NSG for Bastion-to-validation-host SSH and MySQL access from the client subnet
 - lightweight validation host for private TCP `3306` checks
+
+### `patterns/azure/cosmosdb_private_access`
+
+Uses:
+
+- `terraform-az-fk-vnet`
+- `terraform-az-fk-private-dns`
+- `terraform-az-fk-nsg`
+- `terraform-az-fk-bastion`
+- `terraform-az-fk-cosmosdb`
+- `terraform-az-fk-private-endpoint`
+- `terraform-az-fk-compute`
+
+Focus:
+
+- one VNet with a client subnet, `AzureBastionSubnet`, and Private Endpoint subnet
+- Cosmos DB SQL API account with public network access disabled and no IP firewall rules
+- Cosmos DB Private Endpoint using subresource `Sql`
+- Private DNS Zone `privatelink.documents.azure.com` linked to the VNet
+- one SQL database and one SQL container for validation
+- one Azure Bastion host for operator SSH access to the private validation host
+- one subnet-associated NSG for Bastion-to-validation-host SSH and Cosmos DB HTTPS access from the client subnet
+- lightweight validation host for private DNS and TCP `443` checks
 
 ---
 

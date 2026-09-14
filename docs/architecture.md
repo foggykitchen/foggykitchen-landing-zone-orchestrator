@@ -65,6 +65,7 @@ This separation keeps the implementation:
 - `postgresql_private_access`
 - `sql_private_access`
 - `mysql_private_access`
+- `cosmosdb_private_access`
 
 ### OCI
 
@@ -161,6 +162,19 @@ Focus:
 - Azure Bastion for operator SSH access to the private validation host
 - NSG-enforced Bastion-to-client SSH and client-to-MySQL TCP `3306` reachability boundaries
 - single-region MySQL baseline without Private Endpoint mode, secure variant controls, DR, app-to-data topology, or governance
+
+### Azure Cosmos DB Private Access
+
+Focus:
+
+- one VNet with separate client, Bastion, and Private Endpoint subnets
+- Cosmos DB SQL API account deployed with public network access disabled
+- Cosmos DB Private Endpoint using subresource `Sql`
+- Private DNS Zone `privatelink.documents.azure.com` linked to the VNet
+- one SQL database and one SQL container
+- Azure Bastion for operator SSH access to the private validation host
+- NSG-enforced Bastion-to-client SSH and client-to-Private-Endpoint TCP `443` reachability boundaries
+- single-region Cosmos DB SQL API baseline without local-auth disablement, data-plane RBAC assignments, managed identity, CMK, diagnostics, multi-region failover, app-to-data topology, or governance
 
 ### OCI DRG Cross-Region
 
