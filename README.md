@@ -35,7 +35,10 @@ Depending on the selected pattern and payload, the repository can compose:
 - Azure hub-and-spoke landing zones
 - Azure private endpoint landing zones
 - Azure firewall transit landing zones
-- Azure private database landing zones
+- Azure PostgreSQL Flexible Server private-access landing zones with delegated subnet
+- Azure Database for MySQL Flexible Server private-access landing zones with delegated subnet
+- Azure SQL Database private-access landing zones with Private Endpoint
+- Azure Cosmos DB SQL API private-access landing zones with Private Endpoint
 - OCI DRG cross-region landing zones
 - OCI same-region LPG local peering landing zones
 - OCI multiregion compute failover patterns
