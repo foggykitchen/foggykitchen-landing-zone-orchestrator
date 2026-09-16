@@ -2,7 +2,7 @@
 
 FoggyKitchen Landing Zone Orchestrator is a reference architecture layer built on top of public **Terraform / OpenTofu modules** from the FoggyKitchen ecosystem for **Azure** and **OCI**.
 
-It demonstrates how reusable infrastructure modules can be composed into opinionated landing zone patterns: hub-and-spoke networking, private-first compute, private endpoints, Azure private database access, DRG cross-region remote peering, local peering, private DNS, firewall-based transit, and OCI multiregion failover.
+It demonstrates how reusable infrastructure modules can be composed into opinionated landing zone patterns: hub-and-spoke networking, private-first compute, private endpoints, Azure private AKS basics, Azure private database access, DRG cross-region remote peering, local peering, private DNS, firewall-based transit, and OCI multiregion failover.
 It also shows how the same orchestration model can be extended into OCI ADB private access, OCI DevOps delivery patterns, and OCI Functions patterns built from reusable FoggyKitchen modules.
 
 This repository is a reference implementation and educational architecture pattern.  
@@ -35,6 +35,7 @@ Depending on the selected pattern and payload, the repository can compose:
 - Azure hub-and-spoke landing zones
 - Azure private endpoint landing zones
 - Azure firewall transit landing zones
+- Azure private AKS basic landing zones
 - Azure PostgreSQL Flexible Server private-access landing zones with delegated subnet or Private Endpoint
 - Azure Database for MySQL Flexible Server private-access landing zones with delegated subnet
 - Azure SQL Database private-access landing zones with Private Endpoint
@@ -128,6 +129,8 @@ foggykitchen-landing-zone-orchestrator/
 ├── examples/
 │   ├── azure/
 │   │   ├── README.md
+│   │   ├── aks/
+│   │   │   └── basic/
 │   │   ├── database/
 │   │   │   ├── postgresql/
 │   │   │   │   └── private_access/
@@ -184,6 +187,7 @@ foggykitchen-landing-zone-orchestrator/
 │           └── README.md
 ├── patterns/
 │   ├── azure/
+│   │   ├── aks_basic/
 │   │   ├── postgresql_private_access/
 │   │   ├── mysql_private_access/
 │   │   ├── cosmosdb_private_access/
@@ -218,6 +222,7 @@ Currently implemented:
 - [examples/azure/networking/hub_spoke/routing](examples/azure/networking/hub_spoke/routing/README.md)
 - [examples/azure/networking/firewall_transit/basic](examples/azure/networking/firewall_transit/basic/README.md)
 - [examples/azure/networking/private_endpoint/storage_private_link](examples/azure/networking/private_endpoint/storage_private_link/README.md)
+- [examples/azure/aks/basic](examples/azure/aks/basic/README.md)
 - [examples/azure/database/postgresql/private_access/delegated_subnet](examples/azure/database/postgresql/private_access/delegated_subnet/README.md)
 - [examples/azure/database/postgresql/private_access/private_endpoint](examples/azure/database/postgresql/private_access/private_endpoint/README.md)
 - [examples/azure/database/mysql/private_access/delegated_subnet](examples/azure/database/mysql/private_access/delegated_subnet/README.md)
@@ -239,6 +244,7 @@ Shared orchestration patterns:
 - [patterns/azure/hub_spoke](patterns/azure/hub_spoke)
 - [patterns/azure/firewall_transit](patterns/azure/firewall_transit)
 - [patterns/azure/private_endpoint](patterns/azure/private_endpoint)
+- [patterns/azure/aks_basic](patterns/azure/aks_basic)
 - [patterns/azure/postgresql_private_access](patterns/azure/postgresql_private_access)
 - [patterns/azure/mysql_private_access](patterns/azure/mysql_private_access)
 - [patterns/azure/cosmosdb_private_access](patterns/azure/cosmosdb_private_access)
@@ -320,6 +326,7 @@ The repository composes FoggyKitchen building blocks such as:
 - [terraform-az-fk-storage](https://github.com/foggykitchen/terraform-az-fk-storage)
 - [terraform-az-fk-private-endpoint](https://github.com/foggykitchen/terraform-az-fk-private-endpoint)
 - [terraform-az-fk-firewall](https://github.com/foggykitchen/terraform-az-fk-firewall)
+- [terraform-az-fk-aks](https://github.com/foggykitchen/terraform-az-fk-aks)
 - [terraform-az-fk-pg](https://github.com/foggykitchen/terraform-az-fk-pg)
 - [terraform-az-fk-sql](https://github.com/foggykitchen/terraform-az-fk-sql)
 - [terraform-az-fk-mysql](https://github.com/foggykitchen/terraform-az-fk-mysql)

@@ -16,6 +16,7 @@ The documents in this directory explain:
 They cover both:
 
 - landing zone networking compositions for Azure and OCI
+- Azure AKS teaser-tier compositions
 - Azure private database compositions for PostgreSQL, MySQL, SQL Database, and Cosmos DB
 - OCI private ADB access compositions
 - OCI multiregion compute failover compositions

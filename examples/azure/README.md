@@ -11,6 +11,7 @@ The goal of this section is to group Azure examples in a way that remains readab
 Current emphasis:
 
 - networking-oriented landing zone patterns
+- AKS teaser-tier landing zone patterns
 - database private-access landing zone patterns for relational engines and Cosmos DB
 - payload-driven reuse of shared Azure orchestrator code
 
@@ -19,6 +20,7 @@ Current emphasis:
 ## 📂 Available Azure Domains
 
 - [Networking examples](networking/README.md)
+- [AKS examples](aks/README.md)
 - [Database examples](database/README.md)
 
 ---

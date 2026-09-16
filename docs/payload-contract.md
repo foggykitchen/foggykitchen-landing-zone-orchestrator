@@ -204,6 +204,80 @@ These payloads describe a self-contained single-region VNet with Azure Bastion, 
 - `routing`
 - `compute`
 
+`aks_basic` focuses on:
+
+- `architecture.network`
+- `workload.jump`
+- `data.aks`
+
+For AKS basic private access, the current contract is:
+
+- `architecture.network.vnet.name`
+- `architecture.network.vnet.cidr`
+- `architecture.network.node_subnet.name`
+- `architecture.network.node_subnet.cidr`
+- `architecture.network.jump_subnet.name`
+- `architecture.network.jump_subnet.cidr`
+- `architecture.network.bastion_subnet.cidr`
+- optional `architecture.network.nat_gateway.name`
+- optional `architecture.network.nat_gateway.public_ip_name`
+- optional `architecture.network.route_table.name`
+- `workload.jump.name`
+- `workload.jump.shape`
+- `workload.jump.admin_username`
+- `workload.jump.ssh_authorized_keys`
+- `data.aks.cluster.name`
+- `data.aks.cluster.kubernetes_version`
+- `data.aks.cluster.network_plugin`
+- `data.aks.cluster.service_cidr`
+- `data.aks.cluster.dns_service_ip`
+- `data.aks.cluster.private_cluster_enabled`
+- `data.aks.cluster.outbound_type`
+- `data.aks.default_node_pool.node_count`
+- `data.aks.default_node_pool.vm_size`
+
+Example:
+
+```yaml
+architecture:
+  network:
+    vnet:
+      name: vnet-fk-azure-aks-basic-dev
+      cidr: 10.180.0.0/16
+    node_subnet:
+      name: snet-fk-aks-nodes
+      cidr: 10.180.10.0/24
+    jump_subnet:
+      name: snet-fk-aks-jump
+      cidr: 10.180.20.0/24
+    bastion_subnet:
+      cidr: 10.180.30.0/26
+
+workload:
+  jump:
+    name: vm-fk-aks-jump
+    shape: Standard_B1s
+    admin_username: azureuser
+    ssh_authorized_keys:
+      - ssh-rsa REPLACE_WITH_PUBLIC_KEY_ONLY
+
+data:
+  aks:
+    cluster:
+      name: aks-fk-basic-dev
+      kubernetes_version: "1.33.5"
+      network_plugin: azure
+      service_cidr: 10.200.0.0/16
+      dns_service_ip: 10.200.0.10
+      private_cluster_enabled: true
+      outbound_type: userDefinedRouting
+    default_node_pool:
+      node_count: 1
+      vm_size: Standard_D2s_v3
+```
+
+The AKS basic pattern supports only a private cluster with Azure CNI and `outbound_type = "userDefinedRouting"`. The node subnet receives an associated empty route table, and NAT Gateway provides outbound egress for private nodes. `data.aks.acr`, `data.aks.cmk`, `data.aks.diagnostics`, and `data.aks.additional_node_pools` are reserved for a richer blueprint-tier AKS pattern.
+
 `postgresql_private_access` focuses on:
 
 - `architecture.private_access`
