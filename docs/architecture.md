@@ -63,6 +63,7 @@ This separation keeps the implementation:
 - `private_endpoint`
 - `firewall_transit`
 - `aks_basic`
+- `aks_private_acr`
 - `postgresql_private_access`
 - `sql_private_access`
 - `mysql_private_access`
@@ -151,11 +152,11 @@ Focus:
 - centralized north-south egress
 - route tables pointing to Azure Firewall private IP
 
-### Azure AKS Basic
+### Azure AKS Teaser Patterns
 
 Focus:
 
-- teaser-tier private AKS baseline
+- teaser-tier private AKS baselines
 - one self-contained VNet with an AKS node subnet, a jump subnet, and `AzureBastionSubnet`
 - AKS private cluster using Azure CNI
 - empty route table associated to the AKS node subnet for AKS `userDefinedRouting`
@@ -163,7 +164,8 @@ Focus:
 - subnet-associated NSGs denying direct Internet inbound
 - Azure Bastion for operator SSH access to the private jump host
 - lightweight private jump host for AKS private API DNS and TCP `443` checks
-- single-region AKS baseline without Azure Firewall, ACR, customer-managed keys, diagnostics, additional node pools, autoscaling, hub-spoke transit, or DR
+- optional private ACR teaser through `aks_private_acr`, using ACR Premium, Private Endpoint subresource `registry`, and Private DNS Zone `privatelink.azurecr.io`
+- single-region AKS baselines without Azure Firewall, customer-managed keys, diagnostics, additional node pools, autoscaling, hub-spoke transit, or DR
 
 ### Azure Database Private Access
 

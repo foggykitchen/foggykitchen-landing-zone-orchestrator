@@ -49,13 +49,14 @@ These patterns use self-contained single-region VNets with Azure Bastion and a p
 
 ## Azure AKS Coverage
 
-The public orchestrator currently includes one Azure AKS teaser-tier pattern:
+The public orchestrator currently includes Azure AKS teaser-tier patterns:
 
 | Scenario | Pattern | Current scope |
 | --- | --- | --- |
 | Private AKS basic | `patterns/azure/aks_basic` | single-region private AKS cluster with Azure Bastion, NAT Gateway egress, subnet NSGs, empty route table for `userDefinedRouting`, and a private jump host |
+| Private AKS plus private ACR | `patterns/azure/aks_private_acr` | `aks_basic` shape plus ACR Premium, ACR Private Endpoint subresource `registry`, Private DNS Zone `privatelink.azurecr.io`, and `AcrPull` attachment |
 
-The AKS pattern is intentionally narrower than the premium `aks_firewall_transit` blueprint. Azure Firewall transit, ACR, customer-managed keys, additional node pools, autoscaling, diagnostics, multi-region, and DR are outside this public pattern.
+The AKS patterns are intentionally narrower than the premium `aks_firewall_transit` blueprint. Azure Firewall transit, customer-managed keys, additional node pools, autoscaling, diagnostics, multi-region, and DR are outside these public patterns.
 
 ---
 

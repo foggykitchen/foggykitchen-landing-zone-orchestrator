@@ -5,6 +5,7 @@ Azure AKS examples show how the public orchestrator composes focused Kubernetes 
 ## Available Scenarios
 
 - [basic](basic/README.md)
+- [private_acr](private_acr/README.md)
 
 ## License
 

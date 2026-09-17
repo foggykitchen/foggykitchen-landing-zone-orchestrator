@@ -36,6 +36,7 @@ Depending on the selected pattern and payload, the repository can compose:
 - Azure private endpoint landing zones
 - Azure firewall transit landing zones
 - Azure private AKS basic landing zones
+- Azure private AKS plus private ACR landing zones
 - Azure PostgreSQL Flexible Server private-access landing zones with delegated subnet or Private Endpoint
 - Azure Database for MySQL Flexible Server private-access landing zones with delegated subnet
 - Azure SQL Database private-access landing zones with Private Endpoint
@@ -130,7 +131,8 @@ foggykitchen-landing-zone-orchestrator/
 │   ├── azure/
 │   │   ├── README.md
 │   │   ├── aks/
-│   │   │   └── basic/
+│   │   │   ├── basic/
+│   │   │   └── private_acr/
 │   │   ├── database/
 │   │   │   ├── postgresql/
 │   │   │   │   └── private_access/
@@ -188,6 +190,7 @@ foggykitchen-landing-zone-orchestrator/
 ├── patterns/
 │   ├── azure/
 │   │   ├── aks_basic/
+│   │   ├── aks_private_acr/
 │   │   ├── postgresql_private_access/
 │   │   ├── mysql_private_access/
 │   │   ├── cosmosdb_private_access/
@@ -223,6 +226,7 @@ Currently implemented:
 - [examples/azure/networking/firewall_transit/basic](examples/azure/networking/firewall_transit/basic/README.md)
 - [examples/azure/networking/private_endpoint/storage_private_link](examples/azure/networking/private_endpoint/storage_private_link/README.md)
 - [examples/azure/aks/basic](examples/azure/aks/basic/README.md)
+- [examples/azure/aks/private_acr](examples/azure/aks/private_acr/README.md)
 - [examples/azure/database/postgresql/private_access/delegated_subnet](examples/azure/database/postgresql/private_access/delegated_subnet/README.md)
 - [examples/azure/database/postgresql/private_access/private_endpoint](examples/azure/database/postgresql/private_access/private_endpoint/README.md)
 - [examples/azure/database/mysql/private_access/delegated_subnet](examples/azure/database/mysql/private_access/delegated_subnet/README.md)
@@ -245,6 +249,7 @@ Shared orchestration patterns:
 - [patterns/azure/firewall_transit](patterns/azure/firewall_transit)
 - [patterns/azure/private_endpoint](patterns/azure/private_endpoint)
 - [patterns/azure/aks_basic](patterns/azure/aks_basic)
+- [patterns/azure/aks_private_acr](patterns/azure/aks_private_acr)
 - [patterns/azure/postgresql_private_access](patterns/azure/postgresql_private_access)
 - [patterns/azure/mysql_private_access](patterns/azure/mysql_private_access)
 - [patterns/azure/cosmosdb_private_access](patterns/azure/cosmosdb_private_access)
@@ -265,15 +270,17 @@ Shared orchestration patterns:
 
 The public orchestrator includes a focused Azure AKS teaser-tier landing-zone pattern for a single-region private cluster. It keeps the network self-contained instead of reusing the broader hub-spoke or firewall-transit patterns.
 
-Current Azure AKS example:
+Current Azure AKS examples:
 
 - Private AKS basic baseline with Azure Bastion operator access and NAT Gateway egress: [examples/azure/aks/basic](examples/azure/aks/basic/README.md)
+- Private AKS plus private ACR baseline with ACR Private Endpoint access: [examples/azure/aks/private_acr](examples/azure/aks/private_acr/README.md)
 
 | Scenario | Pattern | Network shape | Validation path |
 | --- | --- | --- | --- |
 | Private AKS basic | `patterns/azure/aks_basic` | one VNet with AKS node, jump, and `AzureBastionSubnet` subnets | Azure Bastion to private jump host, then private AKS API DNS and TCP `443` checks |
+| Private AKS plus private ACR | `patterns/azure/aks_private_acr` | one VNet with AKS node, jump, ACR Private Endpoint, and `AzureBastionSubnet` subnets | Azure Bastion to private jump host, then private AKS API and ACR DNS/TCP `443` checks |
 
-This public pattern deliberately excludes Azure Firewall transit, ACR integration, customer-managed keys, additional node pools, autoscaling, diagnostics, multi-region, and DR. Those concerns belong in the premium `aks_firewall_transit` blueprint tier.
+These public patterns deliberately exclude Azure Firewall transit, customer-managed keys, additional node pools, autoscaling, diagnostics, multi-region, and DR. Those concerns belong in the premium `aks_firewall_transit` blueprint tier.
 
 ---
 
@@ -343,6 +350,7 @@ The repository composes FoggyKitchen building blocks such as:
 - [terraform-az-fk-private-endpoint](https://github.com/foggykitchen/terraform-az-fk-private-endpoint)
 - [terraform-az-fk-firewall](https://github.com/foggykitchen/terraform-az-fk-firewall)
 - [terraform-az-fk-aks](https://github.com/foggykitchen/terraform-az-fk-aks)
+- [terraform-az-fk-acr](https://github.com/foggykitchen/terraform-az-fk-acr)
 - [terraform-az-fk-pg](https://github.com/foggykitchen/terraform-az-fk-pg)
 - [terraform-az-fk-sql](https://github.com/foggykitchen/terraform-az-fk-sql)
 - [terraform-az-fk-mysql](https://github.com/foggykitchen/terraform-az-fk-mysql)

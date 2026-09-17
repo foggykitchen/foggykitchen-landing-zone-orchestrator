@@ -28,6 +28,7 @@ The goal of this map is to show how the repository turns individual modules into
 | `terraform-az-fk-private-endpoint` | Private service exposure |
 | `terraform-az-fk-firewall` | Central inspection and transit boundary |
 | `terraform-az-fk-aks` | Azure Kubernetes Service cluster layer |
+| `terraform-az-fk-acr` | Azure Container Registry service layer |
 | `terraform-az-fk-pg` | PostgreSQL Flexible Server service layer |
 | `terraform-az-fk-sql` | Azure SQL Database service layer |
 | `terraform-az-fk-mysql` | MySQL Flexible Server service layer |
@@ -116,6 +117,36 @@ Focus:
 - subnet-associated NSGs for denied Internet inbound and Bastion-sourced SSH/RDP to the jump subnet
 - one Azure Bastion host for operator SSH access to the private jump host
 - lightweight jump host for private AKS API TCP `443` checks
+
+### `patterns/azure/aks_private_acr`
+
+Uses:
+
+- `terraform-az-fk-vnet`
+- `terraform-az-fk-nsg`
+- `terraform-az-fk-routing`
+- `terraform-az-fk-public-ip`
+- `terraform-az-fk-natgw`
+- `terraform-az-fk-bastion`
+- `terraform-az-fk-aks`
+- `terraform-az-fk-acr`
+- `terraform-az-fk-private-dns`
+- `terraform-az-fk-private-endpoint`
+- `terraform-az-fk-compute`
+
+Focus:
+
+- one VNet with an AKS node subnet, a jump subnet, an ACR Private Endpoint subnet, and `AzureBastionSubnet`
+- private AKS cluster through `terraform-az-fk-aks`
+- ACR Premium registry through `terraform-az-fk-acr`
+- ACR Private Endpoint through `terraform-az-fk-private-endpoint`
+- Private DNS Zone `privatelink.azurecr.io` through `terraform-az-fk-private-dns`
+- `AcrPull` role assignment to the AKS kubelet identity
+- empty route table association for AKS `userDefinedRouting`
+- NAT Gateway egress for the AKS node and jump subnets
+- subnet-associated NSGs for denied Internet inbound and Bastion-sourced SSH/RDP to the jump subnet
+- one Azure Bastion host for operator SSH access to the private jump host
+- lightweight jump host for private AKS API and ACR TCP `443` checks
 
 ### `patterns/azure/postgresql_private_access`
 

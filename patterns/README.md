@@ -28,6 +28,7 @@ Examples under `examples/` should stay thin and delegate architecture logic to t
 - [private_endpoint](azure/private_endpoint)
 - [firewall_transit](azure/firewall_transit)
 - [aks_basic](azure/aks_basic)
+- [aks_private_acr](azure/aks_private_acr)
 - [postgresql_private_access](azure/postgresql_private_access)
 - [sql_private_access](azure/sql_private_access)
 - [mysql_private_access](azure/mysql_private_access)
@@ -63,6 +64,7 @@ Recommended order:
 - `azure/hub_spoke` is the shared base for the Azure networking-oriented patterns
 - `azure/private_endpoint` extends the shared Azure networking foundation
 - `azure/aks_basic` adds a teaser-tier private AKS baseline with Azure Bastion, NAT Gateway egress, and a private jump host
+- `azure/aks_private_acr` extends the AKS teaser tier with ACR Private Endpoint and Private DNS access
 - `azure/postgresql_private_access` keeps PostgreSQL delegated-subnet and Private Endpoint variants minimal and self-contained
 - `azure/sql_private_access` adds the first Azure database Private Endpoint pattern while keeping the network self-contained
 - `azure/mysql_private_access` mirrors the delegated-subnet database shape for MySQL Flexible Server

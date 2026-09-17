@@ -276,7 +276,40 @@ data:
       vm_size: Standard_D2s_v3
 ```
 
-The AKS basic pattern supports only a private cluster with Azure CNI and `outbound_type = "userDefinedRouting"`. The node subnet receives an associated empty route table, and NAT Gateway provides outbound egress for private nodes. `data.aks.acr`, `data.aks.cmk`, `data.aks.diagnostics`, and `data.aks.additional_node_pools` are reserved for a richer blueprint-tier AKS pattern.
+The AKS basic pattern supports only a private cluster with Azure CNI and `outbound_type = "userDefinedRouting"`. The node subnet receives an associated empty route table, and NAT Gateway provides outbound egress for private nodes. `data.aks.acr` is handled by `aks_private_acr`; `data.aks.cmk`, `data.aks.diagnostics`, and `data.aks.additional_node_pools` are reserved for richer blueprint-tier AKS patterns.
+
+`aks_private_acr` extends the `aks_basic` payload with:
+
+- `architecture.network.private_endpoint_subnet.name`
+- `architecture.network.private_endpoint_subnet.cidr`
+- `data.aks.acr.name`
+- `data.aks.acr.sku`
+- `data.aks.acr.admin_enabled`
+- `data.aks.acr.public_network_access_enabled`
+- optional `data.aks.acr.private_dns_zone_name`
+- optional `data.aks.acr.private_endpoint_name`
+
+Example extension:
+
+```yaml
+architecture:
+  network:
+    private_endpoint_subnet:
+      name: snet-fk-acr-private-endpoint
+      cidr: 10.181.40.0/24
+
+data:
+  aks:
+    acr:
+      name: fkaksacrdev001
+      sku: Premium
+      admin_enabled: false
+      public_network_access_enabled: false
+      private_dns_zone_name: privatelink.azurecr.io
+      private_endpoint_name: pe-fk-aks-acr-dev
+```
+
+The `aks_private_acr` pattern requires ACR Premium for Private Endpoint support, uses ACR Private Endpoint subresource `registry`, creates or links `privatelink.azurecr.io`, disables public registry access, and assigns `AcrPull` to the AKS kubelet identity after AKS and ACR exist.
 
 `postgresql_private_access` focuses on:
 
