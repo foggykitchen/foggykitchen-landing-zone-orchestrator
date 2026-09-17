@@ -261,6 +261,22 @@ Shared orchestration patterns:
 
 ---
 
+## Azure AKS Coverage
+
+The public orchestrator includes a focused Azure AKS teaser-tier landing-zone pattern for a single-region private cluster. It keeps the network self-contained instead of reusing the broader hub-spoke or firewall-transit patterns.
+
+Current Azure AKS example:
+
+- Private AKS basic baseline with Azure Bastion operator access and NAT Gateway egress: [examples/azure/aks/basic](examples/azure/aks/basic/README.md)
+
+| Scenario | Pattern | Network shape | Validation path |
+| --- | --- | --- | --- |
+| Private AKS basic | `patterns/azure/aks_basic` | one VNet with AKS node, jump, and `AzureBastionSubnet` subnets | Azure Bastion to private jump host, then private AKS API DNS and TCP `443` checks |
+
+This public pattern deliberately excludes Azure Firewall transit, ACR integration, customer-managed keys, additional node pools, autoscaling, diagnostics, multi-region, and DR. Those concerns belong in the premium `aks_firewall_transit` blueprint tier.
+
+---
+
 ## Azure Database Coverage
 
 The public orchestrator includes focused, single-region Azure private database landing-zone patterns. Each pattern keeps networking self-contained instead of reusing the full hub-spoke pattern, and uses Azure Bastion for operator access to a private validation host.

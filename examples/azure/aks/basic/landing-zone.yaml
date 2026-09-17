@@ -43,7 +43,7 @@ data:
   aks:
     cluster:
       name: aks-fk-basic-dev
-      kubernetes_version: "1.33.5"
+      kubernetes_version: "1.34"
       network_plugin: azure
       service_cidr: 10.200.0.0/16
       dns_service_ip: 10.200.0.10

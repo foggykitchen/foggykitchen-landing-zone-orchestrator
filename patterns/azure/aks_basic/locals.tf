@@ -32,7 +32,7 @@ locals {
   route_table_name           = nonsensitive(try(local.network.route_table.name, "${local.project_name}-aks-udr"))
 
   aks_name                    = nonsensitive(local.aks.cluster.name)
-  aks_kubernetes_version      = nonsensitive(try(local.aks.cluster.kubernetes_version, "1.33.5"))
+  aks_kubernetes_version      = nonsensitive(try(local.aks.cluster.kubernetes_version, "1.34"))
   aks_network_plugin          = nonsensitive(try(local.aks.cluster.network_plugin, "azure"))
   aks_network_policy          = nonsensitive(try(local.aks.cluster.network_policy, null))
   aks_service_cidr            = nonsensitive(try(local.aks.cluster.service_cidr, "10.200.0.0/16"))

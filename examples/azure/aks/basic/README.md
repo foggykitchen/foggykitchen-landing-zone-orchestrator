@@ -46,11 +46,11 @@ The `aks_basic` pattern composes one VNet with an AKS node subnet, a dedicated j
 cp terraform.tfvars.example terraform.tfvars
 tofu init
 tofu validate
+tofu plan
+tofu apply
 ```
 
-Replace the placeholder values in `terraform.tfvars` before running a real plan or apply.
-
-This PR validates only `tofu fmt`, `tofu init`, and `tofu validate`. It does not run `tofu plan` or `tofu apply` against a real subscription.
+Replace the placeholder values in `terraform.tfvars` before planning.
 
 ## Validation Flow
 
@@ -69,6 +69,88 @@ Expected result:
 - the jump host has no public IP and operator SSH goes through Azure Bastion
 - direct Internet-originated inbound traffic to the AKS node subnet is denied by NSG
 - AKS uses `outbound_type = "userDefinedRouting"` with an empty route table, while the subnet-associated NAT Gateway provides outbound egress for private nodes
+
+## Validation Result
+
+Validation output from the deployed example through Azure Bastion:
+
+```text
+== client host ==
+vm-fk-aks-jump
+
+== client addresses ==
+10.180.20.4
+lo               UNKNOWN        127.0.0.1/8 ::1/128
+eth0             UP             10.180.20.4/24 metric 100 fe80::20d:3aff:fe2e:6e40/64
+
+== aks private dns ==
+10.180.10.4     aks-fk-basic-dev-jfpxuv41.343499fb-c03e-4038-b544-b97708374e03.privatelink.westeurope.azmk8s.io
+
+== aks tcp 443 ==
+Connection to aks-fk-basic-dev-jfpxuv41.343499fb-c03e-4038-b544-b97708374e03.privatelink.westeurope.azmk8s.io (10.180.10.4) 443 port [tcp/https] succeeded!
+
+== aks https /version ==
+HTTP/2 401
+audit-id: 9558a1fe-e141-48d0-b1c0-d38530d870a0
+cache-control: no-cache, private
+content-type: application/json
+content-length: 157
+date: Thu, 17 Sep 2026 08:59:40 GMT
+
+{
+  "kind": "Status",
+  "apiVersion": "v1",
+  "metadata": {},
+  "status": "Failure",
+  "message": "Unauthorized",
+  "reason": "Unauthorized",
+  "code": 401
+}
+```
+
+The `401 Unauthorized` response is expected for an unauthenticated API request. It confirms that the private AKS API endpoint is reachable from the jump host through private DNS and TCP `443`.
+
+## Azure Portal Verification
+
+<img src="diagrams/azure_aks_basic_resource_group_overview.jpg" alt="Resource Group overview" width="900"/>
+
+**Figure 2.** Resource Group overview after deployment.
+
+<img src="diagrams/azure_aks_basic_vnet_subnets.jpg" alt="VNet subnets" width="900"/>
+
+**Figure 3.** VNet subnets for AKS nodes, jump host, and Azure Bastion.
+
+<img src="diagrams/azure_aks_basic_aks_overview.jpg" alt="AKS overview" width="900"/>
+
+**Figure 4.** AKS overview with private API server address.
+
+<img src="diagrams/azure_aks_basic_aks_networking.jpg" alt="AKS networking" width="900"/>
+
+**Figure 5.** AKS virtual network integration with the node subnet.
+
+<img src="diagrams/azure_aks_basic_route_table.jpg" alt="AKS route table" width="900"/>
+
+**Figure 6.** Empty route table associated to the AKS node subnet for `userDefinedRouting`.
+
+<img src="diagrams/azure_aks_basic_nat_gateway.jpg" alt="NAT Gateway overview" width="900"/>
+
+**Figure 7.** NAT Gateway used for outbound egress from the private AKS and jump subnets.
+
+<img src="diagrams/azure_aks_basic_bastion_overview.jpg" alt="Azure Bastion overview" width="900"/>
+
+**Figure 8.** Azure Bastion used for operator access to the private jump host.
+
+<img src="diagrams/azure_aks_basic_jump_vm_networking.jpg" alt="Jump VM networking" width="900"/>
+
+**Figure 9.** Private jump VM networking in the dedicated jump subnet.
+
+<img src="diagrams/azure_aks_basic_node_nsg_rules.jpg" alt="AKS node NSG rules" width="900"/>
+
+**Figure 10.** AKS node subnet NSG rules denying direct Internet inbound traffic.
+
+<img src="diagrams/azure_aks_basic_jump_nsg_rules.jpg" alt="Jump host NSG rules" width="900"/>
+
+**Figure 11.** Jump subnet NSG rules allowing SSH only from the Bastion subnet and denying direct Internet inbound traffic.
 
 ## Destroy
 
