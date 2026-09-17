@@ -6,6 +6,7 @@ Azure AKS examples show how the public orchestrator composes focused Kubernetes 
 
 - [basic](basic/README.md)
 - [private_acr](private_acr/README.md)
+- [firewall_transit_basic](firewall_transit_basic/README.md) - premium blueprint placeholder
 
 ## License
 

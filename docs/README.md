@@ -58,6 +58,8 @@ The public orchestrator currently includes Azure AKS teaser-tier patterns:
 
 The AKS patterns are intentionally narrower than the premium `aks_firewall_transit` blueprint. Azure Firewall transit, customer-managed keys, additional node pools, autoscaling, diagnostics, multi-region, and DR are outside these public patterns.
 
+The public examples tree includes [examples/azure/aks/firewall_transit_basic](../examples/azure/aks/firewall_transit_basic/README.md) as a placeholder for the premium AKS firewall-transit blueprint. The implementation is distributed through the private `foggykitchen-landing-zone-blueprint` repository and requires a [FoggyKitchen Professional+ subscription](https://foggykitchen.com/membership).
+
 ---
 
 ## 🧭 Recommended Reading Order

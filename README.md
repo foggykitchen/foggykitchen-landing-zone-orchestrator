@@ -132,7 +132,8 @@ foggykitchen-landing-zone-orchestrator/
 │   │   ├── README.md
 │   │   ├── aks/
 │   │   │   ├── basic/
-│   │   │   └── private_acr/
+│   │   │   ├── private_acr/
+│   │   │   └── firewall_transit_basic/
 │   │   ├── database/
 │   │   │   ├── postgresql/
 │   │   │   │   └── private_access/
@@ -281,6 +282,8 @@ Current Azure AKS examples:
 | Private AKS plus private ACR | `patterns/azure/aks_private_acr` | one VNet with AKS node, jump, ACR Private Endpoint, and `AzureBastionSubnet` subnets | Azure Bastion to private jump host, then private AKS API and ACR DNS/TCP `443` checks |
 
 These public patterns deliberately exclude Azure Firewall transit, customer-managed keys, additional node pools, autoscaling, diagnostics, multi-region, and DR. Those concerns belong in the premium `aks_firewall_transit` blueprint tier.
+
+The public examples tree includes a placeholder for the premium AKS firewall-transit blueprint at [examples/azure/aks/firewall_transit_basic](examples/azure/aks/firewall_transit_basic/README.md). The implementation lives in the private `foggykitchen-landing-zone-blueprint` repository and requires a [FoggyKitchen Professional+ subscription](https://foggykitchen.com/membership).
 
 ---
 

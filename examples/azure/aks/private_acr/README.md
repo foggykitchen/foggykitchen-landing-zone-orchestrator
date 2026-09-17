@@ -2,7 +2,7 @@
 
 This example composes a **private Azure Kubernetes Service cluster** with a private Azure Container Registry reachable through Azure Private Link, Azure Bastion operator access, NAT Gateway egress, and a private jump host.
 
-It extends the public `aks_basic` teaser-tier shape by adding one ACR Premium registry, one ACR Private Endpoint, and the `privatelink.azurecr.io` Private DNS Zone. Move to the premium `aks_firewall_transit` blueprint when the architecture requires Azure Firewall transit, hub-and-spoke networking, customer-managed keys, multiple node pools, or broader platform governance.
+It extends the public `aks_basic` teaser-tier shape by adding one ACR Premium registry, one ACR Private Endpoint, and the `privatelink.azurecr.io` Private DNS Zone. Move to the premium [AKS firewall-transit blueprint placeholder](../firewall_transit_basic/README.md) when the architecture requires Azure Firewall transit, hub-and-spoke networking, customer-managed keys, multiple node pools, or broader platform governance. The blueprint repository is private and requires a [FoggyKitchen Professional+ membership](https://foggykitchen.com/membership).
 
 ## Architecture Overview
 
@@ -101,65 +101,65 @@ Capture the following after a manual apply:
 
 ## Deployment Evidence
 
-**Resource Group overview**
-
 <img src="diagrams/azure_aks_private_acr_resource_group_overview.jpg" alt="Azure AKS private ACR resource group overview" width="900"/>
 
-**VNet subnets**
+**Figure 2.** Resource Group overview after deployment, showing the private AKS cluster, private ACR, Private Endpoint, Private DNS Zone, Bastion, NAT Gateway, NSGs, route table, jump VM, and supporting network resources.
 
 <img src="diagrams/azure_aks_private_acr_vnet_subnets.jpg" alt="Azure AKS private ACR VNet subnets" width="900"/>
 
-**AKS overview**
+**Figure 3.** VNet subnet layout with dedicated subnets for AKS nodes, the private jump host, ACR Private Endpoint, and `AzureBastionSubnet`.
 
 <img src="diagrams/azure_aks_private_acr_aks_overview.jpg" alt="Azure AKS private ACR AKS overview" width="900"/>
 
-**AKS networking**
+**Figure 4.** AKS overview showing the running private cluster, Kubernetes version, private API server address, Azure CNI network configuration, and attached ACR.
 
 <img src="diagrams/azure_aks_private_acr_aks_networking.jpg" alt="Azure AKS private ACR AKS networking" width="900"/>
 
-**ACR overview**
+**Figure 5.** AKS networking view showing virtual network integration with the dedicated AKS node subnet.
 
 <img src="diagrams/azure_aks_private_acr_acr_overview.jpg" alt="Azure AKS private ACR container registry overview" width="900"/>
 
-**ACR networking**
+**Figure 6.** Azure Container Registry overview showing the Premium registry, login server, provisioning state, and resource tags.
 
 <img src="diagrams/azure_aks_private_acr_acr_networking.jpg" alt="Azure AKS private ACR container registry networking" width="900"/>
 
-**ACR Private Endpoint**
+**Figure 7.** ACR networking private access view showing the approved Private Endpoint connection and disabled public access path.
 
 <img src="diagrams/azure_aks_private_acr_private_endpoint.jpg" alt="Azure AKS private ACR Private Endpoint overview" width="900"/>
 
-**ACR Private Endpoint DNS configuration**
+**Figure 8.** ACR Private Endpoint overview showing subresource `registry`, approved connection status, target registry, and Private Endpoint subnet placement.
 
 <img src="diagrams/azure_aks_private_acr_private_endpoint_dns.jpg" alt="Azure AKS private ACR Private Endpoint DNS configuration" width="900"/>
 
-**Private DNS Zone records**
+**Figure 9.** ACR Private Endpoint DNS configuration showing customer-visible FQDNs, private IP addresses, and the linked `privatelink.azurecr.io` zone group.
 
 <img src="diagrams/azure_aks_private_acr_private_dns_zone.jpg" alt="Azure AKS private ACR Private DNS Zone records" width="900"/>
 
-**AKS route table**
+**Figure 10.** Private DNS Zone records for `privatelink.azurecr.io`, resolving the registry and regional data endpoint to private IPs in the Private Endpoint subnet.
 
 <img src="diagrams/azure_aks_private_acr_route_table.jpg" alt="Azure AKS private ACR route table" width="900"/>
 
-**NAT Gateway**
+**Figure 11.** Empty route table associated to the AKS node subnet for AKS `userDefinedRouting`; NAT Gateway provides outbound egress for the subnet.
 
 <img src="diagrams/azure_aks_private_acr_nat_gateway.jpg" alt="Azure AKS private ACR NAT Gateway" width="900"/>
 
-**Azure Bastion**
+**Figure 12.** NAT Gateway overview showing the Standard NAT Gateway, public outbound IP, and subnet associations used for private-node and jump-host egress.
 
 <img src="diagrams/azure_aks_private_acr_bastion_overview.jpg" alt="Azure AKS private ACR Azure Bastion overview" width="900"/>
 
-**Jump VM networking**
+**Figure 13.** Azure Bastion overview showing the Bastion host in `AzureBastionSubnet`, used for operator SSH access to the private jump host.
 
 <img src="diagrams/azure_aks_private_acr_jump_vm_networking.jpg" alt="Azure AKS private ACR jump VM networking" width="900"/>
 
-**AKS node subnet NSG rules**
+**Figure 14.** Jump VM networking view showing placement in `snet-fk-aks-jump`, private IP assignment, NAT Gateway egress, and no direct public IP on the VM NIC.
 
 <img src="diagrams/azure_aks_private_acr_node_nsg_rules.jpg" alt="Azure AKS private ACR node subnet NSG rules" width="900"/>
 
-**Jump subnet NSG rules**
+**Figure 15.** AKS node subnet NSG rules denying direct Internet-originated inbound traffic while allowing required virtual network and outbound flows.
 
 <img src="diagrams/azure_aks_private_acr_jump_nsg_rules.jpg" alt="Azure AKS private ACR jump subnet NSG rules" width="900"/>
+
+**Figure 16.** Jump subnet NSG rules allowing SSH and RDP only from `AzureBastionSubnet`, denying direct Internet-originated inbound traffic, and allowing controlled outbound egress.
 
 ## Destroy
 
@@ -177,6 +177,7 @@ tofu destroy
 ## Learn More
 
 - [FoggyKitchen Azure AKS Terraform Course](https://foggykitchen.com/courses/azure-aks-terraform-course)
+- [FoggyKitchen premium AKS firewall transit blueprint placeholder](../firewall_transit_basic/README.md)
 - [Create a private Azure Kubernetes Service cluster](https://learn.microsoft.com/en-us/azure/aks/private-clusters)
 - [Connect privately to an Azure Container Registry using Azure Private Link](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-private-link)
 - [Azure private endpoint DNS configuration](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns)
