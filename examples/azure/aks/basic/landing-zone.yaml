@@ -1,0 +1,54 @@
+landing_zone:
+  name: fk-azure-aks-basic-dev
+  default_tags:
+    project: foggykitchen
+    environment: dev
+    landing_zone: fk-azure-aks-basic-dev
+    managed_by: opentofu
+
+cloud:
+  subscription_id: ${jsonencode(subscription_id)}
+  tenant_id: ${jsonencode(tenant_id)}
+  location: westeurope
+  resource_group:
+    name: rg-fk-azure-aks-basic-dev
+
+architecture:
+  network:
+    vnet:
+      name: vnet-fk-azure-aks-basic-dev
+      cidr: 10.180.0.0/16
+    node_subnet:
+      name: snet-fk-aks-nodes
+      cidr: 10.180.10.0/24
+    jump_subnet:
+      name: snet-fk-aks-jump
+      cidr: 10.180.20.0/24
+    bastion_subnet:
+      cidr: 10.180.30.0/26
+    nat_gateway:
+      name: natgw-fk-aks-basic
+      public_ip_name: pip-fk-aks-basic-natgw
+    route_table:
+      name: rt-fk-aks-empty-udr
+
+workload:
+  jump:
+    name: vm-fk-aks-jump
+    shape: Standard_B1s
+    admin_username: azureuser
+    ssh_authorized_keys: ${jsonencode(ssh_authorized_keys)}
+
+data:
+  aks:
+    cluster:
+      name: aks-fk-basic-dev
+      kubernetes_version: "1.34"
+      network_plugin: azure
+      service_cidr: 10.200.0.0/16
+      dns_service_ip: 10.200.0.10
+      private_cluster_enabled: true
+      outbound_type: userDefinedRouting
+    default_node_pool:
+      node_count: 1
+      vm_size: Standard_D2s_v3

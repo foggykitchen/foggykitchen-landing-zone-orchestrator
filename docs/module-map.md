@@ -27,6 +27,7 @@ The goal of this map is to show how the repository turns individual modules into
 | `terraform-az-fk-storage` | Storage service layer |
 | `terraform-az-fk-private-endpoint` | Private service exposure |
 | `terraform-az-fk-firewall` | Central inspection and transit boundary |
+| `terraform-az-fk-aks` | Azure Kubernetes Service cluster layer |
 | `terraform-az-fk-pg` | PostgreSQL Flexible Server service layer |
 | `terraform-az-fk-sql` | Azure SQL Database service layer |
 | `terraform-az-fk-mysql` | MySQL Flexible Server service layer |
@@ -92,6 +93,29 @@ Uses:
 - `terraform-az-fk-public-ip`
 - `terraform-az-fk-firewall`
 - `terraform-az-fk-compute`
+
+### `patterns/azure/aks_basic`
+
+Uses:
+
+- `terraform-az-fk-vnet`
+- `terraform-az-fk-nsg`
+- `terraform-az-fk-routing`
+- `terraform-az-fk-public-ip`
+- `terraform-az-fk-natgw`
+- `terraform-az-fk-bastion`
+- `terraform-az-fk-aks`
+- `terraform-az-fk-compute`
+
+Focus:
+
+- one VNet with an AKS node subnet, a jump subnet, and `AzureBastionSubnet`
+- private AKS cluster through `terraform-az-fk-aks`
+- empty route table association for AKS `userDefinedRouting`
+- NAT Gateway egress for the AKS node and jump subnets
+- subnet-associated NSGs for denied Internet inbound and Bastion-sourced SSH/RDP to the jump subnet
+- one Azure Bastion host for operator SSH access to the private jump host
+- lightweight jump host for private AKS API TCP `443` checks
 
 ### `patterns/azure/postgresql_private_access`
 

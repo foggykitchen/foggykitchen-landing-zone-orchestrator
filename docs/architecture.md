@@ -62,6 +62,7 @@ This separation keeps the implementation:
 - `hub_spoke`
 - `private_endpoint`
 - `firewall_transit`
+- `aks_basic`
 - `postgresql_private_access`
 - `sql_private_access`
 - `mysql_private_access`
@@ -149,6 +150,20 @@ Focus:
 - centralized east-west inspection
 - centralized north-south egress
 - route tables pointing to Azure Firewall private IP
+
+### Azure AKS Basic
+
+Focus:
+
+- teaser-tier private AKS baseline
+- one self-contained VNet with an AKS node subnet, a jump subnet, and `AzureBastionSubnet`
+- AKS private cluster using Azure CNI
+- empty route table associated to the AKS node subnet for AKS `userDefinedRouting`
+- NAT Gateway associated to the AKS node and jump subnets for outbound egress
+- subnet-associated NSGs denying direct Internet inbound
+- Azure Bastion for operator SSH access to the private jump host
+- lightweight private jump host for AKS private API DNS and TCP `443` checks
+- single-region AKS baseline without Azure Firewall, ACR, customer-managed keys, diagnostics, additional node pools, autoscaling, hub-spoke transit, or DR
 
 ### Azure Database Private Access
 
