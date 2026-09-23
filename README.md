@@ -38,7 +38,7 @@ Depending on the selected pattern and payload, the repository can compose:
 - Azure private AKS basic landing zones
 - Azure private AKS plus private ACR landing zones
 - Azure PostgreSQL Flexible Server private-access landing zones with delegated subnet or Private Endpoint
-- Azure Database for MySQL Flexible Server private-access landing zones with delegated subnet
+- Azure Database for MySQL Flexible Server private-access landing zones with delegated subnet or Private Endpoint
 - Azure SQL Database private-access landing zones with Private Endpoint
 - Azure Cosmos DB SQL API private-access landing zones with Private Endpoint
 - OCI DRG cross-region landing zones
@@ -141,7 +141,8 @@ foggykitchen-landing-zone-orchestrator/
 │   │   │   │       └── private_endpoint/
 │   │   │   ├── mysql/
 │   │   │   │   └── private_access/
-│   │   │   │       └── delegated_subnet/
+│   │   │   │       ├── delegated_subnet/
+│   │   │   │       └── private_endpoint/
 │   │   │   ├── cosmosdb/
 │   │   │   │   └── private_access/
 │   │   │   │       └── private_endpoint/
@@ -296,6 +297,7 @@ Current Azure database examples:
 - PostgreSQL Flexible Server with delegated-subnet private access: [examples/azure/database/postgresql/private_access/delegated_subnet](examples/azure/database/postgresql/private_access/delegated_subnet/README.md)
 - PostgreSQL Flexible Server with Private Endpoint access: [examples/azure/database/postgresql/private_access/private_endpoint](examples/azure/database/postgresql/private_access/private_endpoint/README.md)
 - MySQL Flexible Server with delegated-subnet private access: [examples/azure/database/mysql/private_access/delegated_subnet](examples/azure/database/mysql/private_access/delegated_subnet/README.md)
+- MySQL Flexible Server with Private Endpoint access: [examples/azure/database/mysql/private_access/private_endpoint](examples/azure/database/mysql/private_access/private_endpoint/README.md)
 - Azure SQL Database with Private Endpoint access: [examples/azure/database/sql/private_access/private_endpoint](examples/azure/database/sql/private_access/private_endpoint/README.md)
 - Cosmos DB SQL API with Private Endpoint access: [examples/azure/database/cosmosdb/private_access/private_endpoint](examples/azure/database/cosmosdb/private_access/private_endpoint/README.md)
 
@@ -304,6 +306,7 @@ Current Azure database examples:
 | PostgreSQL Flexible Server | `patterns/azure/postgresql_private_access` | delegated subnet | `Microsoft.DBforPostgreSQL/flexibleServers` delegation |
 | PostgreSQL Flexible Server | `patterns/azure/postgresql_private_access` | Private Endpoint | `postgresqlServer` subresource with `privatelink.postgres.database.azure.com` |
 | MySQL Flexible Server | `patterns/azure/mysql_private_access` | delegated subnet | `Microsoft.DBforMySQL/flexibleServers` delegation |
+| MySQL Flexible Server | `patterns/azure/mysql_private_access` | Private Endpoint | `mysqlServer` subresource with `privatelink.mysql.database.azure.com` |
 | Azure SQL Database | `patterns/azure/sql_private_access` | Private Endpoint | `sqlServer` subresource with `privatelink.database.windows.net` |
 | Cosmos DB SQL API | `patterns/azure/cosmosdb_private_access` | Private Endpoint | `Sql` subresource with `privatelink.documents.azure.com` |
 

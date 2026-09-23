@@ -41,7 +41,7 @@ The goal of this map is to show how the repository turns individual modules into
 | Pattern | Database module | Private access modules | Current modes |
 | --- | --- | --- | --- |
 | `patterns/azure/postgresql_private_access` | `terraform-az-fk-pg` | `terraform-az-fk-private-dns`; `terraform-az-fk-private-endpoint` for Private Endpoint mode | delegated subnet, Private Endpoint |
-| `patterns/azure/mysql_private_access` | `terraform-az-fk-mysql` | `terraform-az-fk-private-dns` | delegated subnet |
+| `patterns/azure/mysql_private_access` | `terraform-az-fk-mysql` | `terraform-az-fk-private-dns`; `terraform-az-fk-private-endpoint` for Private Endpoint mode | delegated subnet, Private Endpoint |
 | `patterns/azure/sql_private_access` | `terraform-az-fk-sql` | `terraform-az-fk-private-dns`, `terraform-az-fk-private-endpoint` | Private Endpoint |
 | `patterns/azure/cosmosdb_private_access` | `terraform-az-fk-cosmosdb` | `terraform-az-fk-private-dns`, `terraform-az-fk-private-endpoint` | Private Endpoint |
 
@@ -200,12 +200,13 @@ Uses:
 - `terraform-az-fk-nsg`
 - `terraform-az-fk-bastion`
 - `terraform-az-fk-mysql`
+- `terraform-az-fk-private-endpoint`
 - `terraform-az-fk-compute`
 
 Focus:
 
-- one VNet with a client subnet, `AzureBastionSubnet`, and delegated MySQL subnet
-- MySQL Flexible Server private access through delegated subnet and Private DNS
+- one VNet with a client subnet, `AzureBastionSubnet`, and either a delegated MySQL subnet or Private Endpoint subnet
+- MySQL Flexible Server private access through delegated subnet and Private DNS, or Private Endpoint and Private DNS Zone Group
 - public network access disabled and no MySQL firewall rules
 - one Azure Bastion host for operator SSH access to the private validation host
 - one subnet-associated NSG for Bastion-to-validation-host SSH and MySQL access from the client subnet

@@ -41,7 +41,7 @@ The public orchestrator currently includes Azure private database landing-zone p
 | Engine | Pattern | Current private-access modes |
 | --- | --- | --- |
 | PostgreSQL Flexible Server | `patterns/azure/postgresql_private_access` | delegated subnet, Private Endpoint |
-| Azure Database for MySQL Flexible Server | `patterns/azure/mysql_private_access` | delegated subnet |
+| Azure Database for MySQL Flexible Server | `patterns/azure/mysql_private_access` | delegated subnet, Private Endpoint |
 | Azure SQL Database | `patterns/azure/sql_private_access` | Private Endpoint |
 | Cosmos DB SQL API | `patterns/azure/cosmosdb_private_access` | Private Endpoint |
 

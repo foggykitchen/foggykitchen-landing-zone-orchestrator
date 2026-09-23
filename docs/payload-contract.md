@@ -190,7 +190,7 @@ Azure database private-access patterns use the same top-level shape:
 | Pattern | Data block | Current mode values | Mode-specific network key | Azure target |
 | --- | --- | --- | --- | --- |
 | `postgresql_private_access` | `data.postgresql` | `delegated_subnet`, `private_endpoint` | `delegated_subnet` or `private_endpoint_subnet` | PostgreSQL delegated subnet or `postgresqlServer` Private Endpoint |
-| `mysql_private_access` | `data.mysql` | `delegated_subnet` | `delegated_subnet` | MySQL delegated subnet |
+| `mysql_private_access` | `data.mysql` | `delegated_subnet`, `private_endpoint` | `delegated_subnet` or `private_endpoint_subnet` | MySQL delegated subnet or `mysqlServer` Private Endpoint |
 | `sql_private_access` | `data.sql` | `private_endpoint` | `private_endpoint_subnet` | Azure SQL `sqlServer` Private Endpoint |
 | `cosmosdb_private_access` | `data.cosmosdb` | `private_endpoint` | `private_endpoint_subnet` | Cosmos DB SQL API `Sql` Private Endpoint |
 
@@ -513,7 +513,7 @@ The Azure SQL pattern supports only Private Endpoint mode. `data.sql.entra`, `da
 - `workload.client`
 - `data.mysql`
 
-For MySQL delegated-subnet private access, the current contract is:
+For MySQL private access, the current contract is:
 
 - `architecture.private_access.mode`
 - `architecture.network.vnet.name`
@@ -521,8 +521,10 @@ For MySQL delegated-subnet private access, the current contract is:
 - `architecture.network.client_subnet.name`
 - `architecture.network.client_subnet.cidr`
 - `architecture.network.bastion_subnet.cidr`
-- `architecture.network.delegated_subnet.name`
-- `architecture.network.delegated_subnet.cidr`
+- `architecture.network.delegated_subnet.name` when `mode = delegated_subnet`
+- `architecture.network.delegated_subnet.cidr` when `mode = delegated_subnet`
+- `architecture.network.private_endpoint_subnet.name` when `mode = private_endpoint`
+- `architecture.network.private_endpoint_subnet.cidr` when `mode = private_endpoint`
 - `workload.client.name`
 - `workload.client.shape`
 - `workload.client.admin_username`
@@ -581,7 +583,7 @@ data:
       name: foggydb
 ```
 
-The MySQL pattern supports only Azure Database for MySQL Flexible Server with delegated-subnet private access. For this mode, the Private DNS Zone must end with `mysql.database.azure.com`. `data.mysql.entra`, `data.mysql.cmk`, and `data.mysql.diagnostics` are reserved for a later secure variant.
+The MySQL pattern supports Azure Database for MySQL Flexible Server with delegated-subnet or Private Endpoint private access. For delegated-subnet mode, the Private DNS Zone must end with `mysql.database.azure.com`. For Private Endpoint mode, the Private Endpoint subresource is `mysqlServer` and the Private DNS Zone is `privatelink.mysql.database.azure.com`. `data.mysql.entra`, `data.mysql.cmk`, and `data.mysql.diagnostics` are reserved for a later secure variant.
 
 ---
 
