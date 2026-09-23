@@ -67,7 +67,7 @@ Recommended order:
 - `azure/aks_private_acr` extends the AKS teaser tier with ACR Private Endpoint and Private DNS access
 - `azure/postgresql_private_access` keeps PostgreSQL delegated-subnet and Private Endpoint variants minimal and self-contained
 - `azure/sql_private_access` adds the first Azure database Private Endpoint pattern while keeping the network self-contained
-- `azure/mysql_private_access` mirrors the delegated-subnet database shape for MySQL Flexible Server
+- `azure/mysql_private_access` mirrors the database private-access shape for MySQL Flexible Server with delegated subnet and Private Endpoint modes
 - `azure/cosmosdb_private_access` adds Cosmos DB SQL API Private Endpoint access with a self-contained validation network
 - advanced multicloud implementations are intentionally distributed outside this public repository
 

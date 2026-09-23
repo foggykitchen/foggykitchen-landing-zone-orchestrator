@@ -97,7 +97,7 @@ Azure database private-access patterns share a deliberately small topology:
 | --- | --- | --- | --- | --- |
 | PostgreSQL Flexible Server | `postgresql_private_access` | delegated subnet | `Microsoft.DBforPostgreSQL/flexibleServers` subnet delegation | `5432` |
 | PostgreSQL Flexible Server | `postgresql_private_access` | Private Endpoint | `postgresqlServer` with `privatelink.postgres.database.azure.com` | `5432` |
-| Azure Database for MySQL Flexible Server | `mysql_private_access` | delegated subnet | `Microsoft.DBforMySQL/flexibleServers` subnet delegation | `3306` |
+| Azure Database for MySQL Flexible Server | `mysql_private_access` | delegated subnet, Private Endpoint | `Microsoft.DBforMySQL/flexibleServers` subnet delegation or `mysqlServer` Private Endpoint with `privatelink.mysql.database.azure.com` | `3306` |
 | Azure SQL Database | `sql_private_access` | Private Endpoint | `sqlServer` with `privatelink.database.windows.net` | `1433` |
 | Cosmos DB SQL API | `cosmosdb_private_access` | Private Endpoint | `Sql` with `privatelink.documents.azure.com` | `443` |
 
@@ -196,12 +196,12 @@ Focus:
 
 Focus:
 
-- one VNet with separate client, Bastion, and delegated MySQL subnets
-- MySQL Flexible Server deployed with delegated-subnet private access
-- Private DNS Zone ending with `mysql.database.azure.com` linked to the VNet for MySQL name resolution
+- one VNet with separate client, Bastion, and either delegated MySQL or Private Endpoint subnets
+- MySQL Flexible Server deployed with delegated-subnet or Private Endpoint private access
+- Private DNS Zone ending with `mysql.database.azure.com` for delegated subnet or `privatelink.mysql.database.azure.com` for Private Endpoint, linked to the VNet for MySQL name resolution
 - Azure Bastion for operator SSH access to the private validation host
 - NSG-enforced Bastion-to-client SSH and client-to-MySQL TCP `3306` reachability boundaries
-- single-region MySQL baseline without Private Endpoint mode, secure variant controls, DR, app-to-data topology, or governance
+- single-region MySQL baseline without secure variant controls, DR, app-to-data topology, or governance
 
 ### Azure Cosmos DB Private Access
 

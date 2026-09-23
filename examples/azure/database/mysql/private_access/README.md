@@ -5,10 +5,10 @@ This scenario family focuses on Azure Database for MySQL Flexible Server private
 ## Available Variants
 
 - [delegated_subnet](delegated_subnet/README.md) - delegated-subnet private access with one VNet, one client subnet, `AzureBastionSubnet`, one delegated database subnet, one NSG, one Azure Bastion host, one Private DNS Zone, and one validation host.
+- [private_endpoint](private_endpoint/README.md) - Private Endpoint access with one VNet, one client subnet, `AzureBastionSubnet`, one Private Endpoint subnet, one NSG, one Azure Bastion host, one Private DNS Zone, one Private Endpoint, and one validation host.
 
 ## Deferred
 
-- Private Endpoint mode variant
 - secure variant with Microsoft Entra authentication, customer-managed keys, and diagnostics
 - PostgreSQL, Azure SQL Database, and Cosmos DB
 - app-to-data, multi-spoke, governance, and disaster recovery blueprint tiers
