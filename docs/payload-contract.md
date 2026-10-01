@@ -65,6 +65,7 @@ Common Azure payload sections may include:
 - `compute`
 - `load_balancer`
 - `storage`
+- `functions`
 - `private_endpoints`
 - `firewall`
 - `data`
@@ -195,6 +196,119 @@ Azure database private-access patterns use the same top-level shape:
 | `cosmosdb_private_access` | `data.cosmosdb` | `private_endpoint` | `private_endpoint_subnet` | Cosmos DB SQL API `Sql` Private Endpoint |
 
 These payloads describe a self-contained single-region VNet with Azure Bastion, a private validation host, Private DNS, and no public database exposure.
+
+### Azure Functions Event-Driven Data Pipeline Summary
+
+`event_driven_data_pipeline` uses this top-level shape:
+
+- `cloud.my_public_ip`
+- `architecture.network`
+- `functions`
+- `data.storage`
+- `data.postgresql`
+
+It composes API Management, Azure Functions, Event Hubs, Function App host Storage, managed identity, RBAC, and PostgreSQL Flexible Server.
+
+Current contract keys:
+
+- `architecture.network.vnet.name`
+- `architecture.network.vnet.cidr`
+- `architecture.network.functions_subnet.name`
+- `architecture.network.functions_subnet.cidr`
+- `architecture.network.postgresql_subnet.name`
+- `architecture.network.postgresql_subnet.cidr`
+- `functions.source_path`
+- `functions.identity.name`
+- `functions.app.name`
+- `functions.app.service_plan_name`
+- `functions.app.sku`
+- `functions.app.runtime_stack.language`
+- `functions.app.runtime_stack.version`
+- `functions.app.content_share_name`
+- `functions.app.debug_mode`
+- `functions.runtime.initiator_name`
+- `functions.runtime.collector_name`
+- `functions.runtime.validator_name`
+- `functions.event_hub.namespace_name`
+- `functions.event_hub.event_hub_name`
+- `functions.api.name`
+- `functions.api.api_name`
+- `functions.api.display_name`
+- `functions.api.path_prefix`
+- `functions.api.route_name`
+- `functions.api.route_path`
+- `functions.api.validator_route_name`
+- `functions.api.validator_route_path`
+- `functions.api.publisher_name`
+- `functions.api.publisher_email`
+- `data.storage.account_name`
+- `data.postgresql.private_dns_zone_name`
+- `data.postgresql.server.name`
+- `data.postgresql.server.version`
+- `data.postgresql.server.sku`
+- `data.postgresql.server.storage_mb`
+- `data.postgresql.server.admin_login`
+- `data.postgresql.server.admin_password`
+- `data.postgresql.database.name`
+
+The pattern packages the function sources from `functions.source_path` into one Azure Function App ZIP. The ZIP contains `fninitiator`, `fncollector`, and validation-only `fnvalidator`; APIM routes to `fninitiator` for ingestion and `fnvalidator` for example validation, while `fncollector` consumes Event Hubs through native Azure Functions trigger bindings. `cloud.my_public_ip` is used only to allow the local OpenTofu runner to reach the Function App host Storage Account during provisioning while keeping Storage network rules restricted.
+
+### Azure Functions Bulk Ingestion Pipeline Summary
+
+`bulk_ingestion_pipeline` uses this top-level shape:
+
+- `cloud.my_public_ip`
+- `architecture.network`
+- `functions`
+- `data.storage`
+- `data.postgresql`
+
+It composes Blob Storage, Event Grid, Azure Functions, Event Hubs, Function App host Storage, API Management for validation-only access, managed identity, RBAC, and PostgreSQL Flexible Server.
+
+Current contract keys:
+
+- `architecture.network.vnet.name`
+- `architecture.network.vnet.cidr`
+- `architecture.network.functions_subnet.name`
+- `architecture.network.functions_subnet.cidr`
+- `architecture.network.postgresql_subnet.name`
+- `architecture.network.postgresql_subnet.cidr`
+- `functions.source_path`
+- `functions.identity.name`
+- `functions.app.name`
+- `functions.app.service_plan_name`
+- `functions.app.sku`
+- `functions.app.runtime_stack.language`
+- `functions.app.runtime_stack.version`
+- `functions.app.content_share_name`
+- `functions.app.debug_mode`
+- `functions.runtime.bulkload_name`
+- `functions.runtime.collector_name`
+- `functions.runtime.validator_name`
+- `functions.event_hub.namespace_name`
+- `functions.event_hub.event_hub_name`
+- `functions.event_grid.system_topic_name`
+- `functions.event_grid.event_subscription_name`
+- `functions.api.name`
+- `functions.api.api_name`
+- `functions.api.display_name`
+- `functions.api.path_prefix`
+- `functions.api.validator_route_name`
+- `functions.api.validator_route_path`
+- `functions.api.publisher_name`
+- `functions.api.publisher_email`
+- `data.storage.account_name`
+- `data.storage.container_name`
+- `data.postgresql.private_dns_zone_name`
+- `data.postgresql.server.name`
+- `data.postgresql.server.version`
+- `data.postgresql.server.sku`
+- `data.postgresql.server.storage_mb`
+- `data.postgresql.server.admin_login`
+- `data.postgresql.server.admin_password`
+- `data.postgresql.database.name`
+
+The pattern packages the function sources from `functions.source_path` into one Azure Function App ZIP. The ZIP contains `fnbulkload`, `fncollector`, and validation-only `fnvalidator`; Event Grid routes Blob Created events only to `fnbulkload`, APIM exposes only `fnvalidator` for example validation, and `fncollector` consumes Event Hubs through native Azure Functions trigger bindings. `cloud.my_public_ip` is used only to allow the local OpenTofu runner to reach the Function App host Storage Account and ingestion container during provisioning or manual validation while keeping Storage network rules restricted.
 
 `firewall_transit` focuses on:
 

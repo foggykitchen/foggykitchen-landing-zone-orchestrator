@@ -1,0 +1,77 @@
+landing_zone:
+  name: fk-azure-event-driven-data-pipeline-dev
+  default_tags:
+    project: foggykitchen
+    environment: dev
+    landing_zone: fk-azure-event-driven-data-pipeline-dev
+    managed_by: opentofu
+
+cloud:
+  subscription_id: ${jsonencode(subscription_id)}
+  tenant_id: ${jsonencode(tenant_id)}
+  location: ${jsonencode(location)}
+  my_public_ip: ${jsonencode(my_public_ip)}
+  resource_group:
+    name: rg-fk-azure-event-driven-data-pipeline-dev
+
+architecture:
+  network:
+    vnet:
+      name: vnet-fk-azure-event-driven-data-pipeline-dev
+      cidr: 10.170.0.0/16
+    functions_subnet:
+      name: snet-fk-event-functions
+      cidr: 10.170.20.0/24
+    postgresql_subnet:
+      name: snet-fk-event-postgresql
+      cidr: 10.170.30.0/24
+
+functions:
+  source_path: ${jsonencode(functions_base_path)}
+  identity:
+    name: id-fk-event-functions-dev
+  app:
+    name: func-fk-event-data-dev
+    service_plan_name: plan-fk-event-data-dev
+    sku: EP1
+    runtime_stack:
+      language: python
+      version: "3.12"
+    content_share_name: fkeventdatacontent
+    debug_mode: true
+  runtime:
+    initiator_name: fninitiator
+    collector_name: fncollector
+  event_hub:
+    namespace_name: evhns-fk-event-data-dev
+    event_hub_name: ingestion
+    sku: Standard
+    capacity: 1
+    partition_count: 2
+    message_retention_in_days: 1
+  api:
+    name: apim-fk-event-data-dev
+    api_name: event-driven-data
+    display_name: Event-Driven Data API
+    path_prefix: v1
+    route_name: fninitiator
+    route_path: /ingest
+    validator_route_name: fnvalidator
+    validator_route_path: /validate
+    publisher_name: ${jsonencode(apim_publisher_name)}
+    publisher_email: ${jsonencode(apim_publisher_email)}
+
+data:
+  storage:
+    account_name: fkeventdatadev001
+  postgresql:
+    private_dns_zone_name: fk-azure-event-driven-data-pipeline-dev.postgres.database.azure.com
+    server:
+      name: pg-fk-event-data-dev
+      version: "16"
+      sku: GP_Standard_D2s_v3
+      storage_mb: 32768
+      admin_login: pgadmin
+      admin_password: ${jsonencode(postgresql_admin_password)}
+    database:
+      name: foggydb

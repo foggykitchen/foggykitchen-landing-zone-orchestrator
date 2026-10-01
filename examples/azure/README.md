@@ -13,6 +13,7 @@ Current emphasis:
 - networking-oriented landing zone patterns
 - AKS teaser-tier landing zone patterns
 - database private-access landing zone patterns for relational engines and Cosmos DB
+- Azure Functions event-driven and bulk ingestion patterns
 - payload-driven reuse of shared Azure orchestrator code
 
 ---
@@ -22,6 +23,7 @@ Current emphasis:
 - [Networking examples](networking/README.md)
 - [AKS examples](aks/README.md)
 - [Database examples](database/README.md)
+- [Functions examples](functions/README.md)
 
 ---
 
