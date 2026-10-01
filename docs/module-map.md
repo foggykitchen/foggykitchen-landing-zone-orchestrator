@@ -29,6 +29,12 @@ The goal of this map is to show how the repository turns individual modules into
 | `terraform-az-fk-firewall` | Central inspection and transit boundary |
 | `terraform-az-fk-aks` | Azure Kubernetes Service cluster layer |
 | `terraform-az-fk-acr` | Azure Container Registry service layer |
+| `terraform-az-fk-function` | Azure Functions runtime and ZIP deployment layer |
+| `terraform-az-fk-event-grid` | Azure resource event routing layer |
+| `terraform-az-fk-event-hub` | Event Hubs namespace and asynchronous buffer layer |
+| `terraform-az-fk-api-management` | Public API ingress and generated route-policy layer |
+| `terraform-az-fk-managed-identity` | User-assigned identity layer |
+| `terraform-az-fk-rbac` | Azure RBAC role assignment layer |
 | `terraform-az-fk-pg` | PostgreSQL Flexible Server service layer |
 | `terraform-az-fk-sql` | Azure SQL Database service layer |
 | `terraform-az-fk-mysql` | MySQL Flexible Server service layer |
@@ -147,6 +153,57 @@ Focus:
 - subnet-associated NSGs for denied Internet inbound and Bastion-sourced SSH/RDP to the jump subnet
 - one Azure Bastion host for operator SSH access to the private jump host
 - lightweight jump host for private AKS API and ACR TCP `443` checks
+
+### `patterns/azure/event_driven_data_pipeline`
+
+Uses:
+
+- `terraform-az-fk-vnet`
+- `terraform-az-fk-nsg`
+- `terraform-az-fk-private-dns`
+- `terraform-az-fk-storage`
+- `terraform-az-fk-managed-identity`
+- `terraform-az-fk-rbac`
+- `terraform-az-fk-event-hub`
+- `terraform-az-fk-pg`
+- `terraform-az-fk-function`
+- `terraform-az-fk-api-management`
+
+Focus:
+
+- one VNet with a Functions integration subnet and a PostgreSQL delegated subnet
+- one Function App ZIP package containing `fninitiator`, `fncollector`, and validation-only `fnvalidator`
+- API Management routes to `fninitiator` and validation-only `fnvalidator`
+- one Event Hub as the asynchronous buffer
+- native Event Hub-triggered `fncollector` persistence into PostgreSQL Flexible Server
+- no Service Connector Hub equivalent and no hand-authored API Management policy XML
+
+### `patterns/azure/bulk_ingestion_pipeline`
+
+Uses:
+
+- `terraform-az-fk-vnet`
+- `terraform-az-fk-nsg`
+- `terraform-az-fk-private-dns`
+- `terraform-az-fk-storage`
+- `terraform-az-fk-managed-identity`
+- `terraform-az-fk-rbac`
+- `terraform-az-fk-event-hub`
+- `terraform-az-fk-event-grid`
+- `terraform-az-fk-pg`
+- `terraform-az-fk-function`
+- `terraform-az-fk-api-management`
+
+Focus:
+
+- one VNet with a Functions integration subnet and a PostgreSQL delegated subnet
+- one private ingestion Blob container
+- one Function App ZIP package containing `fnbulkload`, `fncollector`, and validation-only `fnvalidator`
+- Event Grid Blob Created subscription to `fnbulkload`
+- one Event Hub as the asynchronous buffer
+- native Event Hub-triggered `fncollector` persistence into PostgreSQL Flexible Server
+- API Management route to validation-only `fnvalidator`
+- no Service Connector Hub equivalent and no API-driven ingestion entry point
 
 ### `patterns/azure/postgresql_private_access`
 

@@ -1,0 +1,9 @@
+subscription_id = "00000000-0000-0000-0000-000000000000"
+tenant_id       = "00000000-0000-0000-0000-000000000000"
+location        = "westeurope"
+my_public_ip    = "203.0.113.10"
+
+apim_publisher_name  = "FoggyKitchen"
+apim_publisher_email = "admin@example.com"
+
+postgresql_admin_password = "REPLACE_WITH_STRONG_PASSWORD"

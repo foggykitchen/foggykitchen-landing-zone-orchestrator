@@ -64,6 +64,8 @@ This separation keeps the implementation:
 - `firewall_transit`
 - `aks_basic`
 - `aks_private_acr`
+- `bulk_ingestion_pipeline`
+- `event_driven_data_pipeline`
 - `postgresql_private_access`
 - `sql_private_access`
 - `mysql_private_access`
@@ -166,6 +168,31 @@ Focus:
 - lightweight private jump host for AKS private API DNS and TCP `443` checks
 - optional private ACR teaser through `aks_private_acr`, using ACR Premium, Private Endpoint subresource `registry`, and Private DNS Zone `privatelink.azurecr.io`
 - single-region AKS baselines without Azure Firewall, customer-managed keys, diagnostics, additional node pools, autoscaling, hub-spoke transit, or DR
+
+### Azure Event-Driven Data Pipeline
+
+Focus:
+
+- API-driven Azure Functions ingestion
+- API Management public route to `fninitiator`
+- Event Hubs asynchronous buffer
+- native Event Hub trigger binding into `fncollector`
+- PostgreSQL Flexible Server delegated-subnet private persistence
+- validation-only API Management route to `fnvalidator`
+- no Service Connector Hub equivalent and no hand-authored API Management policy XML
+
+### Azure Bulk Ingestion Pipeline
+
+Focus:
+
+- Blob Storage upload-driven Azure Functions ingestion
+- Event Grid System Topic and subscription routing Blob Created events to `fnbulkload`
+- `fnbulkload` reads uploaded JSON blobs and publishes records to Event Hubs
+- Event Hubs asynchronous buffer
+- native Event Hub trigger binding into `fncollector`
+- PostgreSQL Flexible Server delegated-subnet private persistence
+- validation-only API Management route to `fnvalidator`
+- no Service Connector Hub equivalent, no API-driven ingestion path, and no `fninitiator`
 
 ### Azure Database Private Access
 
@@ -330,6 +357,7 @@ Included today:
 - Azure landing zone networking patterns
 - Azure private endpoint pattern for Storage
 - Azure firewall transit pattern
+- Azure Functions event-driven and bulk ingestion pipeline patterns
 - OCI DRG cross-region and LPG-based networking patterns
 - OCI multiregion compute failover pattern
 - OCI private ADB access pattern
