@@ -14,6 +14,7 @@ Current emphasis:
 - AKS teaser-tier landing zone patterns
 - database private-access landing zone patterns for relational engines and Cosmos DB
 - Azure Functions event-driven and bulk ingestion patterns
+- Azure multiregion compute failover patterns
 - payload-driven reuse of shared Azure orchestrator code
 
 ---
@@ -24,6 +25,7 @@ Current emphasis:
 - [AKS examples](aks/README.md)
 - [Database examples](database/README.md)
 - [Functions examples](functions/README.md)
+- [Multiregion examples](multiregion/README.md)
 
 ---
 

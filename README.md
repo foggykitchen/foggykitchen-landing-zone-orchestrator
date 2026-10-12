@@ -2,7 +2,7 @@
 
 FoggyKitchen Landing Zone Orchestrator is a reference architecture layer built on top of public **Terraform / OpenTofu modules** from the FoggyKitchen ecosystem for **Azure** and **OCI**.
 
-It demonstrates how reusable infrastructure modules can be composed into opinionated landing zone patterns: hub-and-spoke networking, private-first compute, private endpoints, Azure private AKS basics, Azure private database access, DRG cross-region remote peering, local peering, private DNS, firewall-based transit, and OCI multiregion failover.
+It demonstrates how reusable infrastructure modules can be composed into opinionated landing zone patterns: hub-and-spoke networking, private-first compute, private endpoints, Azure private AKS basics, Azure private database access, Azure Front Door multiregion failover, DRG cross-region remote peering, local peering, private DNS, firewall-based transit, and OCI multiregion failover.
 It also shows how the same orchestration model can be extended into OCI ADB private access, OCI DevOps delivery patterns, and OCI Functions patterns built from reusable FoggyKitchen modules.
 
 This repository is a reference implementation and educational architecture pattern.  
@@ -39,6 +39,7 @@ Depending on the selected pattern and payload, the repository can compose:
 - Azure private AKS plus private ACR landing zones
 - Azure Functions event-driven data landing zones with API Management, Event Hubs, and PostgreSQL
 - Azure Functions bulk ingestion landing zones with Blob Storage, Event Grid, Event Hubs, and PostgreSQL
+- Azure multiregion compute failover patterns with Front Door and regional Load Balancers
 - Azure PostgreSQL Flexible Server private-access landing zones with delegated subnet or Private Endpoint
 - Azure Database for MySQL Flexible Server private-access landing zones with delegated subnet or Private Endpoint
 - Azure SQL Database private-access landing zones with Private Endpoint
@@ -156,6 +157,9 @@ foggykitchen-landing-zone-orchestrator/
 │   │   │   │   └── basic/
 │   │   │   └── event_driven_data_pipeline/
 │   │   │       └── basic/
+│   │   ├── multiregion/
+│   │   │   └── compute_failover/
+│   │   │       └── basic/
 │   │   └── networking/
 │   │       ├── README.md
 │   │       ├── firewall_transit/
@@ -208,6 +212,7 @@ foggykitchen-landing-zone-orchestrator/
 │   │   ├── event_driven_data_pipeline/
 │   │   ├── firewall_transit/
 │   │   ├── hub_spoke/
+│   │   ├── multiregion_compute_failover/
 │   │   └── private_endpoint/
 │   ├── oci/
 │       ├── adb_private_access/
@@ -240,6 +245,7 @@ Currently implemented:
 - [examples/azure/aks/private_acr](examples/azure/aks/private_acr/README.md)
 - [examples/azure/functions/bulk_ingestion_pipeline/basic](examples/azure/functions/bulk_ingestion_pipeline/basic/README.md)
 - [examples/azure/functions/event_driven_data_pipeline/basic](examples/azure/functions/event_driven_data_pipeline/basic/README.md)
+- [examples/azure/multiregion/compute_failover/basic](examples/azure/multiregion/compute_failover/basic/README.md)
 - [examples/azure/database/postgresql/private_access/delegated_subnet](examples/azure/database/postgresql/private_access/delegated_subnet/README.md)
 - [examples/azure/database/postgresql/private_access/private_endpoint](examples/azure/database/postgresql/private_access/private_endpoint/README.md)
 - [examples/azure/database/mysql/private_access/delegated_subnet](examples/azure/database/mysql/private_access/delegated_subnet/README.md)
@@ -265,6 +271,7 @@ Shared orchestration patterns:
 - [patterns/azure/aks_private_acr](patterns/azure/aks_private_acr)
 - [patterns/azure/bulk_ingestion_pipeline](patterns/azure/bulk_ingestion_pipeline)
 - [patterns/azure/event_driven_data_pipeline](patterns/azure/event_driven_data_pipeline)
+- [patterns/azure/multiregion_compute_failover](patterns/azure/multiregion_compute_failover)
 - [patterns/azure/postgresql_private_access](patterns/azure/postgresql_private_access)
 - [patterns/azure/mysql_private_access](patterns/azure/mysql_private_access)
 - [patterns/azure/cosmosdb_private_access](patterns/azure/cosmosdb_private_access)
@@ -365,6 +372,7 @@ The repository composes FoggyKitchen building blocks such as:
 - [terraform-az-fk-private-dns](https://github.com/foggykitchen/terraform-az-fk-private-dns)
 - [terraform-az-fk-compute](https://github.com/foggykitchen/terraform-az-fk-compute)
 - [terraform-az-fk-loadbalancer](https://github.com/foggykitchen/terraform-az-fk-loadbalancer)
+- [terraform-az-fk-frontdoor](https://github.com/foggykitchen/terraform-az-fk-frontdoor)
 - [terraform-az-fk-storage](https://github.com/foggykitchen/terraform-az-fk-storage)
 - [terraform-az-fk-private-endpoint](https://github.com/foggykitchen/terraform-az-fk-private-endpoint)
 - [terraform-az-fk-firewall](https://github.com/foggykitchen/terraform-az-fk-firewall)

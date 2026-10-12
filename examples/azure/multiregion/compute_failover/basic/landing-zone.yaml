@@ -1,0 +1,158 @@
+landing_zone:
+  name: fk-azure-multiregion-compute-failover-dev
+  default_tags:
+    project: foggykitchen
+    environment: dev
+    landing_zone: fk-azure-multiregion-compute-failover-dev
+    managed_by: opentofu
+
+cloud:
+  subscription_id: ${jsonencode(subscription_id)}
+  tenant_id: ${jsonencode(tenant_id)}
+  primary_location: westeurope
+  standby_location: northeurope
+  resource_group:
+    name: rg-fk-azure-multiregion-compute-failover-dev
+
+architecture:
+  network:
+    primary_vnet:
+      name: vnet-fk-azure-multiregion-primary-dev
+      cidr: 10.210.0.0/16
+    primary_app_subnet:
+      name: snet-fk-primary-app
+      cidr: 10.210.20.0/24
+    primary_nat_gateway:
+      name: natgw-fk-primary-dev
+      public_ip_name: pip-fk-primary-natgw-dev
+    standby_vnet:
+      name: vnet-fk-azure-multiregion-standby-dev
+      cidr: 10.220.0.0/16
+    standby_app_subnet:
+      name: snet-fk-standby-app
+      cidr: 10.220.20.0/24
+    standby_nat_gateway:
+      name: natgw-fk-standby-dev
+      public_ip_name: pip-fk-standby-natgw-dev
+
+workload:
+  project:
+    name: fk-azure-multiregion-compute-failover-dev
+    description: FoggyKitchen Azure multiregion stateless compute failover pattern
+  compute:
+    admin_username: azureuser
+    ssh_public_key: ${jsonencode(admin_ssh_public_key)}
+    vm_size: Standard_B2s
+    image_reference:
+      publisher: Canonical
+      offer: 0001-com-ubuntu-server-jammy
+      sku: 22_04-lts-gen2
+      version: latest
+    cloud_init_override:
+      primary: |
+        #cloud-config
+        write_files:
+          - path: /opt/foggykitchen-site/index.html
+            permissions: "0644"
+            content: |
+              <html><body><h1>fk-primary-dev</h1><p>FoggyKitchen Azure multiregion compute failover - primary site</p></body></html>
+          - path: /etc/systemd/system/foggykitchen-demo.service
+            permissions: "0644"
+            content: |
+              [Unit]
+              Description=FoggyKitchen Azure multiregion demo HTTP service
+              After=network-online.target
+              Wants=network-online.target
+
+              [Service]
+              Type=simple
+              WorkingDirectory=/opt/foggykitchen-site
+              ExecStart=/usr/bin/python3 -m http.server 80 --directory /opt/foggykitchen-site
+              Restart=always
+              RestartSec=5
+
+              [Install]
+              WantedBy=multi-user.target
+        runcmd:
+          - mkdir -p /opt/foggykitchen-site
+          - apt-get update || true
+          - DEBIAN_FRONTEND=noninteractive apt-get install -y python3 || true
+          - systemctl daemon-reload
+          - systemctl enable foggykitchen-demo.service
+          - systemctl restart foggykitchen-demo.service
+      standby: |
+        #cloud-config
+        write_files:
+          - path: /opt/foggykitchen-site/index.html
+            permissions: "0644"
+            content: |
+              <html><body><h1>fk-standby-dev</h1><p>FoggyKitchen Azure multiregion compute failover - standby site</p></body></html>
+          - path: /etc/systemd/system/foggykitchen-demo.service
+            permissions: "0644"
+            content: |
+              [Unit]
+              Description=FoggyKitchen Azure multiregion demo HTTP service
+              After=network-online.target
+              Wants=network-online.target
+
+              [Service]
+              Type=simple
+              WorkingDirectory=/opt/foggykitchen-site
+              ExecStart=/usr/bin/python3 -m http.server 80 --directory /opt/foggykitchen-site
+              Restart=always
+              RestartSec=5
+
+              [Install]
+              WantedBy=multi-user.target
+        runcmd:
+          - mkdir -p /opt/foggykitchen-site
+          - apt-get update || true
+          - DEBIAN_FRONTEND=noninteractive apt-get install -y python3 || true
+          - systemctl daemon-reload
+          - systemctl enable foggykitchen-demo.service
+          - systemctl restart foggykitchen-demo.service
+  load_balancer:
+    primary_name: lb-fk-primary-dev
+    primary_public_ip_name: pip-fk-primary-lb-dev
+    standby_name: lb-fk-standby-dev
+    standby_public_ip_name: pip-fk-standby-lb-dev
+    sku: Standard
+    probe:
+      name: http-health-probe
+      protocol: Http
+      port: 80
+      interval_in_seconds: 5
+      number_of_probes: 2
+      request_path: /
+    rule:
+      name: http-rule
+      protocol: Tcp
+      frontend_port: 80
+      backend_port: 80
+      idle_timeout_in_minutes: 4
+      disable_outbound_snat: true
+  primary_site:
+    name: fk-primary-dev
+    instance_count: 2
+    enable_autoscale: false
+    autoscaling:
+      min_instances: 2
+      max_instances: 4
+      scale_out_cpu_threshold: 70
+      scale_in_cpu_threshold: 30
+  standby_site:
+    name: fk-standby-dev
+    instance_count: 1
+    enable_autoscale: false
+    autoscaling:
+      min_instances: 1
+      max_instances: 2
+      scale_out_cpu_threshold: 70
+      scale_in_cpu_threshold: 30
+
+frontdoor:
+  name: afd-fk-multiregion-compute-dev
+  endpoint_name: fkmultiregioncompute-dev
+  sku_name: Standard_AzureFrontDoor
+  origin_group_name: multiregion-web
+  route_name: default
