@@ -24,6 +24,8 @@ The goal of this map is to show how the repository turns individual modules into
 | `terraform-az-fk-private-dns` | Private name resolution layer |
 | `terraform-az-fk-compute` | Workload layer |
 | `terraform-az-fk-loadbalancer` | Public and private traffic entry contract |
+| `terraform-az-fk-frontdoor` | Edge entry point and multiregion origin failover layer |
+| `terraform-az-fk-frontdoor-waf-policy` | Optional Front Door WAF policy layer for later secure variants |
 | `terraform-az-fk-storage` | Storage service layer |
 | `terraform-az-fk-private-endpoint` | Private service exposure |
 | `terraform-az-fk-firewall` | Central inspection and transit boundary |
@@ -204,6 +206,28 @@ Focus:
 - native Event Hub-triggered `fncollector` persistence into PostgreSQL Flexible Server
 - API Management route to validation-only `fnvalidator`
 - no Service Connector Hub equivalent and no API-driven ingestion entry point
+
+### `patterns/azure/multiregion_compute_failover`
+
+Uses:
+
+- `terraform-az-fk-vnet`
+- `terraform-az-fk-nsg`
+- `terraform-az-fk-natgw`
+- `terraform-az-fk-public-ip`
+- `terraform-az-fk-loadbalancer`
+- `terraform-az-fk-compute`
+- `terraform-az-fk-frontdoor`
+
+Focus:
+
+- two independent regional VNets
+- one regional public Load Balancer per site
+- one VM Scale Set per site with primary capacity larger than standby by default
+- NAT Gateway egress for each private app subnet
+- Azure Front Door Standard priority-based failover between the two regional public origins
+- no cross-region VNet peering or VPN Gateway because the basic failover path is edge-to-public-origin, not private inter-region routing
+- no WAF policy in the basic parity port; `terraform-az-fk-frontdoor-waf-policy` is reserved for later secure variants
 
 ### `patterns/azure/postgresql_private_access`
 

@@ -66,6 +66,7 @@ Common Azure payload sections may include:
 - `load_balancer`
 - `storage`
 - `functions`
+- `frontdoor`
 - `private_endpoints`
 - `firewall`
 - `data`
@@ -178,6 +179,65 @@ Operational note for local applies:
 - the example wrapper may also accept a `provisioner_public_ip` input
 - this is not architecture intent and therefore does not live in YAML
 - it exists only to allow the local OpenTofu runner to create Azure Files data-plane resources while the Storage Account remains locked down by network rules
+
+### Azure Multiregion Compute Failover Summary
+
+`multiregion_compute_failover` uses this top-level shape:
+
+- `cloud`
+- `architecture.network`
+- `workload`
+- `frontdoor`
+
+It composes two regional VNet, NSG, NAT Gateway, Public IP, Load Balancer, and VM Scale Set stacks, plus one Azure Front Door Standard profile for priority-based origin failover.
+
+Current contract keys:
+
+- `cloud.subscription_id`
+- `cloud.tenant_id`
+- `cloud.primary_location`
+- `cloud.standby_location`
+- `cloud.resource_group.name`
+- `architecture.network.primary_vnet.name`
+- `architecture.network.primary_vnet.cidr`
+- `architecture.network.primary_app_subnet.name`
+- `architecture.network.primary_app_subnet.cidr`
+- `architecture.network.primary_nat_gateway.name`
+- `architecture.network.primary_nat_gateway.public_ip_name`
+- `architecture.network.standby_vnet.name`
+- `architecture.network.standby_vnet.cidr`
+- `architecture.network.standby_app_subnet.name`
+- `architecture.network.standby_app_subnet.cidr`
+- `architecture.network.standby_nat_gateway.name`
+- `architecture.network.standby_nat_gateway.public_ip_name`
+- `workload.compute.admin_username`
+- `workload.compute.ssh_public_key`
+- `workload.compute.vm_size`
+- `workload.compute.image_reference`
+- `workload.compute.cloud_init_override.primary`
+- `workload.compute.cloud_init_override.standby`
+- `workload.load_balancer.primary_name`
+- `workload.load_balancer.primary_public_ip_name`
+- `workload.load_balancer.standby_name`
+- `workload.load_balancer.standby_public_ip_name`
+- `workload.load_balancer.sku`
+- `workload.load_balancer.probe`
+- `workload.load_balancer.rule`
+- `workload.primary_site.name`
+- `workload.primary_site.instance_count`
+- `workload.primary_site.enable_autoscale`
+- `workload.primary_site.autoscaling`
+- `workload.standby_site.name`
+- `workload.standby_site.instance_count`
+- `workload.standby_site.enable_autoscale`
+- `workload.standby_site.autoscaling`
+- `frontdoor.name`
+- `frontdoor.endpoint_name`
+- `frontdoor.sku_name`
+- `frontdoor.origin_group_name`
+- `frontdoor.route_name`
+
+The pattern intentionally has no payload key for cross-region private connectivity. The Azure basic failover path is Azure Front Door to two public regional Load Balancers, so VNet peering and VPN Gateway belong in a later enterprise/private-origin blueprint rather than this public parity pattern.
 
 ### Azure Database Private Access Summary
 

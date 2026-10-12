@@ -66,6 +66,7 @@ This separation keeps the implementation:
 - `aks_private_acr`
 - `bulk_ingestion_pipeline`
 - `event_driven_data_pipeline`
+- `multiregion_compute_failover`
 - `postgresql_private_access`
 - `sql_private_access`
 - `mysql_private_access`
@@ -193,6 +194,20 @@ Focus:
 - PostgreSQL Flexible Server delegated-subnet private persistence
 - validation-only API Management route to `fnvalidator`
 - no Service Connector Hub equivalent, no API-driven ingestion path, and no `fninitiator`
+
+### Azure Multiregion Compute Failover
+
+Focus:
+
+- stateless cross-region web failover
+- two independent regional VNets
+- one public Standard Load Balancer per region
+- one VM Scale Set per region
+- NAT Gateway egress for each private app subnet
+- Azure Front Door Standard priority-based failover across the two public regional origins
+- smaller standby capacity by default
+- no cross-region VNet peering, VPN Gateway, WAF, Private Link origins, file replication, or database replication
+- validation evidence in the basic example shows the Front Door endpoint serving `fk-primary-dev`, then serving `fk-standby-dev` after the primary VM Scale Set is scaled to zero
 
 ### Azure Database Private Access
 
@@ -358,6 +373,7 @@ Included today:
 - Azure private endpoint pattern for Storage
 - Azure firewall transit pattern
 - Azure Functions event-driven and bulk ingestion pipeline patterns
+- Azure multiregion compute failover pattern
 - OCI DRG cross-region and LPG-based networking patterns
 - OCI multiregion compute failover pattern
 - OCI private ADB access pattern
