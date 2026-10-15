@@ -1,0 +1,9 @@
+subscription_id = "00000000-0000-0000-0000-000000000000"
+tenant_id       = "00000000-0000-0000-0000-000000000000"
+
+# Leave empty to generate a temporary key pair with the TLS provider.
+admin_ssh_public_key = ""
+
+subscription_name = "Subscription 1"
+organization_url = "https://dev.azure.com/foggykitchendevops"
+build_agent_pool_name = "fk-private-acr-build"

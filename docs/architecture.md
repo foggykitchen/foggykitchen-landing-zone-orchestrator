@@ -64,6 +64,7 @@ This separation keeps the implementation:
 - `firewall_transit`
 - `aks_basic`
 - `aks_private_acr`
+- `devops_build_and_deploy_aks`
 - `bulk_ingestion_pipeline`
 - `event_driven_data_pipeline`
 - `multiregion_compute_failover`
@@ -169,6 +170,19 @@ Focus:
 - lightweight private jump host for AKS private API DNS and TCP `443` checks
 - optional private ACR teaser through `aks_private_acr`, using ACR Premium, Private Endpoint subresource `registry`, and Private DNS Zone `privatelink.azurecr.io`
 - single-region AKS baselines without Azure Firewall, customer-managed keys, diagnostics, additional node pools, autoscaling, hub-spoke transit, or DR
+
+### Azure DevOps Build and Deploy AKS
+
+`devops_build_and_deploy_aks` is a separate flat pattern using the private AKS/ACR infrastructure shape. It directly composes the network, registry, cluster and operator modules rather than calling another pattern.
+
+- GitHub supplies the demo source, Dockerfile and `azure-pipelines-cicd-aks.yml`.
+- The existing private jump VM also hosts Docker and the self-hosted Azure Pipelines Build agent. The pattern creates its pool, project queue and per-pipeline authorization; cloud-init installs the agent. Registration is a separate credential-bearing operator step.
+- Build checks out source, builds and smoke-tests the image, pushes through the ACR Private Endpoint using OIDC and `AcrPush`, then publishes digest metadata.
+- Deploy uses a Microsoft-hosted Ubuntu agent. `AzureCLI@2` calls the ARM Run Command API; kubectl runs inside the private cluster. No direct hosted-agent connection to the private Kubernetes API or ACR is required for this stage.
+- The service principal receives a custom cluster-scoped role with cluster read, Run Command and command-results read. It is an Entra application/service principal, not a user-assigned managed identity.
+- AKS pulls the digest through Private Endpoint using kubelet `AcrPull`. The demo uses one Deployment and an internal ClusterIP Service. Port-forward through the private API provides operator HTTP access from the jump VM; ClusterIP is not a VNet-facing endpoint.
+
+[Live command output and screenshots](../examples/azure/devops/build_and_deploy_aks/basic/README.md#verified-results--2026-10-15) confirm successful deployment, both built-in candidate roles failing, the custom role succeeding, and complete teardown. Historical run links refer to the subsequently deleted DevOps project.
 
 ### Azure Event-Driven Data Pipeline
 

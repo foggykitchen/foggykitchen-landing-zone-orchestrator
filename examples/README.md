@@ -11,7 +11,7 @@ The goal of the `examples/` tree is to provide:
 - runnable payload variants
 - thin wrappers around shared patterns
 - cloud-specific and domain-specific navigation
-- Azure networking, AKS, database, Functions, and multiregion domains
+- Azure networking, AKS, DevOps, database, Functions, and multiregion domains
 - a scalable structure for future additions
 
 Examples are grouped by:

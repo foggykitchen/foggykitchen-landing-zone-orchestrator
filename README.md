@@ -3,7 +3,7 @@
 FoggyKitchen Landing Zone Orchestrator is a reference architecture layer built on top of public **Terraform / OpenTofu modules** from the FoggyKitchen ecosystem for **Azure** and **OCI**.
 
 It demonstrates how reusable infrastructure modules can be composed into opinionated landing zone patterns: hub-and-spoke networking, private-first compute, private endpoints, Azure private AKS basics, Azure private database access, Azure Front Door multiregion failover, DRG cross-region remote peering, local peering, private DNS, firewall-based transit, and OCI multiregion failover.
-It also shows how the same orchestration model can be extended into OCI ADB private access, OCI DevOps delivery patterns, and OCI Functions patterns built from reusable FoggyKitchen modules.
+It also shows how the same orchestration model can be extended into OCI ADB private access, Azure DevOps build-and-deploy AKS, OCI DevOps delivery patterns, and OCI Functions patterns built from reusable FoggyKitchen modules.
 
 This repository is a reference implementation and educational architecture pattern.  
 It is **not** a drop-in enterprise landing zone product.  
@@ -37,6 +37,7 @@ Depending on the selected pattern and payload, the repository can compose:
 - Azure firewall transit landing zones
 - Azure private AKS basic landing zones
 - Azure private AKS plus private ACR landing zones
+- Azure DevOps CI/CD to private AKS and ACR, with OIDC and a self-hosted Build agent
 - Azure Functions event-driven data landing zones with API Management, Event Hubs, and PostgreSQL
 - Azure Functions bulk ingestion landing zones with Blob Storage, Event Grid, Event Hubs, and PostgreSQL
 - Azure multiregion compute failover patterns with Front Door and regional Load Balancers
@@ -152,6 +153,9 @@ foggykitchen-landing-zone-orchestrator/
 │   │   │   └── sql/
 │   │   │       └── private_access/
 │   │   │           └── private_endpoint/
+│   │   ├── devops/
+│   │   │   └── build_and_deploy_aks/
+│   │   │       └── basic/
 │   │   ├── functions/
 │   │   │   ├── bulk_ingestion_pipeline/
 │   │   │   │   └── basic/
@@ -204,6 +208,7 @@ foggykitchen-landing-zone-orchestrator/
 │   ├── azure/
 │   │   ├── aks_basic/
 │   │   ├── aks_private_acr/
+│   │   ├── devops_build_and_deploy_aks/
 │   │   ├── postgresql_private_access/
 │   │   ├── mysql_private_access/
 │   │   ├── cosmosdb_private_access/
@@ -243,6 +248,7 @@ Currently implemented:
 - [examples/azure/networking/private_endpoint/storage_private_link](examples/azure/networking/private_endpoint/storage_private_link/README.md)
 - [examples/azure/aks/basic](examples/azure/aks/basic/README.md)
 - [examples/azure/aks/private_acr](examples/azure/aks/private_acr/README.md)
+- [examples/azure/devops/build_and_deploy_aks/basic](examples/azure/devops/build_and_deploy_aks/basic/README.md)
 - [examples/azure/functions/bulk_ingestion_pipeline/basic](examples/azure/functions/bulk_ingestion_pipeline/basic/README.md)
 - [examples/azure/functions/event_driven_data_pipeline/basic](examples/azure/functions/event_driven_data_pipeline/basic/README.md)
 - [examples/azure/multiregion/compute_failover/basic](examples/azure/multiregion/compute_failover/basic/README.md)
@@ -269,6 +275,7 @@ Shared orchestration patterns:
 - [patterns/azure/private_endpoint](patterns/azure/private_endpoint)
 - [patterns/azure/aks_basic](patterns/azure/aks_basic)
 - [patterns/azure/aks_private_acr](patterns/azure/aks_private_acr)
+- [patterns/azure/devops_build_and_deploy_aks](patterns/azure/devops_build_and_deploy_aks)
 - [patterns/azure/bulk_ingestion_pipeline](patterns/azure/bulk_ingestion_pipeline)
 - [patterns/azure/event_driven_data_pipeline](patterns/azure/event_driven_data_pipeline)
 - [patterns/azure/multiregion_compute_failover](patterns/azure/multiregion_compute_failover)
@@ -290,17 +297,21 @@ Shared orchestration patterns:
 
 ## Azure AKS Coverage
 
-The public orchestrator includes a focused Azure AKS teaser-tier landing-zone pattern for a single-region private cluster. It keeps the network self-contained instead of reusing the broader hub-spoke or firewall-transit patterns.
+The public orchestrator includes focused Azure AKS teaser-tier patterns for single-region private clusters and a separate DevOps pattern for image build, push and deployment. It keeps the network self-contained instead of reusing the broader hub-spoke or firewall-transit patterns.
 
 Current Azure AKS examples:
 
 - Private AKS basic baseline with Azure Bastion operator access and NAT Gateway egress: [examples/azure/aks/basic](examples/azure/aks/basic/README.md)
 - Private AKS plus private ACR baseline with ACR Private Endpoint access: [examples/azure/aks/private_acr](examples/azure/aks/private_acr/README.md)
+- Azure DevOps build and deploy to private AKS: [examples/azure/devops/build_and_deploy_aks/basic](examples/azure/devops/build_and_deploy_aks/basic/README.md)
 
 | Scenario | Pattern | Network shape | Validation path |
 | --- | --- | --- | --- |
 | Private AKS basic | `patterns/azure/aks_basic` | one VNet with AKS node, jump, and `AzureBastionSubnet` subnets | Azure Bastion to private jump host, then private AKS API DNS and TCP `443` checks |
 | Private AKS plus private ACR | `patterns/azure/aks_private_acr` | one VNet with AKS node, jump, ACR Private Endpoint, and `AzureBastionSubnet` subnets | Azure Bastion to private jump host, then private AKS API and ACR DNS/TCP `443` checks |
+| Azure DevOps build and deploy AKS | `patterns/azure/devops_build_and_deploy_aks` | private AKS/ACR shape, with the jump VM also serving as Build agent | self-hosted Build pushes through Private Endpoint; Microsoft-hosted Deploy uses ARM Run Command and kubectl |
+
+The CI/CD example has live evidence for apply, successful image push and rollout, negative RBAC trials, application HTTP access through port-forward, and complete teardown. See its README for commands and screenshots. The service remains internal (`ClusterIP`).
 
 These public patterns deliberately exclude Azure Firewall transit, customer-managed keys, additional node pools, autoscaling, diagnostics, multi-region, and DR. Those concerns belong in the premium `aks_firewall_transit` blueprint tier.
 
@@ -378,6 +389,8 @@ The repository composes FoggyKitchen building blocks such as:
 - [terraform-az-fk-firewall](https://github.com/foggykitchen/terraform-az-fk-firewall)
 - [terraform-az-fk-aks](https://github.com/foggykitchen/terraform-az-fk-aks)
 - [terraform-az-fk-acr](https://github.com/foggykitchen/terraform-az-fk-acr)
+- [terraform-az-fk-devops](https://github.com/foggykitchen/terraform-az-fk-devops)
+- [terraform-az-fk-devops-pipeline](https://github.com/foggykitchen/terraform-az-fk-devops-pipeline)
 - [terraform-az-fk-function](https://github.com/foggykitchen/terraform-az-fk-function)
 - [terraform-az-fk-event-grid](https://github.com/foggykitchen/terraform-az-fk-event-grid)
 - [terraform-az-fk-event-hub](https://github.com/foggykitchen/terraform-az-fk-event-hub)

@@ -157,6 +157,22 @@ repository.
 
 ---
 
+## Azure DevOps Delivery to Private AKS
+
+The new `devops_build_and_deploy_aks` pattern preserves the infrastructure-only scope of `aks_basic` and `aks_private_acr`. It directly composes their networking/AKS/ACR shape with the focused DevOps and RBAC modules.
+
+Build runs on the jump VM because a standard Microsoft-hosted agent has no path to the private ACR data plane. Reusing that VM keeps the demo small; its dedicated `azagent` account has Docker access and therefore effective root access on the shared VM. Terraform manages the pool/queue and pipeline authorization, while registration credentials are supplied outside Terraform and cloud-init.
+
+Deploy runs on a Microsoft-hosted agent through `AzureCLI@2` and `az aks command invoke`. The provider's YAML pipeline definition does not model a Kubernetes deployment resource stage. The single Deployment/ClusterIP Service uses plain kubectl to avoid chart packaging and attached files. No Helm size-limit error was encountered or claimed.
+
+The service connection uses OIDC backed by an Entra application/service principal. Live tests rejected Cluster User at `runCommand/action` and RBAC Writer at cluster `read`; the three-action custom role succeeded after restoration. This grants privileged Run Command access inside the cluster, so repository write permissions matter even though the ARM action list is small.
+
+The example follows the networking examples' optional TLS-generated SSH key convention. The generated public key is passed separately from `templatefile` variables: making the entire YAML depend on an apply-time key would make network `for_each` keys unknown during plan. The sensitive private key remains in state until teardown; no generated state, plans, credentials or caches are committed.
+
+Commands, actual output, screenshots and teardown evidence belong in the [example README](../examples/azure/devops/build_and_deploy_aks/basic/README.md), with navigation and general contracts in the parent READMEs and these docs.
+
+---
+
 ## 🪪 License
 
 Licensed under the **Universal Permissive License (UPL), Version 1.0**.  

@@ -66,6 +66,7 @@ Common Azure payload sections may include:
 - `load_balancer`
 - `storage`
 - `functions`
+- `devops`
 - `frontdoor`
 - `private_endpoints`
 - `firewall`
@@ -484,6 +485,56 @@ data:
 ```
 
 The `aks_private_acr` pattern requires ACR Premium for Private Endpoint support, uses ACR Private Endpoint subresource `registry`, creates or links `privatelink.azurecr.io`, disables public registry access, and assigns `AcrPull` to the AKS kubelet identity after AKS and ACR exist.
+
+### Azure DevOps Build and Deploy AKS
+
+`devops_build_and_deploy_aks` consumes the private AKS/ACR infrastructure blocks above and adds the following CI/CD contract. It is a separate flat composition; the baseline AKS patterns are unchanged.
+
+| Key | Required / default | Meaning |
+| --- | --- | --- |
+| `cloud.subscription_id` | required | Subscription for the ARM OIDC endpoint; match provider configuration |
+| `cloud.tenant_id` | provided by example | Tenant metadata; configure the AzureRM/AzureAD providers consistently |
+| `cloud.subscription_name` | required | Subscription display name for the ARM endpoint |
+| `devops.organization_url` | required | `https://dev.azure.com/ORGANIZATION`; same organization as the provider |
+| `devops.project.name` | required | New private DevOps project |
+| `devops.github.repository` | `foggykitchen/foggykitchen-hello-world` | GitHub owner/repo with existing pipeline YAML |
+| `devops.github.branch` | `master` | Source branch containing the YAML; select the companion feature branch until merged |
+| `devops.build.agent_pool_name` | required | New pool created for the jump VM's self-hosted Build agent |
+| `devops.pipeline.name` | `fk-build-and-deploy-aks` | YAML pipeline definition name |
+
+CI/CD extension example (combine with the full network/AKS payload in the [runnable example](../examples/azure/devops/build_and_deploy_aks/basic/landing-zone.yaml)):
+
+```yaml
+cloud:
+  subscription_id: "YOUR_SUBSCRIPTION_ID"
+  tenant_id: "YOUR_TENANT_ID"
+  subscription_name: "Subscription 1"
+
+devops:
+  organization_url: https://dev.azure.com/foggykitchendevops
+  project:
+    name: fk-devops-aks-dev
+  github:
+    repository: foggykitchen/foggykitchen-hello-world
+    branch: feat/azure-devops-private-aks
+  build:
+    agent_pool_name: fk-private-acr-build
+  pipeline:
+    name: fk-build-and-deploy-aks
+
+workload:
+  jump:
+    name: vm-fk-aks-devops-jump
+    shape: Standard_B2s
+    admin_username: azureuser
+    ssh_authorized_keys: [] # Wrapper supplies admin_ssh_public_key separately.
+```
+
+`payload_file` and `payload_template_vars` remain the pattern entry points. An optional sensitive module input `admin_ssh_public_key` overrides `workload.jump.ssh_authorized_keys`; if null, exactly one key must be supplied in YAML. The basic wrapper accepts an empty public key and generates RSA-4096 using TLS. It passes the generated public key separately, keeping the decoded payload and subnet keys known during plan. The private-key output is sensitive.
+
+Guardrails require private AKS, Azure CNI, `userDefinedRouting`, Premium ACR with public access disabled, and exactly one jump key. `workload.jump.cloud_init_override` is rejected because this pattern owns the Build agent bootstrap. Pool/VM/organization names are validated before interpolation in the registration helper. CMK, diagnostics and additional node pools are rejected.
+
+Provider credentials and registration tokens are not payload fields. The example's DevOps provider uses Azure CLI authentication; the GitHub source endpoint uses `AZDO_GITHUB_SERVICE_CONNECTION_PAT`. Cloud-init installs the agent but does not register it with a stored PAT. Use the installed helper after apply, then run the pipeline once the agent is Online. The YAML path is fixed as `azure-pipelines-cicd-aks.yml`, with `fk-azure-oidc` and `fk-configuration` matching the companion file. Azure deploy logic belongs in that YAML, not in new Terraform stage-type inputs.
 
 `postgresql_private_access` focuses on:
 

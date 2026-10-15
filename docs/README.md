@@ -13,10 +13,11 @@ The documents in this directory explain:
 - how FoggyKitchen modules are mapped into shared patterns
 - how the YAML payload contract is structured
 
-They cover both:
+They cover:
 
 - landing zone networking compositions for Azure and OCI
 - Azure AKS teaser-tier compositions
+- Azure DevOps CI/CD to private AKS and ACR
 - Azure private database compositions for PostgreSQL, MySQL, SQL Database, and Cosmos DB
 - Azure Functions event-driven and bulk ingestion compositions
 - Azure multiregion compute failover compositions with Front Door and regional Load Balancers
@@ -57,10 +58,15 @@ The public orchestrator currently includes Azure AKS teaser-tier patterns:
 | --- | --- | --- |
 | Private AKS basic | `patterns/azure/aks_basic` | single-region private AKS cluster with Azure Bastion, NAT Gateway egress, subnet NSGs, empty route table for `userDefinedRouting`, and a private jump host |
 | Private AKS plus private ACR | `patterns/azure/aks_private_acr` | `aks_basic` shape plus ACR Premium, ACR Private Endpoint subresource `registry`, Private DNS Zone `privatelink.azurecr.io`, and `AcrPull` attachment |
+| Build and deploy private AKS | `patterns/azure/devops_build_and_deploy_aks` | flat private AKS/ACR composition plus a self-hosted Build agent on the jump VM, DevOps OIDC and Microsoft-hosted Deploy through ARM Run Command |
 
 The AKS patterns are intentionally narrower than the premium `aks_firewall_transit` blueprint. Azure Firewall transit, customer-managed keys, additional node pools, autoscaling, diagnostics, multi-region, and DR are outside these public patterns.
 
 The public examples tree includes [examples/azure/aks/firewall_transit_basic](../examples/azure/aks/firewall_transit_basic/README.md) as a placeholder for the premium AKS firewall-transit blueprint. The implementation is distributed through the private `foggykitchen-landing-zone-blueprint` repository and requires a [FoggyKitchen Professional+ subscription](https://foggykitchen.com/membership).
+
+## Azure DevOps Coverage
+
+The [DevOps example hierarchy](../examples/azure/devops/README.md) starts with [build-and-deploy AKS basic](../examples/azure/devops/build_and_deploy_aks/basic/README.md). Its README is the single record for setup, screenshots, successful end-to-end runs, live RBAC trials, HTTP verification and teardown. Pipeline YAML lives in the companion `foggykitchen/foggykitchen-hello-world` repository. The contract covers infrastructure and pipeline configuration; kubectl deployment belongs to YAML.
 
 ## Azure Functions Coverage
 

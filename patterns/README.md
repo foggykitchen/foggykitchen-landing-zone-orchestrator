@@ -29,6 +29,7 @@ Examples under `examples/` should stay thin and delegate architecture logic to t
 - [firewall_transit](azure/firewall_transit)
 - [aks_basic](azure/aks_basic)
 - [aks_private_acr](azure/aks_private_acr)
+- [devops_build_and_deploy_aks](azure/devops_build_and_deploy_aks)
 - [bulk_ingestion_pipeline](azure/bulk_ingestion_pipeline)
 - [event_driven_data_pipeline](azure/event_driven_data_pipeline)
 - [multiregion_compute_failover](azure/multiregion_compute_failover)
@@ -68,6 +69,7 @@ Recommended order:
 - `azure/private_endpoint` extends the shared Azure networking foundation
 - `azure/aks_basic` adds a teaser-tier private AKS baseline with Azure Bastion, NAT Gateway egress, and a private jump host
 - `azure/aks_private_acr` extends the AKS teaser tier with ACR Private Endpoint and Private DNS access
+- `azure/devops_build_and_deploy_aks` directly composes that infrastructure shape with Azure DevOps, OIDC, a Build agent on the jump VM, and YAML-owned kubectl deployment through AKS Run Command
 - `azure/bulk_ingestion_pipeline` adds an Azure Functions Blob/Event Grid bulk ingestion pattern with Event Hubs and PostgreSQL
 - `azure/event_driven_data_pipeline` adds an Azure Functions API-driven ingestion pattern with API Management, Event Hubs, and PostgreSQL
 - `azure/multiregion_compute_failover` adds a stateless Azure Front Door failover pattern across two regional Load Balancer and VMSS stacks

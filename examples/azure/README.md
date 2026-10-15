@@ -12,6 +12,7 @@ Current emphasis:
 
 - networking-oriented landing zone patterns
 - AKS teaser-tier landing zone patterns
+- Azure DevOps build and deploy to private AKS and ACR
 - database private-access landing zone patterns for relational engines and Cosmos DB
 - Azure Functions event-driven and bulk ingestion patterns
 - Azure multiregion compute failover patterns
@@ -23,6 +24,7 @@ Current emphasis:
 
 - [Networking examples](networking/README.md)
 - [AKS examples](aks/README.md)
+- [DevOps examples](devops/README.md)
 - [Database examples](database/README.md)
 - [Functions examples](functions/README.md)
 - [Multiregion examples](multiregion/README.md)

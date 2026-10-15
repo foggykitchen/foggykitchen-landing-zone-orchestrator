@@ -31,6 +31,8 @@ The goal of this map is to show how the repository turns individual modules into
 | `terraform-az-fk-firewall` | Central inspection and transit boundary |
 | `terraform-az-fk-aks` | Azure Kubernetes Service cluster layer |
 | `terraform-az-fk-acr` | Azure Container Registry service layer |
+| `terraform-az-fk-devops` | DevOps project, source connection, Entra OIDC identity, ARM endpoint and variable groups |
+| `terraform-az-fk-devops-pipeline` | YAML pipeline definition and endpoint/variable-group authorizations |
 | `terraform-az-fk-function` | Azure Functions runtime and ZIP deployment layer |
 | `terraform-az-fk-event-grid` | Azure resource event routing layer |
 | `terraform-az-fk-event-hub` | Event Hubs namespace and asynchronous buffer layer |
@@ -155,6 +157,23 @@ Focus:
 - subnet-associated NSGs for denied Internet inbound and Bastion-sourced SSH/RDP to the jump subnet
 - one Azure Bastion host for operator SSH access to the private jump host
 - lightweight jump host for private AKS API and ACR TCP `443` checks
+
+### `patterns/azure/devops_build_and_deploy_aks`
+
+Directly composes the same infrastructure modules as `aks_private_acr` (listed above); it does not call that pattern. CI/CD additions:
+
+| Module / resource | Selected version | Responsibility |
+| --- | --- | --- |
+| `terraform-az-fk-devops` | `v0.2.0` | Private project, GitHub source endpoint, Entra application/service principal, ARM OIDC endpoint and configuration group |
+| `terraform-az-fk-devops-pipeline` | `v0.2.0` | Definition pointing to companion GitHub YAML; authorize its source/ARM endpoints and variable group |
+| `terraform-az-fk-rbac` | `v0.1.4` | Pipeline `AcrPush` at ACR scope and custom Run Command role at cluster scope |
+| `azurerm_role_definition` | AzureRM provider | Three-action Run Command role; no Kubernetes deployment stage resource |
+| `azuredevops_agent_pool`, `azuredevops_agent_queue`, `azuredevops_pipeline_authorization` | Azure DevOps provider | Self-hosted pool, project queue and authorization for this pipeline only |
+| `tls_private_key` in the example wrapper | TLS provider | Optional RSA-4096 key generation; public key passed separately to the pattern |
+
+The existing compute module creates the shared jump/Build VM. Cloud-init installs Docker, Azure CLI, kubectl, the checksum-pinned agent and an interactive registration helper. The YAML owns Docker build/test/push, image metadata and the kubectl deploy script invoked through ARM. No Kubernetes or Helm provider is required by this pattern.
+
+Key outputs are `aks`, `acr`, `network`, `bastion`, `jump_host`, `devops` and `build_agent`. The wrapper additionally exposes a sensitive generated private key when TLS generation is used. See the [example README](../examples/azure/devops/build_and_deploy_aks/basic/README.md) for verified commands and screenshots.
 
 ### `patterns/azure/event_driven_data_pipeline`
 
