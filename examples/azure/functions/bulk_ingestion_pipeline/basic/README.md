@@ -142,6 +142,11 @@ The first upload attempt with Azure AD data-plane authentication failed because 
 - PostgreSQL uses password-based connectivity because this basic delegated-subnet variant does not enable PostgreSQL Entra authentication
 - richer private ingress hardening belongs in a later secure/private blueprint layer
 
+## Related technical articles
+
+- [Azure Data Pipelines with Terraform: From API and Blob Events to PostgreSQL](https://foggykitchen.com/2026/10/05/azure-data-pipelines-functions-event-hubs-postgresql/)
+  — Trace API-driven and Blob-triggered ingestion through Functions and Event Hubs to PostgreSQL, including retry and idempotency boundaries.
+
 ## License
 
 Licensed under the **Universal Permissive License (UPL), Version 1.0**.  

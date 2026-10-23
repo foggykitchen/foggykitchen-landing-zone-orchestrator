@@ -42,6 +42,11 @@ Optional `data.postgresql.entra`, `data.postgresql.cmk`, and `data.postgresql.di
 - [`examples/azure/database/postgresql/private_access/delegated_subnet`](../../../examples/azure/database/postgresql/private_access/delegated_subnet/README.md)
 - [`examples/azure/database/postgresql/private_access/private_endpoint`](../../../examples/azure/database/postgresql/private_access/private_endpoint/README.md)
 
+## Related technical articles
+
+- [Azure Database Modules with Terraform: SQL, MySQL and PostgreSQL](https://foggykitchen.com/2026/09/07/azure-database-modules-terraform-sql-mysql-postgresql/)
+  — Compare SQL, MySQL and PostgreSQL module composition and private connectivity options.
+
 ## License
 
 Licensed under the **Universal Permissive License (UPL), Version 1.0**.

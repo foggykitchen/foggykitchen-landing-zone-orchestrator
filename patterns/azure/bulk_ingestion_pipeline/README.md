@@ -58,6 +58,11 @@ The pattern follows Azure-native serverless behavior rather than porting OCI res
 
 - [`examples/azure/functions/bulk_ingestion_pipeline/basic`](../../../examples/azure/functions/bulk_ingestion_pipeline/basic/README.md)
 
+## Related technical articles
+
+- [Azure Data Pipelines with Terraform: From API and Blob Events to PostgreSQL](https://foggykitchen.com/2026/10/05/azure-data-pipelines-functions-event-hubs-postgresql/)
+  — Trace API-driven and Blob-triggered ingestion through Functions and Event Hubs to PostgreSQL, including retry and idempotency boundaries.
+
 ## License
 
 Licensed under the **Universal Permissive License (UPL), Version 1.0**.  

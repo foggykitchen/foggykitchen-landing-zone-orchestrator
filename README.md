@@ -446,6 +446,15 @@ Then choose one of the example payloads under `examples/`.
 
 ---
 
+## Related technical articles
+
+- [Azure Database Modules with Terraform: SQL, MySQL and PostgreSQL](https://foggykitchen.com/2026/09/07/azure-database-modules-terraform-sql-mysql-postgresql/)
+  — Compare SQL, MySQL and PostgreSQL module composition and private connectivity options.
+- [Private AKS Architecture with Terraform: ACR and Firewall](https://foggykitchen.com/2026/09/21/private-aks-architecture-terraform-acr-firewall/)
+  — Follow the progression from private AKS and private ACR to centralized firewall egress.
+- [Azure Data Pipelines with Terraform: From API and Blob Events to PostgreSQL](https://foggykitchen.com/2026/10/05/azure-data-pipelines-functions-event-hubs-postgresql/)
+  — Trace API-driven and Blob-triggered ingestion through Functions and Event Hubs to PostgreSQL, including retry and idempotency boundaries.
+
 ## 🪪 License
 
 Licensed under the **Universal Permissive License (UPL), Version 1.0**.  

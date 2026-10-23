@@ -72,6 +72,11 @@ Optional `data.aks.cmk`, `data.aks.diagnostics`, and `data.aks.additional_node_p
 - [Design virtual networks with Azure NAT Gateway](https://learn.microsoft.com/en-us/azure/nat-gateway/nat-gateway-design)
 - [Create an SSH connection to a Linux VM using Azure Bastion](https://learn.microsoft.com/en-us/azure/bastion/bastion-connect-vm-ssh-linux)
 
+## Related technical articles
+
+- [Private AKS Architecture with Terraform: ACR and Firewall](https://foggykitchen.com/2026/09/21/private-aks-architecture-terraform-acr-firewall/)
+  — Follow the progression from private AKS and private ACR to centralized firewall egress.
+
 ## License
 
 Licensed under the **Universal Permissive License (UPL), Version 1.0**.

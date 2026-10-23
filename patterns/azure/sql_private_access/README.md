@@ -48,6 +48,11 @@ Optional `data.sql.entra`, `data.sql.cmk`, and `data.sql.diagnostics` blocks are
 
 - [`examples/azure/database/sql/private_access/private_endpoint`](../../../examples/azure/database/sql/private_access/private_endpoint/README.md)
 
+## Related technical articles
+
+- [Azure Database Modules with Terraform: SQL, MySQL and PostgreSQL](https://foggykitchen.com/2026/09/07/azure-database-modules-terraform-sql-mysql-postgresql/)
+  — Compare SQL, MySQL and PostgreSQL module composition and private connectivity options.
+
 ## License
 
 Licensed under the **Universal Permissive License (UPL), Version 1.0**.
