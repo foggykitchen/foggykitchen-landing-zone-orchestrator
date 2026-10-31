@@ -278,3 +278,8 @@ $ tofu state list
 ```
 
 Authenticated Azure DevOps GET requests for project `a1562472-cf44-4217-ba64-21e01fe13b25` and agent pool `11` each returned HTTP 404. The local Bastion tunnel was closed. Repository code and screenshots remain available.
+
+## Related technical articles
+
+- [Azure DevOps with Terraform: Build and Deploy to Private AKS](https://foggykitchen.com/2026/10/26/azure-devops-with-terraform-private-aks-delivery/)
+  — Walk through this private AKS/ACR example, its separate Build and Deploy access paths, image-digest verification and operational limits.
