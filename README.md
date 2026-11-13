@@ -1,5 +1,7 @@
 # FoggyKitchen Landing Zone Orchestrator
 
+OCI patterns in **v2.0.0** require `oracle/oci >= 9.12.1, < 10.0.0` and OpenTofu `>= 1.11.0`. This is a breaking upgrade from OCI 6: run `tofu init -upgrade` and review the plan. See [migration and validation details](docs/oci-provider-9-migration.md).
+
 FoggyKitchen Landing Zone Orchestrator is a reference architecture layer built on top of public **Terraform / OpenTofu modules** from the FoggyKitchen ecosystem for **Azure** and **OCI**.
 
 It demonstrates how reusable infrastructure modules can be composed into opinionated landing zone patterns: hub-and-spoke networking, private-first compute, private endpoints, Azure private AKS basics, Azure private database access, Azure Front Door multiregion failover, DRG cross-region remote peering, local peering, private DNS, firewall-based transit, and OCI multiregion failover.

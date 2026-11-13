@@ -71,8 +71,8 @@ locals {
     minimum_bandwidth_in_mbps = 10
     maximum_bandwidth_in_mbps = 100
   })
-  primary_lb_name        = try(local.workload.load_balancer.primary_name, "fkpri")
-  standby_lb_name        = try(local.workload.load_balancer.standby_name, "fkstd")
+  primary_lb_name         = try(local.workload.load_balancer.primary_name, "fkpri")
+  standby_lb_name         = try(local.workload.load_balancer.standby_name, "fkstd")
   primary_backendset_name = try(local.workload.load_balancer.primary_backend_set_name, "fkpri-bes")
   standby_backendset_name = try(local.workload.load_balancer.standby_backend_set_name, "fkstd-bes")
 

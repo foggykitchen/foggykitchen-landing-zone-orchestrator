@@ -1,5 +1,7 @@
 # OCI Authenticated Serverless API Pattern
 
+Requires OCI provider **>= 9.12.1, < 10.0.0** and OpenTofu **>= 1.11.0**. See the [v2.0.0 migration guide](../../../docs/oci-provider-9-migration.md).
+
 This shared pattern composes a lightweight, public **authenticated serverless API** on Oracle Cloud Infrastructure.
 
 It focuses on:

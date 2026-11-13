@@ -67,3 +67,16 @@ devops:
     helm_stage:
       name: helm_deploy
       timeout_in_seconds: 1800
+
+# Informational metadata; executable constraints live in Terraform files.
+compatibility:
+  orchestrator: v2.0.0
+  opentofu: ">= 1.11.0"
+  oci_provider: ">= 9.12.1, < 10.0.0"
+  modules:
+    devops: v0.2.0
+    devops-pipeline: v0.2.0
+    ocir: v0.2.0
+    oke: v0.4.0
+    policy: v0.2.0
+    vcn: v0.3.0

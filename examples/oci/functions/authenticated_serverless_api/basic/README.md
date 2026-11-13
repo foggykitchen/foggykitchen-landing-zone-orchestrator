@@ -1,5 +1,7 @@
 # OCI Authenticated Serverless API Basic Example
 
+Requires OCI provider **>= 9.12.1, < 10.0.0** and OpenTofu **>= 1.11.0**. See the [v2.0.0 migration guide](../../../../../docs/oci-provider-9-migration.md).
+
 This example is a thin wrapper around the shared **authenticated_serverless_api** pattern.
 
 It demonstrates:

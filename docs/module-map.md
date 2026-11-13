@@ -538,3 +538,7 @@ See [LICENSE](../LICENSE) for details.
 ---
 
 © 2026 FoggyKitchen.com — *Cloud. Code. Clarity.*
+
+## OCI v2.0.0 compatibility
+
+OCI examples declare informational `compatibility` metadata in their YAML payloads. Provider/runtime constraints and pinned module sources in Terraform files are authoritative. See the [OCI provider 9 migration guide](oci-provider-9-migration.md).

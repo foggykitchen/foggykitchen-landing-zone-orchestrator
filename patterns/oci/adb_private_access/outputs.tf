@@ -18,7 +18,7 @@ output "validation_host" {
     ssh_user      = "opc"
     subnet_id     = module.vcn.subnet_ids["client_public"]
     ssh_command   = "ssh opc@${module.client_host.instance_public_ip}"
-    nc_validation = "nc -vz ${module.adb.adb_database.private_endpoint_ip} 1522"
+    nc_validation = "nc -vz ${nonsensitive(module.adb.adb_database.private_endpoint_ip)} 1522"
   }
 }
 

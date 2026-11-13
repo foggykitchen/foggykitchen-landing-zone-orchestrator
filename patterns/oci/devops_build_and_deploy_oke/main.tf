@@ -1,5 +1,5 @@
 module "policy" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-policy.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-policy.git?ref=v0.2.0"
 
   providers = {
     oci = oci.home
@@ -49,7 +49,7 @@ module "policy" {
 }
 
 module "vcn" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.3.0"
 
   compartment_ocid = local.compartment_ocid
   name             = "${local.project_name}-vcn"
@@ -126,7 +126,7 @@ module "vcn" {
 }
 
 module "oke" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-oke.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-oke.git?ref=v0.4.0"
 
   tenancy_ocid                  = local.tenancy_ocid
   compartment_ocid              = local.compartment_ocid
@@ -152,12 +152,12 @@ module "oke" {
 
 resource "terraform_data" "ocir_pull_secret" {
   triggers_replace = {
-    cluster_id       = module.oke.cluster.id
-    registry         = module.ocir_image.registry
-    namespace        = module.ocir_image.namespace
-    ocir_user_name   = "${module.ocir_image.namespace}/${local.devops.registry.ocir_user_name}"
-    ocir_password    = sha256(var.ocir_user_password)
-    kubeconfig       = sha256(module.oke.KubeConfig)
+    cluster_id     = module.oke.cluster.id
+    registry       = module.ocir_image.registry
+    namespace      = module.ocir_image.namespace
+    ocir_user_name = "${module.ocir_image.namespace}/${local.devops.registry.ocir_user_name}"
+    ocir_password  = sha256(var.ocir_user_password)
+    kubeconfig     = sha256(module.oke.KubeConfig)
   }
 
   provisioner "local-exec" {
@@ -188,7 +188,7 @@ EOF
 }
 
 module "ocir_image" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-ocir.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-ocir.git?ref=v0.2.0"
 
   compartment_ocid = local.compartment_ocid
   repository_name  = local.image_repository_name
@@ -198,7 +198,7 @@ module "ocir_image" {
 }
 
 module "ocir_helm" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-ocir.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-ocir.git?ref=v0.2.0"
 
   compartment_ocid = local.compartment_ocid
   repository_name  = local.helm_repository_name
@@ -208,7 +208,7 @@ module "ocir_helm" {
 }
 
 module "devops" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-devops.git?ref=v0.1.2"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-devops.git?ref=v0.2.0"
 
   compartment_ocid           = local.compartment_ocid
   project_name               = local.project_name
@@ -287,7 +287,7 @@ module "devops" {
 }
 
 module "devops_pipeline" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-devops-pipeline.git?ref=v0.1.17"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-devops-pipeline.git?ref=v0.2.0"
 
   project_id = module.devops.project_id
 
@@ -319,12 +319,12 @@ module "devops_pipeline" {
       ]
       stages = [
         {
-          key              = "build"
-          stage_type       = "BUILD"
-          display_name     = try(local.devops.build_pipeline.build_stage.name, "build_and_package")
-          description      = try(local.devops.build_pipeline.build_stage.description, null)
-          build_spec_file  = try(local.devops.build_pipeline.build_stage.build_spec_file, "build_spec.yaml")
-          image            = try(local.devops.build_pipeline.build_stage.image, "OL8_X86_64_STANDARD_10")
+          key                                = "build"
+          stage_type                         = "BUILD"
+          display_name                       = try(local.devops.build_pipeline.build_stage.name, "build_and_package")
+          description                        = try(local.devops.build_pipeline.build_stage.description, null)
+          build_spec_file                    = try(local.devops.build_pipeline.build_stage.build_spec_file, "build_spec.yaml")
+          image                              = try(local.devops.build_pipeline.build_stage.image, "OL8_X86_64_STANDARD_10")
           stage_execution_timeout_in_seconds = try(local.devops.build_pipeline.build_stage.timeout_in_seconds, 36000)
           build_sources = [
             {

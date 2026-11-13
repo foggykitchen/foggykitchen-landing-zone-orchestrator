@@ -97,3 +97,14 @@ load_balancer:
     protocol: HTTP
     port: 80
     url_path: /
+
+# Informational metadata; executable constraints live in Terraform files.
+compatibility:
+  orchestrator: v2.0.0
+  opentofu: ">= 1.11.0"
+  oci_provider: ">= 9.12.1, < 10.0.0"
+  modules:
+    compute: v0.3.0
+    loadbalancer: v2.0.0
+    lpg: v0.2.0
+    vcn: v0.3.0

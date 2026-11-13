@@ -1,5 +1,7 @@
 # OCI LPG Local Peering Pattern
 
+Requires OCI provider **>= 9.12.1, < 10.0.0** and OpenTofu **>= 1.11.0**. See the [v2.0.0 migration guide](../../../docs/oci-provider-9-migration.md).
+
 This directory contains the shared **OCI LPG local peering landing zone pattern** used by FoggyKitchen Landing Zone Orchestrator.
 
 ---

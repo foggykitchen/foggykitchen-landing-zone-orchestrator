@@ -47,7 +47,7 @@ data "local_file" "fnadbsetup_requirements_txt" {
 }
 
 module "vcn" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.3.0"
 
   compartment_ocid = local.compartment_ocid
   name             = "${local.project_name}-vcn"
@@ -103,7 +103,7 @@ module "vcn" {
 }
 
 module "objectstorage" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-objectstorage.git?ref=v0.1.1"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-objectstorage.git?ref=v0.2.0"
 
   compartment_ocid = local.compartment_ocid
   name             = local.project_name
@@ -121,7 +121,7 @@ module "objectstorage" {
 }
 
 module "streaming" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-streaming.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-streaming.git?ref=v0.2.0"
 
   name             = local.project_name
   compartment_ocid = local.compartment_ocid
@@ -136,7 +136,7 @@ module "streaming" {
 }
 
 module "adb" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-adb.git?ref=v1.4"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-adb.git?ref=v2.0.0"
 
   compartment_ocid          = local.compartment_ocid
   adb_password              = local.adb_admin_password
@@ -151,7 +151,7 @@ module "adb" {
 }
 
 module "policy" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-policy.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-policy.git?ref=v0.2.0"
 
   providers = {
     oci = oci.home
@@ -198,7 +198,7 @@ module "policy" {
 }
 
 module "fnbulkload" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v0.2.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v2.0.0"
 
   tenancy_ocid             = local.tenancy_ocid
   region                   = local.region
@@ -227,7 +227,7 @@ module "fnbulkload" {
 
 module "fncollector" {
   depends_on = [module.adb]
-  source     = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v0.2.0"
+  source     = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v2.0.0"
 
   tenancy_ocid       = local.tenancy_ocid
   region             = local.region
@@ -265,7 +265,7 @@ module "fncollector" {
 
 module "fnadbsetup" {
   depends_on = [module.adb]
-  source     = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v0.2.0"
+  source     = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v2.0.0"
 
   tenancy_ocid       = local.tenancy_ocid
   region             = local.region
@@ -300,7 +300,7 @@ module "fnadbsetup" {
 }
 
 module "sch" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-sch.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-sch.git?ref=v0.2.0"
 
   name             = local.project_name
   compartment_ocid = local.compartment_ocid
@@ -318,7 +318,7 @@ module "sch" {
 
 module "event" {
   depends_on = [module.policy, module.fnbulkload]
-  source     = "git::https://github.com/foggykitchen/terraform-oci-fk-event.git?ref=v0.1.0"
+  source     = "git::https://github.com/foggykitchen/terraform-oci-fk-event.git?ref=v0.2.0"
 
   name             = local.project_name
   rule_name        = local.event_rule_name

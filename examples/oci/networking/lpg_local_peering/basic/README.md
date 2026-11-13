@@ -1,5 +1,7 @@
 # OCI LPG Local Peering Landing Zone
 
+Requires OCI provider **>= 9.12.1, < 10.0.0** and OpenTofu **>= 1.11.0**. See the [v2.0.0 migration guide](../../../../../docs/oci-provider-9-migration.md).
+
 This example provides one payload for the shared **OCI local peering orchestrator pattern**.
 
 ![OCI LPG local peering architecture](diagrams/lpg_local_peering_basic_architecture.png)
