@@ -213,7 +213,7 @@ module "policy" {
 }
 
 module "fninitiator" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v2.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v2.0.1"
 
   tenancy_ocid             = local.tenancy_ocid
   region                   = local.region
@@ -241,7 +241,7 @@ module "fninitiator" {
 
 module "fncollector" {
   depends_on = [module.adb]
-  source     = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v2.0.0"
+  source     = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v2.0.1"
 
   tenancy_ocid       = local.tenancy_ocid
   region             = local.region
@@ -279,7 +279,7 @@ module "fncollector" {
 
 module "fnadbsetup" {
   depends_on = [module.adb]
-  source     = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v2.0.0"
+  source     = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v2.0.1"
 
   tenancy_ocid       = local.tenancy_ocid
   region             = local.region
