@@ -76,7 +76,7 @@ module "vnet" {
 }
 
 module "node_nsg" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.1"
 
   name                = "${local.project_name}-node-nsg"
   location            = azurerm_resource_group.this.location
@@ -119,7 +119,7 @@ module "node_nsg" {
 }
 
 module "jump_nsg" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.1"
 
   name                = "${local.project_name}-jump-nsg"
   location            = azurerm_resource_group.this.location
@@ -186,7 +186,7 @@ module "jump_nsg" {
 }
 
 module "routing" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-routing.git?ref=v0.4.2"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-routing.git?ref=v0.4.3"
 
   resource_group_name = azurerm_resource_group.this.name
 
@@ -202,7 +202,7 @@ module "routing" {
 }
 
 module "nat_gateway_public_ip" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-public-ip.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-public-ip.git?ref=v1.0.1"
 
   name                = local.nat_gateway_public_ip_name
   location            = azurerm_resource_group.this.location
@@ -213,7 +213,7 @@ module "nat_gateway_public_ip" {
 }
 
 module "nat_gateway" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-natgw.git?ref=v1.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-natgw.git?ref=v1.1.1"
 
   name                = local.nat_gateway_name
   location            = azurerm_resource_group.this.location
@@ -235,7 +235,7 @@ module "nat_gateway" {
 }
 
 module "bastion" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-bastion.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-bastion.git?ref=v1.0.1"
 
   name                = "${local.project_name}-bastion"
   location            = azurerm_resource_group.this.location
@@ -290,7 +290,7 @@ module "aks" {
 }
 
 module "jump_host" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-compute.git?ref=v0.3.5"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-compute.git?ref=v0.4.1"
 
   name                = local.jump_name
   location            = azurerm_resource_group.this.location

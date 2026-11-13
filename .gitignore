@@ -16,3 +16,7 @@ override.tf.json
 *_override.tf.json
 terraform.rc
 .terraformrc
+
+# Local release verification
+.validation/
+.plugin-cache/

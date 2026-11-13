@@ -77,7 +77,7 @@ module "vnet" {
 }
 
 module "functions_nsg" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.1"
 
   name                = "${local.project_name}-functions-nsg"
   location            = azurerm_resource_group.this.location
@@ -132,7 +132,7 @@ module "functions_nsg" {
 }
 
 module "private_dns" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-private-dns.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-private-dns.git?ref=v1.0.1"
 
   resource_group_name    = azurerm_resource_group.this.name
   private_dns_zone_names = [local.private_dns_zone_name]
@@ -190,7 +190,7 @@ module "event_hub" {
 }
 
 module "event_hub_sender_rbac" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-rbac.git?ref=v0.1.2"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-rbac.git?ref=v0.1.4"
 
   scope                = module.event_hub.event_hub_ids["ingestion"]
   principal_id         = module.identity.principal_id
@@ -198,7 +198,7 @@ module "event_hub_sender_rbac" {
 }
 
 module "event_hub_receiver_rbac" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-rbac.git?ref=v0.1.2"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-rbac.git?ref=v0.1.4"
 
   scope                = module.event_hub.event_hub_ids["ingestion"]
   principal_id         = module.identity.principal_id
@@ -206,7 +206,7 @@ module "event_hub_receiver_rbac" {
 }
 
 module "storage_blob_reader_rbac" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-rbac.git?ref=v0.1.2"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-rbac.git?ref=v0.1.4"
 
   scope                = module.storage.storage_account_id
   principal_id         = module.identity.principal_id

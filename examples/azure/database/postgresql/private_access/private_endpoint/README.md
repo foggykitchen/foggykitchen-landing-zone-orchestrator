@@ -149,7 +149,7 @@ tofu destroy
 - The PostgreSQL Flexible Server Private Endpoint target subresource is `postgresqlServer`.
 - The Private DNS Zone used by this variant is `privatelink.postgres.database.azure.com`.
 - Richer app-to-data topologies, cross-region replicas, disaster recovery, schema bootstrap, and governance belong in later PRs or the private blueprint layer.
-- `terraform-az-fk-compute v0.3.5` deploys the validation host with a private NIC. Azure Bastion provides the operator access path.
+- `terraform-az-fk-compute v0.4.1` deploys the validation host with a private NIC. Azure Bastion provides the operator access path.
 
 ## License
 

@@ -62,7 +62,7 @@ module "vnet" {
 }
 
 module "private_dns" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-private-dns.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-private-dns.git?ref=v1.0.1"
 
   resource_group_name    = azurerm_resource_group.this.name
   private_dns_zone_names = [local.private_dns_zone_name]
@@ -71,7 +71,7 @@ module "private_dns" {
 }
 
 module "database_nsg" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.1"
 
   name                = "${local.project_name}-database-nsg"
   location            = azurerm_resource_group.this.location
@@ -141,7 +141,7 @@ module "database_nsg" {
 }
 
 module "bastion" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-bastion.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-bastion.git?ref=v1.0.1"
 
   name                = "${local.project_name}-bastion"
   location            = azurerm_resource_group.this.location
@@ -213,7 +213,7 @@ resource "azurerm_cosmosdb_sql_container" "this" {
 }
 
 module "cosmosdb_private_endpoint" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-private-endpoint.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-private-endpoint.git?ref=v1.0.1"
 
   name                = "${local.project_name}-cosmosdb-pe"
   location            = azurerm_resource_group.this.location
@@ -233,7 +233,7 @@ module "cosmosdb_private_endpoint" {
 }
 
 module "validation_host" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-compute.git?ref=v0.3.5"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-compute.git?ref=v0.4.1"
 
   name                = local.client_name
   location            = azurerm_resource_group.this.location

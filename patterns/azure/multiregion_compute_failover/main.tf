@@ -185,7 +185,7 @@ module "standby_nat_gateway" {
 }
 
 module "primary_lb_public_ip" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-public-ip.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-public-ip.git?ref=v1.0.1"
 
   name                = local.primary_pip_name
   location            = local.primary_location
@@ -196,7 +196,7 @@ module "primary_lb_public_ip" {
 }
 
 module "standby_lb_public_ip" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-public-ip.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-public-ip.git?ref=v1.0.1"
 
   name                = local.standby_pip_name
   location            = local.standby_location

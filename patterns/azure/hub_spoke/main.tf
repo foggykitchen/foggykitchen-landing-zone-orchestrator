@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "this" {
 }
 
 module "hub_vnet" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-vnet.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-vnet.git?ref=v0.1.2"
 
   name                = local.hub.name
   location            = local.location
@@ -27,7 +27,7 @@ module "hub_vnet" {
 
 module "spoke_vnets" {
   for_each = local.spokes
-  source   = "git::https://github.com/foggykitchen/terraform-az-fk-vnet.git?ref=main"
+  source   = "git::https://github.com/foggykitchen/terraform-az-fk-vnet.git?ref=v0.1.2"
 
   name                = each.value.name
   location            = local.location
@@ -49,7 +49,7 @@ module "spoke_vnets" {
 
 module "hub_to_spoke_peering" {
   for_each = local.features.vnet_peering && local.peering.hub_to_spokes ? module.spoke_vnets : {}
-  source   = "git::https://github.com/foggykitchen/terraform-az-fk-vnet-peering.git?ref=main"
+  source   = "git::https://github.com/foggykitchen/terraform-az-fk-vnet-peering.git?ref=v0.1.1"
 
   resource_group_name          = azurerm_resource_group.this.name
   vnet_1_id                    = module.hub_vnet.vnet_id
@@ -65,7 +65,7 @@ module "hub_to_spoke_peering" {
 
 module "routing" {
   count  = local.features.routing && try(local.routing.enabled, false) ? 1 : 0
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-routing.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-routing.git?ref=v0.4.3"
 
   resource_group_name = azurerm_resource_group.this.name
   route_tables        = local.route_tables
@@ -74,7 +74,7 @@ module "routing" {
 
 module "hub_shared_nsg" {
   count  = local.features.nsg && local.security.nsg.enabled ? 1 : 0
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.1"
 
   name                = "nsg-fk-hub-shared"
   location            = local.location
@@ -103,7 +103,7 @@ module "hub_shared_nsg" {
 
 module "app_frontend_nsg" {
   count  = local.features.nsg && local.security.nsg.enabled ? 1 : 0
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.1"
 
   name                = "nsg-fk-app-frontend"
   location            = local.location
@@ -132,7 +132,7 @@ module "app_frontend_nsg" {
 
 module "app_backend_nsg" {
   count  = local.features.nsg && local.security.nsg.enabled ? 1 : 0
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.1"
 
   name                = "nsg-fk-app-backend"
   location            = local.location
@@ -189,7 +189,7 @@ module "app_backend_nsg" {
 
 module "data_database_nsg" {
   count  = local.features.nsg && local.security.nsg.enabled ? 1 : 0
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.1"
 
   name                = "nsg-fk-data-database"
   location            = local.location
@@ -230,7 +230,7 @@ module "data_database_nsg" {
 
 module "data_private_endpoints_nsg" {
   count  = local.features.nsg && local.security.nsg.enabled ? 1 : 0
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.1"
 
   name                = "nsg-fk-data-private-endpoints"
   location            = local.location
@@ -259,7 +259,7 @@ module "data_private_endpoints_nsg" {
 
 module "router_vm_nsg" {
   count  = local.features.nsg && local.security.nsg.enabled && length(local.route_next_hop_vm_refs) > 0 ? 1 : 0
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.1"
 
   name                = try(local.compute.instances[one(tolist(local.route_next_hop_vm_refs))].nic_nsg_name, "nsg-fk-router-01")
   location            = local.location
@@ -295,7 +295,7 @@ module "router_vm_nsg" {
 
 module "nat_public_ip" {
   for_each = local.features.nat_gateway && local.nat_gateway.enabled ? local.nat_subnet_refs_by_vnet : {}
-  source   = "git::https://github.com/foggykitchen/terraform-az-fk-public-ip.git?ref=main"
+  source   = "git::https://github.com/foggykitchen/terraform-az-fk-public-ip.git?ref=v1.0.1"
 
   name                = try(local.nat_gateway.public_ip_names[each.key], "natgw-fk-${each.key}-${local.landing_zone.environment}-pip")
   location            = local.location
@@ -307,7 +307,7 @@ module "nat_public_ip" {
 
 module "nat_gateway" {
   for_each = local.features.nat_gateway && local.nat_gateway.enabled ? local.nat_subnet_refs_by_vnet : {}
-  source   = "git::https://github.com/foggykitchen/terraform-az-fk-natgw.git?ref=main"
+  source   = "git::https://github.com/foggykitchen/terraform-az-fk-natgw.git?ref=v1.1.1"
 
   name                = try(local.nat_gateway.names[each.key], "natgw-fk-${each.key}-${local.landing_zone.environment}")
   location            = local.location
@@ -324,7 +324,7 @@ module "nat_gateway" {
 
 module "bastion" {
   count  = local.features.bastion && local.bastion.enabled ? 1 : 0
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-bastion.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-bastion.git?ref=v1.0.1"
 
   name                = local.bastion.name
   location            = local.location
@@ -338,7 +338,7 @@ module "bastion" {
 
 module "private_dns" {
   for_each = local.private_dns_zone_definitions
-  source   = "git::https://github.com/foggykitchen/terraform-az-fk-private-dns.git?ref=main"
+  source   = "git::https://github.com/foggykitchen/terraform-az-fk-private-dns.git?ref=v1.0.1"
 
   resource_group_name    = azurerm_resource_group.this.name
   private_dns_zone_names = toset([each.key])
@@ -348,7 +348,7 @@ module "private_dns" {
 
 module "internal_load_balancer" {
   count  = local.features.internal_load_balancer && try(local.load_balancer.enabled, false) ? 1 : 0
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-loadbalancer.git?ref=v1.2.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-loadbalancer.git?ref=v1.2.1"
 
   name                = local.load_balancer.name
   location            = local.location
@@ -386,7 +386,7 @@ module "internal_load_balancer" {
 
 module "compute" {
   for_each = local.features.compute && try(local.compute.enabled, false) ? local.compute_instances : {}
-  source   = "git::https://github.com/foggykitchen/terraform-az-fk-compute.git?ref=v0.3.5"
+  source   = "git::https://github.com/foggykitchen/terraform-az-fk-compute.git?ref=v0.4.1"
 
   name                          = each.value.name
   location                      = local.location
