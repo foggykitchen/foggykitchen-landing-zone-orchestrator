@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.0.0 (pending release)
+## v2.0.0 — 2026-11-13
 
 - **BREAKING:** OCI patterns and examples require `oracle/oci >= 9.12.1, < 10.0.0` and OpenTofu `>= 1.11.0`; OCI 6 is no longer supported.
 - Pin all 19 composed OCI modules to compatible releases, including Compute v0.3.0, DNS Steering v0.2.0, ADB v2.0.0 and Functions v2.0.0. Replace floating OCI module references with release tags.
