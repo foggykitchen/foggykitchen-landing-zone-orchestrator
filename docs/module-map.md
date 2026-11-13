@@ -542,3 +542,57 @@ See [LICENSE](../LICENSE) for details.
 ## OCI v2.0.0 compatibility
 
 OCI examples declare informational `compatibility` metadata in their YAML payloads. Provider/runtime constraints and pinned module sources in Terraform files are authoritative. See the [OCI provider 9 migration guide](oci-provider-9-migration.md).
+
+## Release 2.1.0 module versions
+
+Verified against `git ls-remote --tags --refs` on 2026-11-13.
+
+| Module | Pinned version |
+| --- | --- |
+| `terraform-az-fk-acr` | `v0.2.2` |
+| `terraform-az-fk-aks` | `v2.0.0` |
+| `terraform-az-fk-api-management` | `v0.1.0` |
+| `terraform-az-fk-bastion` | `v1.0.1` |
+| `terraform-az-fk-compute` | `v0.4.1` |
+| `terraform-az-fk-cosmosdb` | `v1.0.0` |
+| `terraform-az-fk-devops` | `v0.2.0` |
+| `terraform-az-fk-devops-pipeline` | `v0.2.0` |
+| `terraform-az-fk-event-grid` | `v0.1.0` |
+| `terraform-az-fk-event-hub` | `v0.1.0` |
+| `terraform-az-fk-firewall` | `v0.2.1` |
+| `terraform-az-fk-frontdoor` | `v0.1.0` |
+| `terraform-az-fk-function` | `v0.1.0` |
+| `terraform-az-fk-loadbalancer` | `v1.2.1` |
+| `terraform-az-fk-managed-identity` | `v0.1.0` |
+| `terraform-az-fk-mysql` | `v1.0.0` |
+| `terraform-az-fk-natgw` | `v1.1.1` |
+| `terraform-az-fk-nsg` | `v1.0.1` |
+| `terraform-az-fk-pg` | `v1.0.1` |
+| `terraform-az-fk-private-dns` | `v1.0.1` |
+| `terraform-az-fk-private-endpoint` | `v1.0.1` |
+| `terraform-az-fk-public-ip` | `v1.0.1` |
+| `terraform-az-fk-rbac` | `v0.1.4` |
+| `terraform-az-fk-routing` | `v0.4.3` |
+| `terraform-az-fk-sql` | `v1.0.0` |
+| `terraform-az-fk-storage` | `v1.1.0` |
+| `terraform-az-fk-vnet` | `v0.1.2` |
+| `terraform-az-fk-vnet-peering` | `v0.1.1` |
+| `terraform-oci-fk-adb` | `v2.0.0` |
+| `terraform-oci-fk-api-gateway` | `v0.2.0` |
+| `terraform-oci-fk-compute` | `v0.3.0` |
+| `terraform-oci-fk-devops` | `v0.2.0` |
+| `terraform-oci-fk-devops-pipeline` | `v0.2.0` |
+| `terraform-oci-fk-dns-steering` | `v0.2.0` |
+| `terraform-oci-fk-drg` | `v0.5.0` |
+| `terraform-oci-fk-event` | `v0.2.0` |
+| `terraform-oci-fk-function` | `v2.0.1` |
+| `terraform-oci-fk-loadbalancer` | `v2.0.0` |
+| `terraform-oci-fk-lpg` | `v0.2.0` |
+| `terraform-oci-fk-nsg` | `v0.2.0` |
+| `terraform-oci-fk-objectstorage` | `v0.2.0` |
+| `terraform-oci-fk-ocir` | `v0.2.0` |
+| `terraform-oci-fk-oke` | `v0.4.0` |
+| `terraform-oci-fk-policy` | `v0.2.0` |
+| `terraform-oci-fk-sch` | `v0.2.0` |
+| `terraform-oci-fk-streaming` | `v0.2.0` |
+| `terraform-oci-fk-vcn` | `v0.3.0` |

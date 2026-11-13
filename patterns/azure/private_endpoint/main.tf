@@ -7,7 +7,7 @@ module "hub_spoke" {
 
 module "storage" {
   count  = local.features.private_endpoint && local.storage.enabled ? 1 : 0
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-storage.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-storage.git?ref=v1.1.0"
 
   name                          = local.storage.name
   resource_group_name           = module.hub_spoke.resource_group_name
@@ -35,7 +35,7 @@ module "storage" {
 
 module "private_endpoints" {
   for_each = local.features.private_endpoint && local.private_endpoints.enabled ? local.resolved_private_endpoints : {}
-  source   = "git::https://github.com/foggykitchen/terraform-az-fk-private-endpoint.git?ref=main"
+  source   = "git::https://github.com/foggykitchen/terraform-az-fk-private-endpoint.git?ref=v1.0.1"
 
   name                           = each.value.name
   location                       = local.location
@@ -50,7 +50,7 @@ module "private_endpoints" {
 
 module "compute_storage_mounts" {
   count  = local.features.compute && try(local.compute_storage_mounts.enabled, false) ? 1 : 0
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-compute.git?ref=v0.3.5"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-compute.git?ref=v0.4.1"
 
   name                = local.compute_storage_mounts.name
   location            = local.location

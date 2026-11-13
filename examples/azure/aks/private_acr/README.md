@@ -172,7 +172,7 @@ tofu destroy
 - `admin_ssh_public_key` is a sensitive Terraform variable and is injected into `landing-zone.yaml` with `templatefile`.
 - This private ACR variant does not configure Azure Firewall, hub-and-spoke topology, customer-managed keys, additional node pools, autoscaling, diagnostics, Log Analytics, multi-region, cross-region, or disaster recovery configuration.
 - The pattern assigns `AcrPull` to the AKS kubelet identity after AKS and ACR exist.
-- `terraform-az-fk-acr v0.2.0` creates the registry only; Private Endpoint and Private DNS are composed separately by this pattern.
+- `terraform-az-fk-acr v0.2.2` creates the registry only; Private Endpoint and Private DNS are composed separately by this pattern.
 
 ## Learn More
 

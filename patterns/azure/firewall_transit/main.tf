@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "this" {
 }
 
 module "hub_vnet" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-vnet.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-vnet.git?ref=v0.1.2"
 
   name                = local.hub.name
   location            = local.location
@@ -27,7 +27,7 @@ module "hub_vnet" {
 
 module "spoke_vnets" {
   for_each = local.spokes
-  source   = "git::https://github.com/foggykitchen/terraform-az-fk-vnet.git?ref=main"
+  source   = "git::https://github.com/foggykitchen/terraform-az-fk-vnet.git?ref=v0.1.2"
 
   name                = each.value.name
   location            = local.location
@@ -49,7 +49,7 @@ module "spoke_vnets" {
 
 module "hub_to_spokes_peering" {
   for_each = module.spoke_vnets
-  source   = "git::https://github.com/foggykitchen/terraform-az-fk-vnet-peering.git?ref=main"
+  source   = "git::https://github.com/foggykitchen/terraform-az-fk-vnet-peering.git?ref=v0.1.1"
 
   resource_group_name          = azurerm_resource_group.this.name
   vnet_1_id                    = module.hub_vnet.vnet_id
@@ -64,7 +64,7 @@ module "hub_to_spokes_peering" {
 }
 
 module "firewall_public_ip" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-public-ip.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-public-ip.git?ref=v1.0.1"
 
   name                = local.firewall.public_ip_name
   location            = local.location
@@ -75,7 +75,7 @@ module "firewall_public_ip" {
 }
 
 module "firewall" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-firewall.git?ref=v0.2.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-firewall.git?ref=v0.2.1"
 
   name                = local.firewall.name
   location            = local.location
@@ -96,7 +96,7 @@ module "firewall" {
 }
 
 module "routing" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-routing.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-routing.git?ref=v0.4.3"
 
   resource_group_name = azurerm_resource_group.this.name
   route_tables = {
@@ -126,7 +126,7 @@ module "routing" {
 
 module "compute" {
   for_each = local.compute_instances
-  source   = "git::https://github.com/foggykitchen/terraform-az-fk-compute.git?ref=v0.3.5"
+  source   = "git::https://github.com/foggykitchen/terraform-az-fk-compute.git?ref=v0.4.1"
 
   name                          = each.value.name
   location                      = local.location

@@ -91,7 +91,7 @@ module "vnet" {
 }
 
 module "node_nsg" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.1"
 
   name                = "${local.project_name}-node-nsg"
   location            = azurerm_resource_group.this.location
@@ -134,7 +134,7 @@ module "node_nsg" {
 }
 
 module "jump_nsg" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-nsg.git?ref=v1.0.1"
 
   name                = "${local.project_name}-jump-nsg"
   location            = azurerm_resource_group.this.location
@@ -201,7 +201,7 @@ module "jump_nsg" {
 }
 
 module "routing" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-routing.git?ref=v0.4.2"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-routing.git?ref=v0.4.3"
 
   resource_group_name = azurerm_resource_group.this.name
 
@@ -217,7 +217,7 @@ module "routing" {
 }
 
 module "private_dns" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-private-dns.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-private-dns.git?ref=v1.0.1"
 
   resource_group_name    = azurerm_resource_group.this.name
   private_dns_zone_names = [local.acr_private_dns_zone_name]
@@ -232,7 +232,7 @@ module "private_dns" {
 }
 
 module "acr" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-acr.git?ref=v0.2.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-acr.git?ref=v0.2.2"
 
   acr_name                      = local.acr_name
   resource_group_name           = azurerm_resource_group.this.name
@@ -244,7 +244,7 @@ module "acr" {
 }
 
 module "acr_private_endpoint" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-private-endpoint.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-private-endpoint.git?ref=v1.0.1"
 
   name                           = local.acr_private_endpoint_name
   location                       = azurerm_resource_group.this.location
@@ -263,7 +263,7 @@ module "acr_private_endpoint" {
 }
 
 module "nat_gateway_public_ip" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-public-ip.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-public-ip.git?ref=v1.0.1"
 
   name                = local.nat_gateway_public_ip_name
   location            = azurerm_resource_group.this.location
@@ -274,7 +274,7 @@ module "nat_gateway_public_ip" {
 }
 
 module "nat_gateway" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-natgw.git?ref=v1.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-natgw.git?ref=v1.1.1"
 
   name                = local.nat_gateway_name
   location            = azurerm_resource_group.this.location
@@ -296,7 +296,7 @@ module "nat_gateway" {
 }
 
 module "bastion" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-bastion.git?ref=v1.0.0"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-bastion.git?ref=v1.0.1"
 
   name                = "${local.project_name}-bastion"
   location            = azurerm_resource_group.this.location
@@ -368,7 +368,7 @@ resource "azurerm_role_assignment" "aks_acr_pull" {
 }
 
 module "jump_host" {
-  source = "git::https://github.com/foggykitchen/terraform-az-fk-compute.git?ref=v0.3.5"
+  source = "git::https://github.com/foggykitchen/terraform-az-fk-compute.git?ref=v0.4.1"
 
   name                = local.jump_name
   location            = azurerm_resource_group.this.location

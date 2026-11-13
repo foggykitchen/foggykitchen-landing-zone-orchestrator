@@ -149,7 +149,7 @@ tofu destroy
 - This Private Endpoint variant does not configure local-auth disablement, Cosmos DB data-plane RBAC assignments, managed identity, customer-managed keys, or Azure Monitor diagnostics.
 - Cosmos DB has no Entra administrator concept. A future secure variant should use `local_authentication_enabled = false` plus data-plane RBAC role assignments, and `key_vault_key_id` / `default_identity_type` for CMK.
 - Multi-region Cosmos DB, richer app-to-data topologies, cross-region failover, disaster recovery, schema bootstrap, and governance belong in later PRs or the private blueprint layer.
-- `terraform-az-fk-compute v0.3.5` deploys the validation host with a private NIC. Azure Bastion provides the operator access path.
+- `terraform-az-fk-compute v0.4.1` deploys the validation host with a private NIC. Azure Bastion provides the operator access path.
 
 ## License
 
