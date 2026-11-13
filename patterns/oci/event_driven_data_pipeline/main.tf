@@ -47,7 +47,7 @@ data "local_file" "fnadbsetup_requirements_txt" {
 }
 
 module "vcn" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.3.0"
 
   compartment_ocid = local.compartment_ocid
   name             = "${local.project_name}-vcn"
@@ -138,7 +138,7 @@ module "vcn" {
 }
 
 module "streaming" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-streaming.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-streaming.git?ref=v0.2.0"
 
   name             = local.project_name
   compartment_ocid = local.compartment_ocid
@@ -153,7 +153,7 @@ module "streaming" {
 }
 
 module "adb" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-adb.git?ref=v1.4"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-adb.git?ref=v2.0.0"
 
   compartment_ocid          = local.compartment_ocid
   adb_password              = local.adb_admin_password
@@ -168,7 +168,7 @@ module "adb" {
 }
 
 module "policy" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-policy.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-policy.git?ref=v0.2.0"
 
   providers = {
     oci = oci.home
@@ -213,7 +213,7 @@ module "policy" {
 }
 
 module "fninitiator" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v0.2.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v2.0.0"
 
   tenancy_ocid             = local.tenancy_ocid
   region                   = local.region
@@ -241,18 +241,18 @@ module "fninitiator" {
 
 module "fncollector" {
   depends_on = [module.adb]
-  source     = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v0.2.0"
+  source     = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v2.0.0"
 
-  tenancy_ocid             = local.tenancy_ocid
-  region                   = local.region
-  ocir_user_name           = local.functions.runtime.ocir_user_name
-  ocir_user_password       = local.functions.runtime.ocir_user_password
-  compartment_ocid         = local.compartment_ocid
-  use_my_fn                = true
-  fk_fn_name               = local.collector_name
-  fk_fn_version            = local.fncollector_version
-  dockerfile_content       = data.local_file.fncollector_dockerfile.content
-  func_py_content          = replace(
+  tenancy_ocid       = local.tenancy_ocid
+  region             = local.region
+  ocir_user_name     = local.functions.runtime.ocir_user_name
+  ocir_user_password = local.functions.runtime.ocir_user_password
+  compartment_ocid   = local.compartment_ocid
+  use_my_fn          = true
+  fk_fn_name         = local.collector_name
+  fk_fn_version      = local.fncollector_version
+  dockerfile_content = data.local_file.fncollector_dockerfile.content
+  func_py_content = replace(
     replace(data.local_file.fncollector_func_py.content, "__ADB_WALLET_CONTENT__", module.adb.adb_database.adb_wallet_content),
     "__ADB_WALLET_PASSWORD__",
     module.adb.adb_database.adb_wallet_password,
@@ -279,18 +279,18 @@ module "fncollector" {
 
 module "fnadbsetup" {
   depends_on = [module.adb]
-  source     = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v0.2.0"
+  source     = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v2.0.0"
 
-  tenancy_ocid             = local.tenancy_ocid
-  region                   = local.region
-  ocir_user_name           = local.functions.runtime.ocir_user_name
-  ocir_user_password       = local.functions.runtime.ocir_user_password
-  compartment_ocid         = local.compartment_ocid
-  use_my_fn                = true
-  fk_fn_name               = local.adb_setup_name
-  fk_fn_version            = local.fnadbsetup_version
-  dockerfile_content       = data.local_file.fnadbsetup_dockerfile.content
-  func_py_content          = replace(
+  tenancy_ocid       = local.tenancy_ocid
+  region             = local.region
+  ocir_user_name     = local.functions.runtime.ocir_user_name
+  ocir_user_password = local.functions.runtime.ocir_user_password
+  compartment_ocid   = local.compartment_ocid
+  use_my_fn          = true
+  fk_fn_name         = local.adb_setup_name
+  fk_fn_version      = local.fnadbsetup_version
+  dockerfile_content = data.local_file.fnadbsetup_dockerfile.content
+  func_py_content = replace(
     replace(data.local_file.fnadbsetup_func_py.content, "__ADB_WALLET_CONTENT__", module.adb.adb_database.adb_wallet_content),
     "__ADB_WALLET_PASSWORD__",
     module.adb.adb_database.adb_wallet_password,
@@ -314,7 +314,7 @@ module "fnadbsetup" {
 }
 
 module "sch" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-sch.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-sch.git?ref=v0.2.0"
 
   name             = local.project_name
   compartment_ocid = local.compartment_ocid
@@ -331,7 +331,7 @@ module "sch" {
 }
 
 module "api_gateway" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-api-gateway.git?ref=v0.1.1"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-api-gateway.git?ref=v0.2.0"
 
   name             = local.api_gateway_name
   compartment_ocid = local.compartment_ocid

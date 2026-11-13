@@ -1,6 +1,6 @@
 # Scripts
 
-This directory is reserved for **helper scripts, validation helpers, and payload tooling** that may be introduced in later phases of the repository.
+Run `python3 scripts/check-module-refs.py` to reject floating OCI module branch references in source, documentation and payloads. The same check runs in GitHub Actions.
 
 ---
 

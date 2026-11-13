@@ -83,3 +83,12 @@ connectivity:
           name: drg-rt-fk-peer-from-rpc
       rpc:
         name: rpc-fk-peer-dev
+
+# Informational metadata; executable constraints live in Terraform files.
+compatibility:
+  orchestrator: v2.0.0
+  opentofu: ">= 1.11.0"
+  oci_provider: ">= 9.12.1, < 10.0.0"
+  modules:
+    drg: v0.5.0
+    vcn: v0.3.0

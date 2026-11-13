@@ -1,5 +1,5 @@
 module "vcn" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.3.0"
 
   compartment_ocid = local.compartment_ocid
   name             = "${local.project_name}-vcn"
@@ -90,7 +90,7 @@ module "vcn" {
 }
 
 module "policy" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-policy.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-policy.git?ref=v0.2.0"
 
   providers = {
     oci = oci.home
@@ -123,7 +123,7 @@ module "policy" {
 }
 
 module "fnjwtauth" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v0.2.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v2.0.0"
 
   tenancy_ocid             = local.tenancy_ocid
   region                   = local.region
@@ -149,7 +149,7 @@ module "fnjwtauth" {
 }
 
 module "fnbackend" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v0.2.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-function.git?ref=v2.0.0"
 
   tenancy_ocid             = local.tenancy_ocid
   region                   = local.region
@@ -175,7 +175,7 @@ module "fnbackend" {
 }
 
 module "api_gateway" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-api-gateway.git?ref=v0.1.1"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-api-gateway.git?ref=v0.2.0"
 
   name             = local.api_gateway_name
   compartment_ocid = local.compartment_ocid

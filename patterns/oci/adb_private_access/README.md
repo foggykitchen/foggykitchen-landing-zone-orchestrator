@@ -1,5 +1,7 @@
 # OCI ADB Private Access Pattern
 
+Requires OCI provider **>= 9.12.1, < 10.0.0** and OpenTofu **>= 1.11.0**. See the [v2.0.0 migration guide](../../../docs/oci-provider-9-migration.md).
+
 This pattern composes OCI networking, an NSG-protected Autonomous Database private endpoint, and a lightweight validation host into a public reference architecture for **private ADB access**.
 
 It is intentionally scoped to a **single-region private database access** scenario:

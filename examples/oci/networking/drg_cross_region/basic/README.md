@@ -1,5 +1,7 @@
 # OCI DRG Cross-Region Landing Zone
 
+Requires OCI provider **>= 9.12.1, < 10.0.0** and OpenTofu **>= 1.11.0**. See the [v2.0.0 migration guide](../../../../../docs/oci-provider-9-migration.md).
+
 This example provides one payload for the shared **OCI DRG cross-region remote peering orchestrator pattern**.
 
 ---

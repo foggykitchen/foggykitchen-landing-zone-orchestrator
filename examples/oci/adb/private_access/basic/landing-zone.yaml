@@ -42,3 +42,14 @@ data:
     free_tier: false
     private_endpoint_label: fkadbpe
     is_auto_scaling_enabled: false
+
+# Informational metadata; executable constraints live in Terraform files.
+compatibility:
+  orchestrator: v2.0.0
+  opentofu: ">= 1.11.0"
+  oci_provider: ">= 9.12.1, < 10.0.0"
+  modules:
+    adb: v2.0.0
+    compute: v0.3.0
+    nsg: v0.2.0
+    vcn: v0.3.0

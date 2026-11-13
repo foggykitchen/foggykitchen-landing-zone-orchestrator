@@ -55,3 +55,14 @@ devops:
       name: deliver
       description: Deliver OCI Registry artifact metadata
       artifact_name: APPLICATION_DOCKER_IMAGE
+
+# Informational metadata; executable constraints live in Terraform files.
+compatibility:
+  orchestrator: v2.0.0
+  opentofu: ">= 1.11.0"
+  oci_provider: ">= 9.12.1, < 10.0.0"
+  modules:
+    devops: v0.2.0
+    devops-pipeline: v0.2.0
+    ocir: v0.2.0
+    policy: v0.2.0

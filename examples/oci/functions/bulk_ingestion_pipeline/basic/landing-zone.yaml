@@ -46,3 +46,18 @@ data:
     app_user_name: APPUSER
     app_user_password: ${adb_app_user_password}
     sqlnet_alias: foggykitchenadb_medium
+
+# Informational metadata; executable constraints live in Terraform files.
+compatibility:
+  orchestrator: v2.0.0
+  opentofu: ">= 1.11.0"
+  oci_provider: ">= 9.12.1, < 10.0.0"
+  modules:
+    adb: v2.0.0
+    event: v0.2.0
+    function: v2.0.0
+    objectstorage: v0.2.0
+    policy: v0.2.0
+    sch: v0.2.0
+    streaming: v0.2.0
+    vcn: v0.3.0

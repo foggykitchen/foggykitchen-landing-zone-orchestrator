@@ -1,5 +1,5 @@
 module "policy" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-policy.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-policy.git?ref=v0.2.0"
 
   providers = {
     oci = oci.home
@@ -44,7 +44,7 @@ module "policy" {
 }
 
 module "ocir" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-ocir.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-ocir.git?ref=v0.2.0"
 
   compartment_ocid = local.compartment_ocid
   repository_name  = local.devops.registry.repository_name
@@ -54,7 +54,7 @@ module "ocir" {
 }
 
 module "devops" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-devops.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-devops.git?ref=v0.2.0"
 
   compartment_ocid           = local.compartment_ocid
   project_name               = local.project_name
@@ -101,7 +101,7 @@ module "devops" {
 }
 
 module "devops_pipeline" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-devops-pipeline.git?ref=v0.1.2"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-devops-pipeline.git?ref=v0.2.0"
 
   project_id = module.devops.project_id
 

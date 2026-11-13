@@ -1,5 +1,5 @@
 module "vcn" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.3.0"
 
   compartment_ocid = local.compartment_ocid
   name             = "${local.project_name}-vcn"
@@ -100,7 +100,7 @@ module "vcn" {
 }
 
 module "adb_nsg" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-nsg.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-nsg.git?ref=v0.2.0"
 
   name             = "${local.project_name}-adb-nsg"
   compartment_ocid = local.compartment_ocid
@@ -136,7 +136,7 @@ module "adb_nsg" {
 }
 
 module "adb" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-adb.git?ref=v1.4"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-adb.git?ref=v2.0.0"
 
   compartment_ocid                      = local.compartment_ocid
   adb_password                          = local.adb_admin_password
@@ -157,7 +157,7 @@ module "adb" {
 }
 
 module "client_host" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-compute.git?ref=v0.2.2"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-compute.git?ref=v0.3.0"
 
   name             = local.client_name
   tenancy_ocid     = local.tenancy_ocid

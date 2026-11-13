@@ -1,5 +1,7 @@
 # OCI ADB Private Access - Basic Example
 
+Requires OCI provider **>= 9.12.1, < 10.0.0** and OpenTofu **>= 1.11.0**. See the [v2.0.0 migration guide](../../../../../docs/oci-provider-9-migration.md).
+
 This example composes a **private Autonomous Database Serverless endpoint** with a **small public validation host** in the same VCN.
 
 It is inspired by:

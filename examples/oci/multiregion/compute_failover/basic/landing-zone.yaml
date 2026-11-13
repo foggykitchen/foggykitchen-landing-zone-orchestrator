@@ -135,3 +135,15 @@ dns:
   display_name: fk-multiregion-compute-failover-dns
   zone_name: foggykitchen-multiregion-demo.com
   domain_name: app.foggykitchen-multiregion-demo.com
+
+# Informational metadata; executable constraints live in Terraform files.
+compatibility:
+  orchestrator: v2.0.0
+  opentofu: ">= 1.11.0"
+  oci_provider: ">= 9.12.1, < 10.0.0"
+  modules:
+    compute: v0.3.0
+    dns-steering: v0.2.0
+    drg: v0.5.0
+    loadbalancer: v2.0.0
+    vcn: v0.3.0

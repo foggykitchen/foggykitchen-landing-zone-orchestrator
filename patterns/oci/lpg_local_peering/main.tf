@@ -1,6 +1,6 @@
 module "vcns" {
   for_each = local.vcn_module_inputs
-  source   = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=main"
+  source   = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.3.0"
 
   compartment_ocid = local.compartment_ocid
   name             = each.value.name
@@ -13,7 +13,7 @@ module "vcns" {
 }
 
 module "lpg" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-lpg.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-lpg.git?ref=v0.2.0"
 
   compartment_ocid_1 = local.compartment_ocid
   compartment_ocid_2 = local.compartment_ocid
@@ -48,7 +48,7 @@ resource "oci_core_default_route_table" "vcn_defaults" {
 
 module "load_balancer" {
   count  = local.load_balancer.enabled ? 1 : 0
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-loadbalancer.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-loadbalancer.git?ref=v2.0.0"
 
   name             = local.load_balancer.name
   compartment_ocid = local.compartment_ocid
@@ -79,7 +79,7 @@ module "load_balancer" {
 
 module "compute" {
   for_each = local.compute.enabled ? local.compute_instances : {}
-  source   = "git::https://github.com/foggykitchen/terraform-oci-fk-compute.git?ref=v0.2.2"
+  source   = "git::https://github.com/foggykitchen/terraform-oci-fk-compute.git?ref=v0.3.0"
 
   name             = each.value.name
   compartment_ocid = local.compartment_ocid

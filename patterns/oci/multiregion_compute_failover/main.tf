@@ -1,5 +1,5 @@
 module "vcn_primary" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.3.0"
 
   compartment_ocid = local.compartment_ocid
   name             = "${local.primary_name}-vcn"
@@ -100,7 +100,7 @@ module "vcn_primary" {
 }
 
 module "drg_primary" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-drg.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-drg.git?ref=v0.5.0"
 
   compartment_ocid = local.compartment_ocid
   name             = "${local.primary_name}-drg"
@@ -152,7 +152,7 @@ module "drg_primary" {
 }
 
 module "vcn_standby" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-vcn.git?ref=v0.3.0"
 
   providers = {
     oci = oci.standby
@@ -257,7 +257,7 @@ module "vcn_standby" {
 }
 
 module "drg_standby" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-drg.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-drg.git?ref=v0.5.0"
 
   providers = {
     oci = oci.standby
@@ -315,7 +315,7 @@ module "drg_standby" {
 }
 
 module "lb_primary" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-loadbalancer.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-loadbalancer.git?ref=v2.0.0"
 
   name             = local.primary_lb_name
   display_name     = "${local.primary_name}-lb"
@@ -332,7 +332,7 @@ module "lb_primary" {
 }
 
 module "lb_standby" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-loadbalancer.git?ref=main"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-loadbalancer.git?ref=v2.0.0"
 
   providers = {
     oci = oci.standby
@@ -353,7 +353,7 @@ module "lb_standby" {
 }
 
 module "compute_primary" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-compute.git?ref=v0.2.2"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-compute.git?ref=v0.3.0"
 
   name                          = "${local.primary_name}-pool"
   tenancy_ocid                  = local.tenancy_ocid
@@ -381,7 +381,7 @@ module "compute_primary" {
 }
 
 module "compute_standby" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-compute.git?ref=v0.2.2"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-compute.git?ref=v0.3.0"
 
   providers = {
     oci = oci.standby
@@ -413,7 +413,7 @@ module "compute_standby" {
 }
 
 module "dns_steering" {
-  source = "git::https://github.com/foggykitchen/terraform-oci-fk-dns-steering.git?ref=v0.1.0"
+  source = "git::https://github.com/foggykitchen/terraform-oci-fk-dns-steering.git?ref=v0.2.0"
 
   providers = {
     oci = oci.home
