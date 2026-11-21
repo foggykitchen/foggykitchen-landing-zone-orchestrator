@@ -47,7 +47,7 @@ module "vcn" {
   }
   security_lists = {
     nsg_only = { display_name = "NSG-only", ingress_rules = [], egress_rules = [] }
-    # Bastion's service-managed endpoint has no workload NSG attachment.
+    # The Bastion service-managed endpoint has no workload NSG attachment.
     # Permit only its two target paths; workload ingress stays in NSGs.
     bastion_endpoint = {
       display_name  = "Bastion endpoint egress"
