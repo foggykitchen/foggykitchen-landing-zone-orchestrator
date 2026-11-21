@@ -1,0 +1,11 @@
+# PAID resources: BaseDB has no Free Tier. Review ECPU, license and storage costs.
+tenancy_ocid = "ocid1.tenancy.oc1..REPLACE_ME"
+user_ocid = "ocid1.user.oc1..REPLACE_ME"
+fingerprint = "REPLACE_WITH_API_KEY_FINGERPRINT"
+private_key_path = "REPLACE_WITH_LOCAL_PRIVATE_KEY_PATH"
+compartment_ocid = "ocid1.compartment.oc1..REPLACE_WITH_EXISTING_COMPARTMENT"
+workload_region = "REPLACE_WITH_SUBSCRIBED_REGION"
+database_version = "REPLACE_WITH_REGION_SUPPORTED_VERSION" # e.g. 23.26.4.0.0; verify region availability.
+admin_ssh_public_key = "" # Optional: supply your existing public key; otherwise a lab key is generated.
+# Required runtime environment variables: TF_VAR_basedb_admin_password, TF_VAR_operator_client_cidr.
+# Do not add their values to this file.

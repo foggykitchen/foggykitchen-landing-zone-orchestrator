@@ -1,11 +1,13 @@
 # FoggyKitchen Landing Zone Orchestrator
 
+**v2.2.0** adds [OCI BaseDB private access](examples/oci/database/basedb/private_access/basic/README.md) with OCI Bastion Service. Live validation covers Managed SSH, database TCP/1521 reachability and cleanup. See [release notes](docs/release-v2.2.0.md).
+
 OCI patterns in **v2.0.0** require `oracle/oci >= 9.12.1, < 10.0.0` and OpenTofu `>= 1.11.0`. This is a breaking upgrade from OCI 6: run `tofu init -upgrade` and review the plan. See [migration and validation details](docs/oci-provider-9-migration.md).
 
 FoggyKitchen Landing Zone Orchestrator is a reference architecture layer built on top of public **Terraform / OpenTofu modules** from the FoggyKitchen ecosystem for **Azure** and **OCI**.
 
 It demonstrates how reusable infrastructure modules can be composed into opinionated landing zone patterns: hub-and-spoke networking, private-first compute, private endpoints, Azure private AKS basics, Azure private database access, Azure Front Door multiregion failover, DRG cross-region remote peering, local peering, private DNS, firewall-based transit, and OCI multiregion failover.
-It also shows how the same orchestration model can be extended into OCI ADB private access, Azure DevOps build-and-deploy AKS, OCI DevOps delivery patterns, and OCI Functions patterns built from reusable FoggyKitchen modules.
+It also shows how the same orchestration model can be extended into OCI ADB and BaseDB private access, Azure DevOps build-and-deploy AKS, OCI DevOps delivery patterns, and OCI Functions patterns built from reusable FoggyKitchen modules.
 
 This repository is a reference implementation and educational architecture pattern.  
 It is **not** a drop-in enterprise landing zone product.  
@@ -50,6 +52,7 @@ Depending on the selected pattern and payload, the repository can compose:
 - OCI DRG cross-region landing zones
 - OCI same-region LPG local peering landing zones
 - OCI multiregion compute failover patterns
+- OCI private Base Database VM systems with Bastion Service
 - OCI private Autonomous Database patterns
 - OCI DevOps build and deploy patterns
 - OCI OKE deployment target patterns
@@ -178,6 +181,10 @@ foggykitchen-landing-zone-orchestrator/
 │   │           └── storage_private_link/
 │   ├── oci/
 │   │   ├── README.md
+│   │   ├── database/
+│   │   │   └── basedb/
+│   │   │       └── private_access/
+│   │   │           └── basic/
 │   │   ├── adb/
 │   │   │   └── private_access/
 │   │   │       └── basic/
@@ -222,6 +229,7 @@ foggykitchen-landing-zone-orchestrator/
 │   │   ├── multiregion_compute_failover/
 │   │   └── private_endpoint/
 │   ├── oci/
+│       ├── basedb_private_access/
 │       ├── adb_private_access/
 │       ├── authenticated_serverless_api/
 │       ├── devops_build_and_deploy_oke/
@@ -262,6 +270,7 @@ Currently implemented:
 - [examples/oci/networking/drg_cross_region/basic](examples/oci/networking/drg_cross_region/basic/README.md)
 - [examples/oci/networking/lpg_local_peering/basic](examples/oci/networking/lpg_local_peering/basic/README.md)
 - [examples/oci/multiregion/compute_failover/basic](examples/oci/multiregion/compute_failover/basic/README.md)
+- [examples/oci/database/basedb/private_access/basic](examples/oci/database/basedb/private_access/basic)
 - [examples/oci/adb/private_access/basic](examples/oci/adb/private_access/basic/README.md)
 - [examples/oci/devops/build_only/basic](examples/oci/devops/build_only/basic/README.md)
 - [examples/oci/devops/build_and_deploy_oke/basic](examples/oci/devops/build_and_deploy_oke/basic/README.md)
@@ -288,6 +297,7 @@ Shared orchestration patterns:
 - [patterns/oci/drg_cross_region](patterns/oci/drg_cross_region)
 - [patterns/oci/lpg_local_peering](patterns/oci/lpg_local_peering)
 - [patterns/oci/multiregion_compute_failover](patterns/oci/multiregion_compute_failover)
+- [patterns/oci/basedb_private_access](patterns/oci/basedb_private_access)
 - [patterns/oci/adb_private_access](patterns/oci/adb_private_access)
 - [patterns/oci/devops_build_only](patterns/oci/devops_build_only)
 - [patterns/oci/devops_build_and_deploy_oke](patterns/oci/devops_build_and_deploy_oke)

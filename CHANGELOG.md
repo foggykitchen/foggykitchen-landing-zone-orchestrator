@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.2.0 — 2026-11-21
+
+### Added
+
+- OCI BaseDB private-access pattern and basic example: private VM DB system, private validation host, Bastion Service, NSGs, NAT/SGW, plan-only tests and payload documentation. Live validated in Frankfurt: Managed SSH and TCP/1521 passed; all 26 resources were destroyed after validation.
+
+### Validation and known limitations
+
+- Includes the architecture diagram, 11 OCI console screenshots and documented TCP validation.
+- Fixed Bastion wait and first-boot package installation required retries during live validation; these limitations are documented. SQL authentication and manual port forwarding were not tested.
+- See [v2.2.0 release notes](docs/release-v2.2.0.md) and [validation report](docs/pr-basedb-private-access.md).
+
 ## v2.1.0 — 2026-11-13
 
 Minor release; landing-zone payload keys are unchanged.

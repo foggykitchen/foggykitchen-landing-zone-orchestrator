@@ -387,6 +387,18 @@ Uses:
 - `terraform-oci-fk-compute`
 - `terraform-oci-fk-loadbalancer`
 
+### `patterns/oci/basedb_private_access`
+
+| Module | Version | Responsibility |
+| --- | --- | --- |
+| `terraform-oci-fk-basedb` | v0.1.0 | PRIMARY DB system, DB Home/database/PDB; ECPU selects LVM internally |
+| `terraform-oci-fk-bastion-service` | v0.2.0 | Private endpoint and one optional managed SSH session |
+| `terraform-oci-fk-compute` | v0.3.0 | Private OL9 client with Bastion plugin |
+| `terraform-oci-fk-nsg` | v0.2.0 | DB/client ingress and egress rules |
+| `terraform-oci-fk-vcn` | v0.3.0 | Private subnets, NAT and Service Gateway, minimal custom security lists |
+
+Providers: OCI `>= 9.12.1, < 10.0.0`, time `>= 0.9.0, < 1.0.0`; the example also uses TLS `>= 4.0.0, < 5.0.0`. OpenTofu `>= 1.11.0`. BaseDB's required `oci.target` alias is mapped to the same workload provider as `oci`. No compartment module is used. The database version is an explicit required payload value. No second forwarding session or Data Guard is created by Terraform.
+
 ### `patterns/oci/adb_private_access`
 
 Uses:

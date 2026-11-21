@@ -75,6 +75,7 @@ This separation keeps the implementation:
 
 ### OCI
 
+- `basedb_private_access`
 - `adb_private_access`
 - `authenticated_serverless_api`
 - `multiregion_compute_failover`
@@ -321,6 +322,14 @@ Focus:
 - protected backend function invocation behind the authorizer
 - lightweight access-control-oriented serverless pattern without data services
 
+### OCI BaseDB Private Access
+
+`basedb_private_access` composes one PRIMARY VM DB system in an existing compartment with a private validation host and OCI Bastion Service. Two private subnets exclude default security lists, prohibit public IPs and Internet ingress, and use NAT/Service Gateway routing. Workload NSGs restrict TCP/1521 and database SSH to the client subnet; operator access is allow-listed at Bastion.
+
+BaseDB uses ECPU/LVM and an explicit database version. Both `oci` and `oci.target` map to the workload-region provider. Password and SSH public key use separate runtime pattern inputs so the YAML topology remains known during planning. A managed SSH session follows a 600-second plugin readiness allowance; database port forwarding is an operator-created temporary session.
+
+This is a paid, single-primary baseline. Same-region/cross-region Data Guard are later orchestrator steps, then blueprint compositions. See the [example](../examples/oci/database/basedb/private_access/basic/README.md) for traffic paths and limitations.
+
 ### OCI ADB Private Access
 
 Focus:
@@ -401,7 +410,7 @@ Not yet treated as first-class pattern families:
 
 - OCI file storage patterns
 - OCI object storage patterns
-- OCI bastion service integration
+- expanded OCI bastion service patterns beyond BaseDB
 - OCI block volume patterns
 - advanced multicloud premium blueprints in the private `foggykitchen-landing-zone-blueprint` repository
 - enterprise governance overlays

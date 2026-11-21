@@ -1,0 +1,65 @@
+landing_zone:
+  name: fk-oci-basedb-private-access-dev
+  defined_tags: {}
+  freeform_tags:
+    project: foggykitchen
+    environment: dev
+    managed_by: opentofu
+
+cloud:
+  tenancy_ocid: "${tenancy_ocid}"
+  compartment_ocid: "${compartment_ocid}"
+  workload_region: "${workload_region}"
+
+architecture:
+  network:
+    vcn_cidr: 10.130.0.0/16
+    client_subnet_cidr: 10.130.10.0/24
+    db_subnet_cidr: 10.130.20.0/24
+
+access:
+  bastion:
+    name: fkbasedbbastionservice
+    client_cidr_allow_list: ["${operator_client_cidr}"]
+    session_ttl_in_seconds: 3600
+    create_session: true
+
+workload:
+  client:
+    name: fk-basedb-private-client
+    shape: VM.Standard.E5.Flex
+    operating_system: Oracle Linux
+    operating_system_version: "9"
+    shape_config: {ocpus: 1, memory_in_gbs: 8}
+    ssh_authorized_keys: ["${admin_ssh_public_key}"]
+    # Optional cloud_init_override replaces the complete default cloud-init.
+
+data:
+  basedb:
+    display_name: fk-basedb-private-primary
+    hostname: fkprimary
+    shape: VM.BaseDB.x86
+    compute_model: ECPU
+    compute_count: 4
+    data_storage_size_in_gb: 256
+    database_name: FOGGYDB
+    pdb_name: FKPDB1
+    # Example selection: 23.26.4.0.0 — verify region availability.
+    database_version: "${database_version}"
+    database_edition: STANDARD_EDITION
+    license_model: LICENSE_INCLUDED
+    auto_backup_enabled: false
+    # availability_domain: "YOUR-AD-NAME" # Otherwise first AD in the region.
+    # fault_domains: ["FAULT-DOMAIN-1"]
+    admin_password: "${basedb_admin_password}"
+
+compatibility:
+  orchestrator: v2.2.0
+  opentofu: ">= 1.11.0"
+  oci_provider: ">= 9.12.1, < 10.0.0"
+  modules:
+    basedb: v0.1.0
+    bastion-service: v0.2.0
+    compute: v0.3.0
+    nsg: v0.2.0
+    vcn: v0.3.0
