@@ -23,6 +23,7 @@ Current emphasis:
 
 ## 📂 Available OCI Domains
 
+- [Database service examples](database/README.md)
 - [ADB examples](adb/README.md)
 - [Networking examples](networking/README.md)
 - [Multiregion examples](multiregion/README.md)

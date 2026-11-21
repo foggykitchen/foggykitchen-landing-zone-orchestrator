@@ -918,6 +918,55 @@ Common OCI payload sections may include:
 
 ---
 
+### OCI BaseDB Private Access
+
+`patterns/oci/basedb_private_access` consumes the following contract. All paths below are relative to the YAML root; fields with defaults may be omitted. The wrapper uses a required existing compartment and workload-region provider. Database version has **no default**. Payload compatibility metadata describes the v2.2.0 release and is informational.
+
+| Key | Type | Required / default |
+| --- | --- | --- |
+| `landing_zone.name` | string | `fk-oci-basedb-private-access-dev` |
+| `landing_zone.defined_tags`, `landing_zone.freeform_tags` | map(string) | `{}` each |
+| `cloud.tenancy_ocid`, `cloud.compartment_ocid`, `cloud.workload_region` | string | Required; existing tenancy/compartment and subscribed region |
+| `architecture.network.vcn_cidr` | string (IPv4 CIDR) | `10.130.0.0/16` |
+| `architecture.network.client_subnet_cidr` | string (IPv4 CIDR) | `10.130.10.0/24` |
+| `architecture.network.db_subnet_cidr` | string (IPv4 CIDR) | `10.130.20.0/24` |
+| `access.bastion.name` | string | `fkbasedbbastionservice` |
+| `access.bastion.client_cidr_allow_list` | list(string), IPv4 CIDRs | Required, nonempty; no /0. Example injects `${operator_client_cidr}` from runtime variable |
+| `access.bastion.session_ttl_in_seconds` | number | `3600`; 1800–10800 |
+| `access.bastion.create_session` | bool | `true`; false creates no managed SSH session |
+| `workload.client.name` | string | `<landing_zone.name>-client` |
+| `workload.client.shape` | string | `VM.Standard.E5.Flex` |
+| `workload.client.operating_system` | string | `Oracle Linux` |
+| `workload.client.operating_system_version` | string | `9` |
+| `workload.client.shape_config` | object({ocpus=number, memory_in_gbs=number}) | `{ocpus=1, memory_in_gbs=8}` |
+| `workload.client.ssh_authorized_keys` | list(string) | Required, exactly one shared key; example uses `${admin_ssh_public_key}` runtime placeholder |
+| `workload.client.cloud_init_override` | string or null | `null`; replaces the full default cloud-init installing nmap-ncat/bind-utils and instructions |
+| `data.basedb.display_name`, `data.basedb.hostname` | string | Required |
+| `data.basedb.shape` | string | `VM.BaseDB.x86` |
+| `data.basedb.compute_model` | string | `ECPU` |
+| `data.basedb.compute_count` | number | `4`; upstream ECPU validation requires multiples of 4, at least 4 |
+| `data.basedb.data_storage_size_in_gb` | number | `256` |
+| `data.basedb.database_name` | string | Required; upstream limit: starts with a letter, max 8 alphanumeric characters |
+| `data.basedb.pdb_name` | string | Required; example `FKPDB1` |
+| `data.basedb.database_version` | string | **Required**; `${database_version}`, e.g. `23.26.4.0.0` only after regional verification |
+| `data.basedb.database_edition` | string | `STANDARD_EDITION` |
+| `data.basedb.license_model` | string | `LICENSE_INCLUDED` |
+| `data.basedb.auto_backup_enabled` | bool | `false` |
+| `data.basedb.availability_domain` | string or null | First AD returned in workload region |
+| `data.basedb.fault_domains` | list(string) or null | `null` |
+| `data.basedb.admin_password` | runtime placeholder | Required literal `${basedb_admin_password}` in template; never a committed password |
+| `compatibility.orchestrator` | string | Example metadata `v2.2.0` |
+| `compatibility.opentofu`, `compatibility.oci_provider` | string | Example metadata `>= 1.11.0` and `>= 9.12.1, < 10.0.0` |
+| `compatibility.modules` | map(string) | basedb v0.1.0, bastion-service v0.2.0, compute v0.3.0, nsg v0.2.0, vcn v0.3.0 |
+
+Pattern inputs are `payload_file`, `payload_template_vars` (map(string), default `{}`, non-secret and known during plan), `basedb_admin_password` (required sensitive string, 12–30 characters), and `admin_ssh_public_key` (required string, may be generated during apply). The YAML renderer substitutes sentinel values for the two runtime placeholders; module inputs receive the actual password and key separately. This avoids propagating a password or unknown generated key into topology/for_each expressions. The wrapper's empty SSH-key default generates one RSA-4096 key, whose private output is sensitive. The SYS password and operator CIDR are supplied through `TF_VAR_*`, never through committed YAML/tfvars values.
+
+`role = PRIMARY`, one DB node, no public IPs, no IGW, subnet ingress prohibitions, NSGs and a 600-second Bastion readiness allowance are fixed pattern decisions. The DB security list is empty; the client security list has only endpoint egress TCP/22 to the client subnet and TCP/1521 to the DB subnet because the Bastion private endpoint cannot use the client VM NSG. The client and BaseDB share the one SSH key. Both BaseDB providers map to the workload provider (`oci.target = oci`). ECPU selects LVM internally in module v0.1.0; no `storage_management` input exists. `create_session = false` yields null session outputs; port forwarding to DB/1521 is an explicit OCI CLI step, not a second Terraform session. The baseline is ECPU; legacy OCPU and Data Guard require separately reviewed patterns rather than changing these fields in isolation.
+
+Outputs: `basedb_private_access` (IDs, private IPs, password-free connection strings, subnet/NSG IDs), `bastion` (bastion ID, optional session ID/SSH command), `validation_host` (instance ID/private IP/nc command), `network` (VCN/subnet IDs and CIDRs). The wrapper additionally exports the sensitive generated SSH private key. See the [basic example](../examples/oci/database/basedb/private_access/basic/README.md) for costs, operator instructions and validation limits.
+
+---
+
 ## 🔒 Public Contract Boundary
 
 This public repository documents the payload contract for the currently exposed Azure and OCI reference patterns.
