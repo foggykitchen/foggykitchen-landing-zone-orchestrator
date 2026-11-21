@@ -1,13 +1,13 @@
 # Changelog
 
-## v2.2.1 — Unreleased
+## v2.2.1 — 2026-11-21
 
 ### Documentation
 
 - Align the OCI database, BaseDB and private-access README indexes with the ADB conventions; highlight BaseDB in the OCI examples index.
 - Align the BaseDB basic example README with the ADB layout, including navigation, validation sections, license and FoggyKitchen footer.
 - Remove the apostrophe from the Bastion endpoint comment as a temporary MCP indexer workaround. No infrastructure configuration, module pins or plan behavior changes.
-- This patch collects the documentation updates made after v2.2.0 for the next tagged MCP indexing run; tag publication and reindex verification are pending approval.
+- This patch collects the documentation updates made after v2.2.0 for the next tagged MCP indexing run; MCP freshness must be verified after reindexing.
 
 ## v2.2.0 — 2026-11-21
 
