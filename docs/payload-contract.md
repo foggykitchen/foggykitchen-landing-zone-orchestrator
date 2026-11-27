@@ -920,7 +920,7 @@ Common OCI payload sections may include:
 
 ### OCI BaseDB Private Access
 
-`patterns/oci/basedb_private_access` consumes the following contract. All paths below are relative to the YAML root; fields with defaults may be omitted. The wrapper uses a required existing compartment and workload-region provider. Database version has **no default**. Payload compatibility metadata describes the v2.2.0 release and is informational.
+`patterns/oci/basedb_private_access` consumes the following contract. All paths below are relative to the YAML root; fields with defaults may be omitted. The wrapper uses a required existing compartment and workload-region provider. Database version has **no default**. Payload compatibility metadata describes the v2.3.0 release and is informational.
 
 | Key | Type | Required / default |
 | --- | --- | --- |
@@ -954,14 +954,20 @@ Common OCI payload sections may include:
 | `data.basedb.auto_backup_enabled` | bool | `false` |
 | `data.basedb.availability_domain` | string or null | First AD returned in workload region |
 | `data.basedb.fault_domains` | list(string) or null | `null` |
+| `data.basedb.encryption` | object or null | Optional; omitted/null keeps Oracle-managed encryption |
+| `data.basedb.encryption.vault_id` | string or null | `null`; existing Vault OCID, required together with `kms_key_id` |
+| `data.basedb.encryption.kms_key_id` | string or null | `null`; existing AES-256 key OCID, required together with `vault_id` |
+| `data.basedb.encryption.kms_key_version_id` | string or null | `null`; optional CDB key version, requires the key/Vault pair |
 | `data.basedb.admin_password` | runtime placeholder | Required literal `${basedb_admin_password}` in template; never a committed password |
-| `compatibility.orchestrator` | string | Example metadata `v2.2.0` |
+| `compatibility.orchestrator` | string | Example metadata `v2.3.0` |
 | `compatibility.opentofu`, `compatibility.oci_provider` | string | Example metadata `>= 1.11.0` and `>= 9.12.1, < 10.0.0` |
-| `compatibility.modules` | map(string) | basedb v0.1.0, bastion-service v0.2.0, compute v0.3.0, nsg v0.2.0, vcn v0.3.0 |
+| `compatibility.modules` | map(string) | basedb v0.2.0, bastion-service v0.2.0, compute v0.3.0, nsg v0.2.0, vcn v0.3.0 |
 
 Pattern inputs are `payload_file`, `payload_template_vars` (map(string), default `{}`, non-secret and known during plan), `basedb_admin_password` (required sensitive string, 12–30 characters), and `admin_ssh_public_key` (required string, may be generated during apply). The YAML renderer substitutes sentinel values for the two runtime placeholders; module inputs receive the actual password and key separately. This avoids propagating a password or unknown generated key into topology/for_each expressions. The wrapper's empty SSH-key default generates one RSA-4096 key, whose private output is sensitive. The SYS password and operator CIDR are supplied through `TF_VAR_*`, never through committed YAML/tfvars values.
 
-`role = PRIMARY`, one DB node, no public IPs, no IGW, subnet ingress prohibitions, NSGs and a 600-second Bastion readiness allowance are fixed pattern decisions. The DB security list is empty; the client security list has only endpoint egress TCP/22 to the client subnet and TCP/1521 to the DB subnet because the Bastion private endpoint cannot use the client VM NSG. The client and BaseDB share the one SSH key. Both BaseDB providers map to the workload provider (`oci.target = oci`). ECPU selects LVM internally in module v0.1.0; no `storage_management` input exists. `create_session = false` yields null session outputs; port forwarding to DB/1521 is an explicit OCI CLI step, not a second Terraform session. The baseline is ECPU; legacy OCPU and Data Guard require separately reviewed patterns rather than changing these fields in isolation.
+`role = PRIMARY`, one DB node, no public IPs, no IGW, subnet ingress prohibitions, NSGs and a 600-second Bastion readiness allowance are fixed pattern decisions. The DB security list is empty; the client security list has only endpoint egress TCP/22 to the client subnet and TCP/1521 to the DB subnet because the Bastion private endpoint cannot use the client VM NSG. The client and BaseDB share the one SSH key. Both BaseDB providers map to the workload provider (`oci.target = oci`). ECPU selects LVM internally in module v0.2.0; no `storage_management` input exists. `create_session = false` yields null session outputs; port forwarding to DB/1521 is an explicit OCI CLI step, not a second Terraform session. The baseline is ECPU; legacy OCPU and Data Guard require separately reviewed patterns rather than changing these fields in isolation.
+
+CMK is a creation-time option: adding or changing any encryption field can replace the DB system. Existing PRIMARY deployments should leave encryption omitted and review a plan before apply; no new PRIMARY resources are expected from the module upgrade alone. External DB-node dynamic-group/key IAM must already be effective or creation fails; see the [pattern IAM prerequisites](../patterns/oci/basedb_private_access/README.md#external-iam-prerequisites). The pattern creates no Vault/key/IAM resources and reads no secrets. It does not enable STANDBY cleanup or Data Guard.
 
 Outputs: `basedb_private_access` (IDs, private IPs, password-free connection strings, subnet/NSG IDs), `bastion` (bastion ID, optional session ID/SSH command), `validation_host` (instance ID/private IP/nc command), `network` (VCN/subnet IDs and CIDRs). The wrapper additionally exports the sensitive generated SSH private key. See the [basic example](../examples/oci/database/basedb/private_access/basic/README.md) for costs, operator instructions and validation limits.
 

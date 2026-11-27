@@ -2,7 +2,7 @@
 
 Requires OCI provider **>= 9.12.1, < 10.0.0** and OpenTofu **>= 1.11.0**. See the [v2.0.0 migration guide](../../../../../../docs/oci-provider-9-migration.md).
 
-A single private Oracle Base Database VM system with an OL9 validation host and OCI Bastion Service in an **existing compartment**. Available in orchestrator **v2.2.0**. Live deployment, access checks and cleanup are documented below.
+A single private Oracle Base Database VM system with an OL9 validation host and OCI Bastion Service in an **existing compartment**. Available since orchestrator **v2.2.0**; optional CMK and BaseDB v0.2.0 are introduced in the **v2.3.0**. Historical non-CMK deployment, access checks and cleanup are documented below.
 
 ## Architecture Overview
 
@@ -65,6 +65,27 @@ Rules are stateful; response traffic uses state tracking. No public ingress is a
 
 The pinned module sets LVM internally for ECPU. It exposes no storage-management input; do not add a fictitious `storage_management` argument. `oci.target` is explicitly mapped to the same provider as `oci` for target database/node discovery.
 
+## Optional customer-managed encryption (v2.3.0)
+
+The pattern pins BaseDB **v0.2.0**. Omit `data.basedb.encryption` (the default) to retain Oracle-managed encryption, or supply an **existing** ACTIVE Vault and ENABLED AES-256 key in the workload region. Set `vault_id` and `kms_key_id` together. `kms_key_version_id` is optional and requires that pair; null lets OCI select the current version. A specified version applies to the CDB; OCI generates a version for the PDB.
+
+Configure CMK **when creating the DB system**. The provider marks all three nested database fields ForceNew: adding or changing encryption on an existing system can replace it. These fields are not an in-place migration or rotation workflow. Before upgrading an existing deployment, run `tofu init -upgrade` and review `tofu plan` before any apply. With encryption omitted, no new resources are expected for PRIMARY. Do not add CMK in place to an existing DB system.
+
+### External IAM prerequisites
+
+Have the tenancy/IAM administrator establish effective key access **before provisioning**. This pattern uses an existing compartment and creates no dynamic groups, policies, Vault, key or key versions, and never reads Vault secrets. DB service key access is granted through a dynamic group covering **all DB system nodes**, as required by Oracle; the referenced BaseDB recipe does not use an `Allow service database ...` grant as a substitute.
+
+The following statements preserve the syntax and resource conditions from [BaseDB v0.2.0 example 04 IAM](https://github.com/foggykitchen/terraform-oci-fk-basedb/blob/v0.2.0/examples/04_single_primary_with_cmk/iam.tf). Replace the angle-bracket placeholders with your existing group, compartment, Vault and key OCIDs:
+
+```text
+Allow dynamic-group id <db_nodes_dynamic_group_ocid> to use vaults in compartment id <vault_compartment_ocid> where target.vault.id = '<vault_ocid>'
+Allow dynamic-group id <db_nodes_dynamic_group_ocid> to manage keys in compartment id <key_compartment_ocid> where target.key.id = '<key_ocid>'
+```
+
+The upstream example uses `ALL {resource.compartment.id = '<db_compartment_ocid>'}` for dynamic-group membership in a **dedicated** lab compartment. In a shared existing compartment, have the IAM owner narrow membership to the intended DB nodes; do not grant unrelated workloads access to the key. Vault and key compartments may differ from the DB compartment. Use an existing dedicated database key where possible: `manage keys` permits key-version management and is broader than encrypt/decrypt. The deployment identity separately needs permission to select the Vault/key and create the DB system.
+
+**Without effective IAM, DB system creation fails.** Creating a policy is not proof it has propagated. Verify access with the IAM owner before deployment. See [Oracle BaseDB key prerequisites](https://docs.oracle.com/en/cloud/paas/base-database/guide/key-about.html), [Oracle DB-node key access](https://docs.oracle.com/en-us/iaas/Content/KeyManagement/Tasks/assigningkeys.htm) and the [tagged example 04 prerequisites and live evidence](https://github.com/foggykitchen/terraform-oci-fk-basedb/tree/v0.2.0/examples/04_single_primary_with_cmk). The upstream live run is not validation of CMK in this orchestrator composition.
+
 ## Costs
 
 **BaseDB has no Free Tier.** The baseline requests **4 ECPUs with LICENSE_INCLUDED**, 256 GB data storage plus system/recovery storage, and a paid compute host. Charges begin when resources are provisioned. NAT, storage and applicable network usage add costs. Automatic database backup is disabled by default; this is not a production backup policy. Provisioning and deletion may take tens of minutes. Review current regional pricing and limits before approving deployment.
@@ -89,6 +110,18 @@ tofu apply
 The `read -p` examples use Bash. Password and operator CIDR must come from runtime variables, not committed YAML/tfvars. Use the public egress address seen by Bastion (consider corporate VPN/NAT). `0.0.0.0/0`, invalid CIDRs and other /0 forms are rejected. Choose non-overlapping subnet CIDRs contained by the VCN if changing the example address plan.
 
 `admin_ssh_public_key = ""` generates a lab RSA-4096 key. Supply an existing public key to avoid generating one. The same key reaches the validation host, BaseDB and Bastion session. `workload.client.cloud_init_override` replaces the default cloud-init; preserve installation of `nmap-ncat` and `bind-utils` if you need the documented checks.
+
+## Plan-only regression checks
+
+From the repository root, run:
+
+```bash
+python3 scripts/validate-examples.py --example examples/oci/database/basedb/private_access/basic
+```
+
+The runner initializes with the backend disabled, validates and runs all six `command = plan` tests with mocked OCI/TLS/time providers. `private_primary` remains unchanged; `cmk_primary` supplies synthetic Vault/key/version IDs, and `reject_partial_cmk` targets the pattern guardrail to isolate it from the upstream module's duplicate validation. No live cloud operations are performed.
+
+OpenTofu HCL tests cannot inspect child-module inputs/resources. The runner also invokes `tests/check-plan.py` against verbose test JSON to verify all three values on the **planned DB system resource**. The no-CMK payload is checked in `pattern_security`; omitted Optional+Computed encryption fields receive synthetic provider-mock values in the plan. Logs stay in ignored `.validation/` and must not be committed. CMK coverage does not establish effective IAM or live upgrade behavior.
 
 ## Validation Flow
 
