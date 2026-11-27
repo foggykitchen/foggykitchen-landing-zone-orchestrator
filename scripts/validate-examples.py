@@ -40,8 +40,10 @@ def main():
                 raise ValueError(f'{test}: only explicit command = plan tests are allowed')
         commands = [['fmt', '-check'], ['init', '-backend=false', '-input=false', '-no-color'],
                     ['validate', '-no-color']]
+        plan_check = path / 'tests' / 'check-plan.py'
         if tests:
-            commands.append(['test', '-no-color'])
+            commands.append(['test', '-json', '-verbose'] if plan_check.is_file()
+                            else ['test', '-no-color'])
         result = {'example': name, 'checks': {}}
         log = args.log_dir / (name.replace('/', '__') + '.log')
         with log.open('w') as output:
@@ -53,6 +55,12 @@ def main():
                 print(f'{name}: {command[0]} exit={run.returncode}', flush=True)
                 if run.returncode and command[0] == 'init':
                     break
+        if plan_check.is_file() and result['checks'].get('test') == 0:
+            with log.open('a') as output:
+                run = subprocess.run([sys.executable, str(plan_check), str(log)],
+                                     env=env, stdout=output, stderr=subprocess.STDOUT)
+            result['checks']['plan-wiring'] = run.returncode
+            print(f'{name}: plan-wiring exit={run.returncode}', flush=True)
         results.append(result)
     (args.log_dir / 'results.json').write_text(json.dumps(results, indent=2) + '\n')
     return int(any(code for result in results for code in result['checks'].values()))

@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.3.0 — Unreleased (draft)
+
+### Added
+
+- Optional `data.basedb.encryption` payload with `vault_id`, `kms_key_id` and `kms_key_version_id`, using an existing Vault/AES-256 key only. Require the Vault/key pair and document prerequisite external DB-node IAM; the pattern creates no IAM, Vault or key and reads no secrets.
+- Plan-only CMK coverage alongside the existing non-CMK BaseDB tests.
+
+### Changed
+
+- Upgrade the single-PRIMARY BaseDB pattern from `terraform-oci-fk-basedb` v0.1.0 to v0.2.0; preserve provider aliases and private topology.
+- Correct BaseDB payload `compatibility.orchestrator` drift from v2.2.0 to v2.3.0 and update the module pin to v0.2.0.
+
+### Upgrade notes
+
+- Run `tofu init -upgrade`, then review `tofu plan` before apply. With encryption omitted, no new PRIMARY resources are expected; a live in-place upgrade was not executed for this change.
+- Adding encryption to an existing DB system forces replacement. Do not add CMK in place; all three encryption fields are creation-time settings, not a rotation workflow.
+- See [draft v2.3.0 release notes](docs/release-v2.3.0.md). No tag or release is created by this PR.
+
 ## v2.2.1 — 2026-11-21
 
 ### Documentation

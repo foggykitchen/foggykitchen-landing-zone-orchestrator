@@ -49,16 +49,22 @@ data:
     database_edition: STANDARD_EDITION
     license_model: LICENSE_INCLUDED
     auto_backup_enabled: false
+    # Optional existing CMK: configure at creation; changes can replace the DB system.
+    # Effective external IAM is required before provisioning (see README).
+    # encryption:
+    #   vault_id: null
+    #   kms_key_id: null
+    #   kms_key_version_id: null
     # availability_domain: "YOUR-AD-NAME" # Otherwise first AD in the region.
     # fault_domains: ["FAULT-DOMAIN-1"]
     admin_password: "${basedb_admin_password}"
 
 compatibility:
-  orchestrator: v2.2.0
+  orchestrator: v2.3.0
   opentofu: ">= 1.11.0"
   oci_provider: ">= 9.12.1, < 10.0.0"
   modules:
-    basedb: v0.1.0
+    basedb: v0.2.0
     bastion-service: v0.2.0
     compute: v0.3.0
     nsg: v0.2.0

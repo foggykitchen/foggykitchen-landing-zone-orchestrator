@@ -391,7 +391,7 @@ Uses:
 
 | Module | Version | Responsibility |
 | --- | --- | --- |
-| `terraform-oci-fk-basedb` | v0.1.0 | PRIMARY DB system, DB Home/database/PDB; ECPU selects LVM internally |
+| `terraform-oci-fk-basedb` | v0.2.0 | PRIMARY DB system, DB Home/database/PDB; ECPU selects LVM internally; optional existing CMK with external IAM |
 | `terraform-oci-fk-bastion-service` | v0.2.0 | Private endpoint and one optional managed SSH session |
 | `terraform-oci-fk-compute` | v0.3.0 | Private OL9 client with Bastion plugin |
 | `terraform-oci-fk-nsg` | v0.2.0 | DB/client ingress and egress rules |

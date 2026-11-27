@@ -12,6 +12,10 @@ data "oci_core_services" "osn" {
 resource "terraform_data" "guardrails" {
   lifecycle {
     precondition {
+      condition     = (try(local.basedb.encryption.vault_id, null) == null) == (try(local.basedb.encryption.kms_key_id, null) == null)
+      error_message = "BaseDB encryption requires vault_id and kms_key_id together, or both null."
+    }
+    precondition {
       condition = length(local.bastion_allow_list) > 0 && alltrue([
         for cidr in local.bastion_allow_list : try(can(cidrnetmask(cidr)) && tonumber(split("/", cidr)[1]) > 0, false)
       ])
@@ -132,7 +136,7 @@ module "bastion" {
   freeform_tags                              = local.freeform_tags
 }
 module "basedb" {
-  source                  = "git::https://github.com/foggykitchen/terraform-oci-fk-basedb.git?ref=v0.1.0"
+  source                  = "git::https://github.com/foggykitchen/terraform-oci-fk-basedb.git?ref=v0.2.0"
   providers               = { oci = oci, oci.target = oci }
   role                    = "PRIMARY"
   compartment_id          = local.compartment_ocid
@@ -152,6 +156,9 @@ module "basedb" {
   pdb_name                = local.basedb.pdb_name
   database_version        = local.basedb.database_version
   auto_backup_enabled     = try(local.basedb.auto_backup_enabled, false)
+  kms_key_id              = try(local.basedb.encryption.kms_key_id, null)
+  vault_id                = try(local.basedb.encryption.vault_id, null)
+  kms_key_version_id      = try(local.basedb.encryption.kms_key_version_id, null)
   admin_password          = var.basedb_admin_password
   ssh_public_keys         = local.client_ssh_keys
   defined_tags            = local.defined_tags
