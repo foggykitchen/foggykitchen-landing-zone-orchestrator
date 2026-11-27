@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.3.0 — Unreleased (draft)
+## v2.3.0 — 2026-11-27
 
 ### Added
 
@@ -16,7 +16,7 @@
 
 - Run `tofu init -upgrade`, then review `tofu plan` before apply. With encryption omitted, no new PRIMARY resources are expected; a live in-place upgrade was not executed for this change.
 - Adding encryption to an existing DB system forces replacement. Do not add CMK in place; all three encryption fields are creation-time settings, not a rotation workflow.
-- See [draft v2.3.0 release notes](docs/release-v2.3.0.md). No tag or release is created by this PR.
+- See [v2.3.0 release notes](docs/release-v2.3.0.md).
 
 ## v2.2.1 — 2026-11-21
 

@@ -1,4 +1,4 @@
-# v2.3.0 — Draft release notes
+# v2.3.0 — Release notes
 
 Extends the existing OCI BaseDB private-access pattern and basic example with optional customer-managed encryption. No new pattern or example is introduced.
 
@@ -13,4 +13,4 @@ Run `tofu init -upgrade`, then review `tofu plan` before apply. No new resources
 
 Validation is limited to static checks and plan-only provider mocks. No live apply, no-change upgrade plan or destroy was executed for this PR, so it does not prove live in-place upgrade behavior or effective IAM. Existing README screenshots and connectivity results remain historical non-CMK evidence. Upstream example 04 live CMK evidence is linked separately.
 
-This is a draft for review. Tagging and publishing v2.3.0 require separate approval. ADB, other module bumps and same-region Data Guard are outside this change.
+Validation passed for all 26 example roots, including six BaseDB plan-only tests and the planned-resource CMK wiring check. Module reference checks, including latest tags, passed for all 49 modules. ADB, other module bumps and same-region Data Guard are outside this change.

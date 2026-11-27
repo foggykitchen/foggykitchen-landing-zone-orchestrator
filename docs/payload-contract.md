@@ -920,7 +920,7 @@ Common OCI payload sections may include:
 
 ### OCI BaseDB Private Access
 
-`patterns/oci/basedb_private_access` consumes the following contract. All paths below are relative to the YAML root; fields with defaults may be omitted. The wrapper uses a required existing compartment and workload-region provider. Database version has **no default**. Payload compatibility metadata describes the v2.3.0 draft release and is informational.
+`patterns/oci/basedb_private_access` consumes the following contract. All paths below are relative to the YAML root; fields with defaults may be omitted. The wrapper uses a required existing compartment and workload-region provider. Database version has **no default**. Payload compatibility metadata describes the v2.3.0 release and is informational.
 
 | Key | Type | Required / default |
 | --- | --- | --- |

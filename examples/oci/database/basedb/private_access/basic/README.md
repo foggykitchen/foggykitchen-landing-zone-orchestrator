@@ -2,7 +2,7 @@
 
 Requires OCI provider **>= 9.12.1, < 10.0.0** and OpenTofu **>= 1.11.0**. See the [v2.0.0 migration guide](../../../../../../docs/oci-provider-9-migration.md).
 
-A single private Oracle Base Database VM system with an OL9 validation host and OCI Bastion Service in an **existing compartment**. Available since orchestrator **v2.2.0**; optional CMK and BaseDB v0.2.0 are introduced in the **v2.3.0 draft**. Historical non-CMK deployment, access checks and cleanup are documented below.
+A single private Oracle Base Database VM system with an OL9 validation host and OCI Bastion Service in an **existing compartment**. Available since orchestrator **v2.2.0**; optional CMK and BaseDB v0.2.0 are introduced in the **v2.3.0**. Historical non-CMK deployment, access checks and cleanup are documented below.
 
 ## Architecture Overview
 
